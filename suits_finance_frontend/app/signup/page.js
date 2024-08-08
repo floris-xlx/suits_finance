@@ -125,10 +125,10 @@ export default function LoginPage() {
   }, []);
 
   const metadata = {
-    title: "Xylex",
-    description: "Sign up for Xylex",
-    image: "https://app.xylex.ai/og.png",
-    url: `https://app.xylex.ai`,
+    title: "Suites Finance",
+    description: "Sign up for Suites Finance",
+    image: "https://app.suites.finance/og.png",
+    url: `https://app.suites.finance/signup`,
   };
 
   return (
@@ -136,7 +136,7 @@ export default function LoginPage() {
       <head>
         <meta name="description" content={metadata.description} />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:creator" content="@XylexAI" />
+        <meta name="twitter:creator" content="@SuitesFinance" />
         <meta name="twitter:image" content={metadata.image} />
         <meta name="twitter:title" content={metadata.title} />
         <meta name="twitter:description" content={metadata.description} />
@@ -145,7 +145,7 @@ export default function LoginPage() {
         <meta property="og:url" content={metadata.url} />
         <meta property="og:type" content="website" />
         <meta property="og:image" content={metadata.image} />
-        <meta property="og:site_name" content="Xylex" />
+        <meta property="og:site_name" content="SuitesFinance" />
         <meta name="theme-color" content="#7E3AF2" />
       </head>
 

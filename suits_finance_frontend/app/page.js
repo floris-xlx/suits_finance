@@ -78,7 +78,7 @@ const Journal = () => {
       <head>
         <meta name="description" content={metadata.description} />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:creator" content="@XylexAI" />
+        <meta name="twitter:creator" content="@SuitesFinance" />
         <meta property="og:title" content={metadata.title} />
         <meta property="og:description" content={metadata.description} />
         <meta property="og:url" content={metadata.url} />

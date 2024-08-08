@@ -2,7 +2,7 @@
 export const OpenGraphMeta = {
     twitter: {
         card: "summary_large_image",
-        creator: "@XylexAI"
+        creator: "@SuitesFinance"
     },
     og: {
         type: "website",
