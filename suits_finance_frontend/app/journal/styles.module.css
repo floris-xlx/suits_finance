@@ -1,0 +1,6 @@
+.DashboardContainer {
+    background-color: var(--color-primary) !important;
+    height: 100vh !important;
+    width: 100vw !important;
+    overflow-x: hidden !important;
+}

@@ -1,0 +1,4 @@
+- [ ] add the linear style loading thingies
+- [ ] bugg report 
+- [ ] add og.png for all
+- [ ] add algo switcher

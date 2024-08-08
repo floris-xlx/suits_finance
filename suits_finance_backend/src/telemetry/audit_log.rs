@@ -43,6 +43,7 @@ pub enum AuditLogStatus {
     Info,
 }
 
+
 // to string
 impl ToString for AuditLogStatus {
     fn to_string(&self) -> String {

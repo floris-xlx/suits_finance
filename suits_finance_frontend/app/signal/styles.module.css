@@ -1,0 +1,251 @@
+.loginPageDividerVertical {
+    border-left: 1px solid #ebebeb;
+    height: 100%;
+    position: absolute;
+    right: 33.33%;
+    z-index: 100
+}
+
+.containerLogin {
+    position: absolute;
+    height: 130vh;
+    width: 100%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    background-color: var(--color-primary);
+}
+
+@media (min-width: 500px) {
+    .containerLogin {
+        height: 100vh;
+    }
+}
+
+
+.loginPageSideContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 33.33%;
+    height: 100%;
+    position: relative;
+    z-index: 100
+}
+
+.logoContainer {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 23.8%;
+    transform: translateX(50%);
+    z-index: 100;
+}
+
+
+.sideLogoXylex {
+    height: 97px;
+    width: 97px;
+    border: 30px white solid;
+    z-index: 100
+}
+
+@keyframes slide-in {
+    from {
+        transform: translateX(-30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.sideLogoText {
+    font-size: 2rem;
+    font-weight: 500;
+    color: #242323;
+    font-stretch: condensed;
+    margin-left: -80px;
+    opacity: 0;
+    transition: transform 0.5s, opacity 0.5s;
+    animation-delay: .5s;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-name: slide-in;
+    z-index: 100;
+}
+
+.sideLogoText.active {
+    opacity: 1;
+}
+
+.sideLogoText2 {
+    height: 27px;
+    margin-left: 60px;
+    z-index: 1;
+
+}
+
+
+.loginFormContainer {
+    z-index: 0;
+    position: absolute !important;
+    left: 24%;
+    top: 37%;
+    transform: scale(1.2);
+}
+
+@media (max-width: 395px  ) {
+    .loginFormContainer {
+        right: 0% !important;
+        transform: scale(0.90) !important;
+    }
+}
+
+@media (max-width: 420px  ) {
+    .loginFormContainer {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        left: 46% !important;
+        transform: scale(0.90) !important;
+    }
+}
+
+@media (max-width: 450px) {
+    .loginFormContainer {
+        left: 40% !important;
+        transform: scale(1) !important;
+    }
+}
+
+
+
+@media (max-width: 500px) {
+    .loginFormContainer {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        left: 40% !important;
+        transform: scale(0.95) !important;
+    }
+}
+
+
+
+/* mobile breakpoint */
+@media (max-width: 1100px) {
+    .loginPageDividerVertical {
+        display: none;
+    }
+    .logoContainer {
+        display: flex;
+        position: absolute;
+        top: 0;
+        left: -60% !important;
+
+    }
+
+    .loginFormContainer {
+        z-index: 0;
+        display: flex;
+        margin-left: auto;
+        margin-right: auto;
+        justify-content: center;
+        top: -10%;
+        position: relative !important;;
+        transform: scale(0.95);
+    }
+
+
+}
+
+@media (min-width: 768px) {
+    .logoContainer {
+        right: 27%;
+    }
+}
+
+@media (min-width: 900px) {
+    .logoContainer {
+        right: 28.2%;
+    }
+}
+
+@media (min-width: 1000px) {
+    .logoContainer {
+        right: 28.7%;
+    }
+}
+
+@media (min-width: 1100px) {
+    .logoContainer {
+        right: 29%;
+        transform: translateX(65%) !important;
+    }
+}
+
+
+@media (min-width: 1200px) {
+    .logoContainer {
+        right: 29.5%;
+    }
+}
+
+@media (min-width: 1400px) {
+    .logoContainer {
+        right: 29.9%;
+    }
+}
+
+@media (min-width: 1600px) {
+    .logoContainer {
+        right: 30.5%;
+    }
+}
+
+@media (min-width: 1800px) {
+    .logoContainer {
+        right: 30.7%;
+    }
+}
+
+@media (min-width: 2000px) {
+    .logoContainer {
+        right: 30.8%;
+    }
+}
+
+@media (min-width: 2200px) {
+    .logoContainer {
+        right: 31.1%;
+    }
+}
+
+@media (min-width: 2400px) {
+    .logoContainer {
+        right: 31.3%;
+    }
+}
+
+@media (min-width: 2600px) {
+    .logoContainer {
+        right: 31.6%;
+    }
+}
+
+@media (min-width: 2800px) {
+    .logoContainer {
+        right: 31.6%;
+    }
+}
+
+@media (min-width: 3000px) {
+    .logoContainer {
+        right: 31.8%;
+    }
+}
+
+@media (min-width: 3300px) {
+    .logoContainer {
+        right: 31.85%;
+    }
+}

@@ -1,7 +1,16 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+
+    "allowImportingTsExtensions": true,
+    "allowArbitraryExtensions": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "checkJs": true,
+    "jsx": "react",
     "paths": {
-      "@/*": ["./*"]
-    }
+      "@/app/*": ["app/*"]
+    },
+    "exclude": ["node_modules", "**/node_modules/*"]
   }
 }
