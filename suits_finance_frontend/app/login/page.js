@@ -20,7 +20,6 @@ import { HeadLogin } from '@/app/components/layouts/OpenGraph/Login';
 
 
 export default function LoginPage() {
-  const textRef = useRef(null);
   const router = useRouter();
   const [wrong, setWrong] = useState(false);
   const supabase = createClientComponentClient();
