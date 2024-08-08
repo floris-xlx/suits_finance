@@ -17,7 +17,8 @@ use supabase_rs::SupabaseClient;
 // re-export init_tracing
 pub use crate::telemetry::trace_client::init_tracing;
 pub use crate::telemetry::colors;
-pub use crate::data::supabase::initialize_supabase_client;
+pub use crate::data::supabase_client::initialize_supabase_client;
+pub use crate::api::client::api_client;
 
 
 
@@ -27,7 +28,8 @@ pub use crate::data::supabase::initialize_supabase_client;
 pub mod api;
 pub mod data;
 pub mod telemetry;
-
+pub mod tests;
+pub mod utils;
 
 // tests
 
@@ -42,14 +44,9 @@ pub async fn client() {
 
     let client: SupabaseClient = initialize_supabase_client().await;
 
-
+    if let Err(e) = api_client().await {
+        error!("{}", colors::red(&format!("Failed to start API client: {}", e)));
+    }
 
     info!("Hello, world!");
-}
-
-
-async fn api_client() {
-    info!("{}", colors::cyan("Starting the API client.."));
-
-
 }
