@@ -16,7 +16,6 @@ export function useRequireAuth() {
     setUsername,
     setProfilePicture,
     setProviderType,
-    setOrganization
   } = useUserStore();
   const {
     setAuthLoading
