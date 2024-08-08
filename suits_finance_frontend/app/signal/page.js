@@ -124,9 +124,6 @@ export default function SignalGeneration() {
 
           const signal = await SendSignal(tradeHash, localOrganization);
 
-          console.log('Signal sent: ', signal);
-          console.log('Trade added: ', newTrade);
-
           SignalGeneratedSuccessNotification({
             algorithm_id: algorithmId,
             trade_hash: tradeHash

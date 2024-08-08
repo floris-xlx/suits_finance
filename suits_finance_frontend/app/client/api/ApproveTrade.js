@@ -18,7 +18,6 @@ async function ApproveSignalTradesByRob(tradeHash) {
     const urlWithParams = `${url}?${params.toString()}`;
 
     const response = await axios.get(urlWithParams, { mode: 'no-cors' });
-    console.log(response);
 
     if (response.status !== 200) {
         throw new Error(`Failed to approve signal: ${response.status}`);

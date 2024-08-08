@@ -7,7 +7,6 @@ const UpdateTradeStatusLayout = ({
     setFilterKey = null,
     trade_hash = null
 }) => {
-    console.log('trade_hash', trade_hash)
 
     return (
         <Fragment>

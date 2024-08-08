@@ -22,8 +22,6 @@ export default function StrategyDrilldown({
     const { view, setIsInStrategyDrilldown, setIsInJournalStrategiesOverview } = useUserViewStore();
     const { user } = useUserStore();
 
-    console.log(view);
-
         // if view.strategyDrilldownSideBarItem is null then set it to {title: "General"}
     if (!view.strategyDrilldownSideBarItem) {
         view.strategyDrilldownSideBarItem = { title: "General" };

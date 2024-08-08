@@ -85,7 +85,7 @@ export default function LoginPage() {
 
               <div className="mx-auto w-full max-w-sm lg:w-96 SlideInAnimation">
                 <div>
-                  <Xylex /> 
+                <Xylex size={'lg'} />
     
                   <h2 className="mt-6 text-3xl font-bold tracking-tight text-primary">
                    Set a new password

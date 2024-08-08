@@ -11,11 +11,6 @@ import Xylex from "@/app/components/ui/Logos/Xylex.jsx";
 import ThemeButton from "@/app/components/ui/Theme/ThemeButton.jsx";
 import SignInButton from "@/app/components/ui/Buttons/SignIn.jsx";
 
-import {
-  DiscordIcon,
-  GoogleIcon
-} from "@/app/components/ui/Icon.jsx";
-
 
 export default function LoginPage() {
   const [notification, setNotification] = useState(null);
@@ -28,7 +23,7 @@ export default function LoginPage() {
   const [wrong, setWrong] = useState(false);
   const [auth, setAuth] = useState(false);
 
-
+  // temp
   const [isTbrOnboarding, setIsTbrOnboarding] = useState(false);
 
   useEffect(() => {
@@ -90,8 +85,6 @@ export default function LoginPage() {
       PasswordTooShort(); // Call PasswordTooShort to show the error message
       setLoading(false);
     }
-
-
 
     // handle email already exists
     // data.user.identities length is 0 if the users email is already in use
@@ -165,7 +158,7 @@ export default function LoginPage() {
 
             <div className="mx-auto w-full max-w-sm lg:w-96 SlideInAnimation">
               <div>
-                <Xylex />
+              <Xylex size={'lg'} />
 
                 <h2 className="mt-6 text-3xl font-bold tracking-tight text-primary">
                   {isTbrOnboarding ? (

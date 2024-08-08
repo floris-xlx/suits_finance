@@ -23,8 +23,6 @@ const StrategyCardsGrid = () => {
 
     const handleCreateStrategy = () => {
         setIsInStrategyCreationFlow(true);
-        console.log('create strategy');
-
     };
     
     // // data fetching logic for strategies

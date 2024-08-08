@@ -123,7 +123,6 @@ const ToggleBlockUsers = ({
         }
 
       }).then(() => {
-        console.log('success');
         setLoading(false);
 
         setTimeout(() => { }, 100);

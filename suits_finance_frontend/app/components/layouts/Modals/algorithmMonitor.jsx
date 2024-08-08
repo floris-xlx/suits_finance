@@ -66,8 +66,6 @@ const AlgorithmMonitor = () => {
         return () => clearInterval(countdownRef.current);
     }, [algoMonitorData]);
 
-    console.log(algoMonitorData);
-
     return (
         <div>
             {loadingData && <p>Loading...</p>}
@@ -87,7 +85,7 @@ const AlgorithmMonitor = () => {
                             lastRunTime={algoMonitorData.genesis.last_run_time}
                         />
                     )}
-         
+
 
                     {algoMonitorData.tbr_original && (
                         < AlgorithmMonitorCard

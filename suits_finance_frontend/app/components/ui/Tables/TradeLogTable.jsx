@@ -53,7 +53,6 @@ export default function App({
 
     const convertTradeFilterCacheIntoFormat = () => {
         const tradeStatusFilters = new Set(tradeFilters.isTradeStatusFilters);
-        console.log(tradeStatusFilters)
         setIsTradeStatusFilters(tradeStatusFilters);
     }
 
@@ -72,12 +71,6 @@ export default function App({
     const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
     const [scopedTradeHash, setScopedTradeHash] = useState(null);
     const [page, setPage] = useState(1);
-
-    console.log(selectedKeys)
-    console.log(statusFilter)
-
-
-
 
 
     useEffect(() => {

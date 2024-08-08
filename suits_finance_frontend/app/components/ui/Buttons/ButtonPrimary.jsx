@@ -21,8 +21,6 @@ const ButtonPrimary = ({
         }
     }
 
-    console.log(disabled);
-
     return (
         <div className="w-full flex mx-auto mt-[20px]">
             {!loading ? (

@@ -9,7 +9,6 @@ function RefreshMetadata(tradeHash) {
     const disabledMetadataHashes = JSON.parse(GetKeyLocalStorage('disabledMetadataHashes')) || [];
 
     if (disabledMetadataHashes.includes(tradeHash)) {
-        console.log(`Metadata streaming is disabled for trade hash: ${tradeHash}`);
         return Promise.resolve({ message: `Metadata streaming is disabled for trade hash: ${tradeHash}` });
     }
 
@@ -17,7 +16,6 @@ function RefreshMetadata(tradeHash) {
         tradeHash: tradeHash
     }
     const url = `${XYLEX_API_URL}/hash/trade/update_metadata`;
-    console.log('url', url);
     const params = new URLSearchParams();
     params.append('trade_hash', data.tradeHash);
 
@@ -28,7 +26,6 @@ function RefreshMetadata(tradeHash) {
         setTimeout(() => {
             axios.get(urlWithParams, { mode: 'no-cors' })
                 .then(response => {
-                    console.log(response);
                     if (response.data.message === "trade metadata streaming is disabled for this hash") {
                         const tradeHash = response.data.trade_hash;
                         const updatedDisabledMetadataHashes = [...disabledMetadataHashes, tradeHash];

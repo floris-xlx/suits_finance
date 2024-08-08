@@ -18,7 +18,6 @@ const SideBar = () => {
     ];
 
     const { view, setStrategyDrilldownSideBarItem } = useUserViewStore();
-    console.log(view)
     useEffect(() => {
         if (view.strategyDrilldownSideBarItem === null) {
             setCurrentItem(Items[0]);

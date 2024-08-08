@@ -8,8 +8,6 @@ const supabase = createClient(supabaseUrl, SUPABASE_ANON_KEY);
 
 
 export async function IsUserIdGlobalAdmin(userId) {
-  console.log('IsUserIdGlobalAdmin called with userId:', userId);
-
   const { data, error } = await supabase
     .from('users')
     .select('global_admin')

@@ -11,7 +11,6 @@ async function UsernameCreate(username, userId) {
     const urlWithParams = `${url}?${params.toString()}`;
 
     const response = await axios.get(urlWithParams, { mode: 'no-cors' });
-    console.log(response)
     
     if (response.status !== 200) {
         throw new Error(`Failed to check username availability: ${response.status}`);

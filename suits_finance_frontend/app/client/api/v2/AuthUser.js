@@ -4,20 +4,18 @@ import axios from 'axios';
 
 async function AuthUser(email, organization) {
     const url = `${XYLEX_API_PAYMENTS_URL}/auth`;
-    console.log(url);
-    console.log(email);
-    console.log(organization);
+
 
     const params = new URLSearchParams();
     params.append('email', email);
 
     const urlWithParams = `${url}?${params.toString()}`;
 
-    console.log(urlWithParams);
+
 
     const response = await axios.get(urlWithParams, { mode: 'no-cors' });
 
-    console.log(response);
+
 
     if (response.status === 401) {
         return {

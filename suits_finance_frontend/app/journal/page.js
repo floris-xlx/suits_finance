@@ -40,8 +40,6 @@ export default function JournalPage() {
     if (!strategyInQuery) return;
 
     GetStrategyById(strategyInQuery).then((strategy) => {
-      console.log(strategy);
-
       if (strategy) {
         setStrategy(strategy[0]);
       }

@@ -675,7 +675,6 @@ export async function GetOrganizationByUserId(userId) {
 }
 
 export async function IsUserOrgAdmin(userId) {
-  console.log('User ID:', userId);
   if (!userId) {
     return null;
   }
@@ -685,8 +684,6 @@ export async function IsUserOrgAdmin(userId) {
     .from('users')
     .select('organization_admin')
     .eq('user_id', userId);
-
-    console.log(data);
 
   if (error) throw error;
 
