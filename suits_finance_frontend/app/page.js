@@ -67,7 +67,7 @@ const Journal = () => {
   }, [router]);
 
   const metadata = {
-    title: "Xylex",
+    title: "Suits Finance",
     description: "Redefining financial markets",
     image: "https://app.suits.finance/og.png",
     url: `https://app.suits.finance`,
@@ -84,7 +84,7 @@ const Journal = () => {
         <meta property="og:url" content={metadata.url} />
         <meta property="og:type" content="website" />
         <meta property="og:image" content={metadata.image} />
-        <meta property="og:site_name" content="Xylex" />
+        <meta property="og:site_name" content="Suits Finance" />
         <meta name="theme-color" content="#7E3AF2" />
       </head>
       {/* handle meta graph and head tags */}

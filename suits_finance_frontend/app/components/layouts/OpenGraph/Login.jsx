@@ -5,7 +5,7 @@ import { OpenGraphMeta } from "@/app/components/layouts/OpenGraph/Default.jsx";
 export const HeadLogin = () => {
   // define the metadata for the login page
   const metadata = {
-      title: "Xylex | Login",
+      title: "Suits Finance | Login",
       description: "Login to your xylex account.",
       image: "https://app.suits.finance/og.png",
       url: `https://app.suits.finance/login`,

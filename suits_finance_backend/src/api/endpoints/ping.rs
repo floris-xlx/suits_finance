@@ -15,6 +15,7 @@ use crate::telemetry::audit_log::{AuditLog, AuditLogStatus};
 
 
 
+
 #[get("/ping")]
 pub async fn ping() -> impl Responder {
     info!("{}", colors::cyan("GET @ /ping"));

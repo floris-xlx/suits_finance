@@ -25,7 +25,7 @@ const ErrorServerInlineNotification = () => {
             <div className="flex flex-col gap-y-1">
 
                 <span className="pl-3 text-primary font-semibold sm:text-[14px] text-[13px]">
-                    An error occured while reaching the Xylex server.
+                    An error occured while reaching the Suits Finance server.
                 </span>
 
                 <span className="pl-3 text-secondary font-semibold sm:text-[12px] text-[11px]">

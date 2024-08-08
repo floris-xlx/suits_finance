@@ -6,7 +6,7 @@ export const OpenGraphMeta = {
     },
     og: {
         type: "website",
-        site_name: "Xylex"
+        site_name: "Suits Finance"
     },
     // this is mainly used for discord color embed lines
     theme_color: "#7E3AF2"

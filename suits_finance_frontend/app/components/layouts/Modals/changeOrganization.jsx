@@ -5,7 +5,7 @@ const ChangeOrganization = () => {
     return (
         <Fragment>
             <OrganizationTab
-                organizationNames={['Xylex', 'Diamant Capital', 'Trades By Rob']}
+                organizationNames={['Suits Finance', 'Diamant Capital', 'Trades By Rob']}
             />
         </Fragment>
     )

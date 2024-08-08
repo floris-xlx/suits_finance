@@ -77,7 +77,7 @@ export default function LoginPage() {
         email: email,
         password: password,
         options: {
-          emailRedirectTo: 'https://app.suits.finance/email-verified'
+          emailRedirectTo: 'https://app.xylex.ai/email-verified'
         }
       }
     );
@@ -134,8 +134,8 @@ export default function LoginPage() {
   const metadata = {
     title: "Xylex",
     description: "Sign up for Xylex",
-    image: "https://app.suits.finance/og.png",
-    url: `https://app.suits.finance`,
+    image: "https://app.xylex.ai/og.png",
+    url: `https://app.xylex.ai`,
   };
 
   return (

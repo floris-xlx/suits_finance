@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 import { Toaster } from 'react-hot-toast';
 
 export const metadata = {
-  title: "Xylex | Journal",
+  title: "Suits Finance | Journal",
   description: "A journaling app for those who are serious about trading.",
 };
 

@@ -5,7 +5,7 @@ import { OpenGraphMeta } from "@/app/components/layouts/OpenGraph/Default.jsx";
 export const HeadManage = () => {
   // define the metadata for the journal page
   const metadata = {
-      title: "Xylex | Manage",
+      title: "Suits Finance | Manage",
       description: "",
       image: "https://app.suits.finance/og.png",
       url: `https://app.suits.finance`,

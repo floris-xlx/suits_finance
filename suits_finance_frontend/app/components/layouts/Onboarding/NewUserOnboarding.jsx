@@ -120,10 +120,10 @@ const NewUserOnboarding = () => {
                     <div className={`flex items-center mx-auto w-[375px] sm:w-[500px] flex-col gap-y-3 ${classNameGetStarted}`}>
                         < XylexNoLink size={'lg'} />
                         <p className="text-primary text-4xl font-semibold select-none mt-8">
-                            Welcome to Xylex
+                            Welcome to Suits Finance
                         </p>
                         <p className="text-secondary text-sm font-normal select-none text-center">
-                            Xylex is an all in one platform for traders. <br />
+                            Suits Finance is an all in one platform for traders. <br />
                             Journal trades, track performance.
                         </p>
 

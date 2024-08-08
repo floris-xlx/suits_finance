@@ -6,7 +6,7 @@ import { SetKeyLocalStorage } from "@/app/client/caching/LocalStorageRouter";
 
 const VerticalTabFullWidth = ({
     label,
-    organizationNames = ["Xylex"],
+    organizationNames = ["Suits Finance"],
     value
 }) => {
   // organization

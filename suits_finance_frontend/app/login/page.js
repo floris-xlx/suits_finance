@@ -86,14 +86,14 @@ export default function LoginPage() {
               <div>
                 <Xylex size={'lg'} />
 
-                <h2 className="mt-6 text-3xl font-bold tracking-tight text-primary">
+                <h2 className="mt-6 text-3xl font-bold tracking-tight text-primary select-none">
                   Sign in to your account
                 </h2>
-                <p className="mt-2 text-sm text-secondary">
+                <p className="mt-2 text-sm text-secondary select-none">
                   Or{" "}
                   <a
                     href="/signup"
-                    className="font-medium text-brand-primary hover:text-brand-secondary transition focus:outline-none focus:ring-2   focus:ring-primary rounded-sm"
+                    className="font-medium text-brand-primary hover:text-brand-secondary transition focus:outline-none focus:ring-2   focus:ring-primary rounded-sm select-none"
                   >
                     create your free account
                   </a>
@@ -107,7 +107,7 @@ export default function LoginPage() {
                     <div>
                       <label
                         htmlFor="email"
-                        className="block text-sm font-medium text-secondary"
+                        className="block text-sm font-medium text-secondary select-none"
                       >
                         Email address
                       </label>
@@ -129,7 +129,7 @@ export default function LoginPage() {
                     <div className="space-y-1">
                       <label
                         htmlFor="password"
-                        className="block text-sm font-medium text-secondary"
+                        className="block text-sm font-medium text-secondary select-none"
                       >
                         Password
                       </label>
@@ -152,7 +152,7 @@ export default function LoginPage() {
                       <div className="text-sm">
                         <a
                           href="/forgot-password"
-                          className="font-medium text-brand-primary hover:text-brand-secondary transition focus:outline-none focus:ring-2 focus:ring-primary rounded-sm"
+                          className="font-medium text-brand-primary hover:text-brand-secondary transition focus:outline-none focus:ring-2 focus:ring-primary rounded-sm select-none"
                         >
                           Forgot your password?
                         </a>

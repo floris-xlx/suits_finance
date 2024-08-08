@@ -8,7 +8,7 @@ import { Toaster } from 'react-hot-toast';
 
 export const metadata = {
   title: 'Suits Finance | Sign Up',
-  description: 'Create your Xylex account.',
+  description: 'Create your Suits Finance account.',
 }
 
 export default function RootLayout({ children }) {

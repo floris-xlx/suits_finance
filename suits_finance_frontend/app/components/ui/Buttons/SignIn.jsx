@@ -27,7 +27,7 @@ const SignInButton = ({
 
                 <button
                     type="submit"
-                    className="flex w-full justify-center rounded-md border border-transparent bg-brand-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-brand-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition"
+                    className="flex w-full justify-center rounded-md border border-transparent bg-brand-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-brand-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition select-none"
                     onClick={handleSignIn}
                 >
 

@@ -7,7 +7,7 @@ import { Toaster } from 'react-hot-toast';
 
 export const metadata = {
   title: 'Suits Finance | Journal',
-  description: 'Journal your trades and strategies with Xylex',
+  description: 'Journal your trades and strategies with Suits Finance',
 }
 
 export default function RootLayout({ children }) {
