@@ -882,7 +882,7 @@ export async function UpsertUser(
     return { upserted: true };
   }
 
-  
+
   console.log('User already exists');
   return { upserted: false };
 }

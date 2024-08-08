@@ -50,12 +50,9 @@ const LoggedInUserCard = ({
   desktopView,
   setIsPaletteSearchOpen
 }) => {
-  const { modalRef: modalRef_changeOrganization, handleOpenModal: handleOpenModal_changeOrganization } = useModal(); // organization change modal
   const { modalRef: modalRef_customization, handleOpenModal: handleOpenModal_customization } = useModal(); // customization modal
-  const { modalRef: modalRef_algoritms, handleOpenModal: handleOpenModal_algorithms } = useModal();
-  const { modalRef: modalRef_algoMonitor, handleOpenModal: handleOpenModal_algoMonitor } = useModal(); // algorithm monitor modal
   const { modalRef: modalRef_filter, handleOpenModal: handleOpenModal_filter } = useModal();
-  const { modalRef: modalRef_econEvents, handleOpenModal: handleOpenModal_econEvents } = useModal();
+
 
   // zustand
   const { loading } = useLoadingStore();
@@ -160,21 +157,10 @@ const LoggedInUserCard = ({
     setIsPaletteSearchOpen((prevState) => !prevState);
   }
 
-  // econ events
-  const handleOpenEconEvents = () => {
-    handleOpenModal_econEvents();
-  }
+
 
   return (
     <>
-      <Modal
-        ref={modalRef_algoMonitor}
-        buttonText={'Close'}
-        title={'Algorithm Monitor'}
-        onButtonPress={handleAlgoMonitorButton}
-      >
-        <AlgorithmMonitor />
-      </Modal>
 
       <Modal
         ref={modalRef_customization}
@@ -184,14 +170,7 @@ const LoggedInUserCard = ({
         <CustomizeLayoutPending />
       </Modal>
 
-      <Modal
-        ref={modalRef_changeOrganization}
-        buttonText={'Change organization'}
-        title={'Change organization'}
-        onButtonPress={WrapperHandleOrganizationChange}
-      >
-        <ChangeOrganization />
-      </Modal>
+
 
       <Modal
         ref={modalRef_filter}
@@ -202,22 +181,8 @@ const LoggedInUserCard = ({
         <FilterRouterModal />
       </Modal>
 
-      <Modal
-        ref={modalRef_algoritms}
-        buttonText={'Switch'}
-        title={'Switch algorithms'}
-        onButtonPress={handleAlgorithmSwitch}
-      >
-        <AlgorithmSwitch />
-      </Modal>
-
-      <Modal
-        ref={modalRef_econEvents}
-        buttonText={'Close'}
-        title={'Economic Events'}
-      >
-        <EconEvents />
-      </Modal>
+ 
+  
 
       <div className="ml-[11px] z-0 px-2 ">
         {loading.authLoading ? (
@@ -254,7 +219,7 @@ const LoggedInUserCard = ({
             <div className="flex flex-row gap-x-3 ">
               <div className="hidden md:flex gap-x-3 flex-row">
 
-                <ButtonIcon onPress={handleOpenModal_filter} hide={view.isInJournal || view.isEditingModePendingTrades}>
+                <ButtonIcon onPress={handleOpenModal_filter}>
                   <FunnelIcon className="icon" />
                 </ButtonIcon>
 
@@ -262,26 +227,11 @@ const LoggedInUserCard = ({
                   <MagnifyingGlassIcon className="icon" />
                 </ButtonIcon>
 
-                <ButtonIcon onPress={handleOpenModal_customization} hide={view.isInJournal}>
+                <ButtonIcon onPress={handleOpenModal_customization} >
                   <PaintBrushIcon className="icon" />
                 </ButtonIcon>
 
-                <ButtonIcon onPress={handleOpenModal_changeOrganization} hide={!user.admin}>
-                  <BriefcaseIcon className="icon" />
-                </ButtonIcon>
-
-                {/* <ButtonIcon onPress={handleOpenModal_algorithms} hide={view.isInJournal || organization.isMember}>
-                  <CpuChipIcon className="icon" />
-                </ButtonIcon> */}
-
-                <ButtonIcon onPress={handleOpenModal_algoMonitor} hide={view.isInJournal}>
-                  <EyeIcon className="icon" />
-                </ButtonIcon>
-
-                <ButtonIcon onPress={handleOpenEconEvents} hide={view.isInJournal}>
-                  <NewspaperIcon className="icon" />
-                </ButtonIcon>
-
+    
               </div>
 
               {/* mobile dropdown */}
@@ -291,10 +241,6 @@ const LoggedInUserCard = ({
                   handleFilterWrapper={handleFilterWrapper}
                   handleOpenSearch={handleOpenSearch}
                   handleOpenModal_customization={handleOpenModal_customization}
-                  handleOpenModal_changeOrganization={handleOpenModal_changeOrganization}
-                  handleOpenModal_algorithms={handleOpenModal_algorithms}
-                  handleOpenModal_algoMonitor={handleOpenModal_algoMonitor}
-                  handleOpenModal_econEvents={handleOpenModal_econEvents}
                   isInJournal={view.isInJournal}
                   isGlobalAdmin={user.admin}
                   isInEditingModePendingTrades={view.isEditingModePendingTrades}

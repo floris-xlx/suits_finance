@@ -40,9 +40,6 @@ export default function JournalPage() {
   // zustand
   const { user, setUsername, setOrganization, setProfilePicture } = useUserStore();
   const { loading, setPendingTradesLoading } = useLoadingStore();
-  const { layout, setLayoutToPendingTrades } = useLayoutStore();
-
-  console.log(user);
 
   // local states
   const [pendingTradesUpdate, setPendingTradesUpdate] = useState(false);

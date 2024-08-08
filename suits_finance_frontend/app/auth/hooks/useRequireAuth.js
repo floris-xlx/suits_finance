@@ -8,9 +8,6 @@ import stripNameFromEmail from '@/app/client/hooks/formatting/StripNameFromEmail
 // zustand
 import { useUserStore, useLoadingStore } from '@/app/stores/stores';
 
-// import apis
-import { UserOrganization } from '@/app/client/api/v2/UserOrganization';
-
 
 export function useRequireAuth() {
   // zustand user
@@ -47,25 +44,12 @@ export function useRequireAuth() {
 
         await UpsertUser(user.id,  user.user_metadata.full_name, user.email, username);
         
-        // legacy
-        SetKeyLocalStorage('username', username);
-
+        
         // zustand
         setUsername(username);
 
         // this is for getting pfp when the oauth2 provider doesnt provide it
         const profilePic = await GetProfilePicById(user.id);
-
-
-        // get organization
-        const organization = await UserOrganization(user.id);
-
-        setOrganization(organization.organization);
-
-
-        // legacy
-        SetKeyLocalStorage('profilePic', profilePic);
-
         // zustand
         setProfilePicture(profilePic);
         setProviderType('email');
