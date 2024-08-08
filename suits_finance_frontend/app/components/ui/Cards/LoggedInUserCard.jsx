@@ -4,23 +4,17 @@
 import React, { useState, useEffect } from 'react';
 import SkeletonLoader from '@/app/components/ui/Loading/SkeletonLoader';
 import {
-  BriefcaseIcon,
   PaintBrushIcon,
-  CpuChipIcon,
   Bars3Icon,
-  EyeIcon,
   MagnifyingGlassIcon,
   FunnelIcon,
-  NewspaperIcon
 } from '@heroicons/react/24/outline';
 import CapitalizeFirstLetter from '@/app/client/hooks/formatting/CapitalizeLetter';
 import { ProfilePicTiny } from '@/app/components/ui/User/User';
-import handleOrganizationChange from '@/app/client/hooks/organizations/handleOrganizationUpdate';
 import { IsUserIdGlobalAdmin } from '@/app/client/supabase/SupabaseOrgData';
 import ButtonIcon from '@/app/components/ui/Buttons/ButtonIcon';
-import {  Button } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 // caching local storage
-import { SetKeyLocalStorage } from '@/app/client/caching/LocalStorageRouter';
 import FilterRouterModal from '@/app/components/layouts/Modals/filterRouter';
 // da modal component
 import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
@@ -29,16 +23,8 @@ import { refreshPage } from '@/app/client/hooks/refreshPage';
 // zustand
 import { useLoadingStore, useLayoutStore, useUserStore, useUserViewStore, useOrganizationStore } from '@/app/stores/stores';
 
-
-
 // modal layouts
-import {
-  CustomizeLayoutPending,
-  ChangeOrganization,
-  AlgorithmSwitch,
-  AlgorithmMonitor,
-  EconEvents
-} from '@/app/components/layouts/Modals.jsx';
+import { CustomizeLayoutPending } from '@/app/components/layouts/Modals.jsx';
 import ManagePendingTradesLayout from '@/app/components/layouts/Dropdowns/ManagePendingTrades';
 import UserCardLayout from '@/app/components/layouts/Dropdowns/UserCard';
 
@@ -82,18 +68,6 @@ const LoggedInUserCard = ({
     refreshPage();
   };
 
-  // handle algo switch modal
-  const handleAlgorithmSwitch = () => {
-    const currentUnixTime = Math.floor(Date.now() / 1000);
-    SetKeyLocalStorage("cachedMountTimeDataWrapper", currentUnixTime);
-
-    // also we have to reset the editing trade views  and the drilldown trade hash
-    // reset the drilldown trade view
-    resetDrilldownTradeView();
-
-    setLayoutToAlgorithmSettings();
-  };
-
   const resetDrilldownTradeView = () => {
     setDrilldownTradeHashPendingTrades(null);
     setEditingModePendingTrades(false);
@@ -106,27 +80,6 @@ const LoggedInUserCard = ({
     }
   };
 
-
-
-  // wrapper handle organization change
-  const WrapperHandleOrganizationChange = async () => {
-    // we want to switch back the layout to pending trades
-
-    // reset the drilldown trade view
-    resetDrilldownTradeView();
-
-    if (layout.isLayoutToAlgorithmSettings) {
-      setLayoutToPendingTrades();
-    }
-
-    await handleOrganizationChange();
-  };
-
-  const handleAlgoMonitorButton = () => {
-    handleOpenModal_algoMonitor();
-  }
-
-
   const handleDropdown = () => {
     if (isDropdownOpen) {
       setIsInDropdownPendingTrades(false);
@@ -136,8 +89,6 @@ const LoggedInUserCard = ({
       setIsInDropdownPendingTrades(true);
     }
   }
-
-
 
   const handleDropdownUser = () => {
     if (isDropdownUserOpen) {
@@ -157,11 +108,8 @@ const LoggedInUserCard = ({
     setIsPaletteSearchOpen((prevState) => !prevState);
   }
 
-
-
   return (
     <>
-
       <Modal
         ref={modalRef_customization}
         buttonText={'Close'}
@@ -169,9 +117,6 @@ const LoggedInUserCard = ({
       >
         <CustomizeLayoutPending />
       </Modal>
-
-
-
       <Modal
         ref={modalRef_filter}
         buttonText={'Apply'}
@@ -181,8 +126,6 @@ const LoggedInUserCard = ({
         <FilterRouterModal />
       </Modal>
 
- 
-  
 
       <div className="ml-[11px] z-0 px-2 ">
         {loading.authLoading ? (
@@ -230,8 +173,6 @@ const LoggedInUserCard = ({
                 <ButtonIcon onPress={handleOpenModal_customization} >
                   <PaintBrushIcon className="icon" />
                 </ButtonIcon>
-
-    
               </div>
 
               {/* mobile dropdown */}
@@ -282,8 +223,6 @@ const LoggedInUserCard = ({
 
                     </div>
                   </button>
-
-                  {/* user logout button */}
                 </UserCardLayout>
               </div>
             )}
