@@ -153,12 +153,11 @@ export default function LoginPage() {
         <div className="flex min-h-full">
           <div className="flex flex-1 flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
             <div className="fixed top-0 left-0 p-4 focus:outline-none focus:ring-2 focus:ring-primary rounded-sm z-10">
-              <Popup messageType={notification} />
             </div>
 
             <div className="mx-auto w-full max-w-sm lg:w-96 SlideInAnimation">
               <div>
-              <Xylex size={'lg'} />
+                <Xylex size={'lg'} />
 
                 <h2 className="mt-6 text-3xl font-bold tracking-tight text-primary">
                   {isTbrOnboarding ? (
