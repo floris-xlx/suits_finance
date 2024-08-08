@@ -43,6 +43,7 @@ export default function LoginPage() {
     if (error) {
       // If there's an error, show the error message
       wrongCredentialsNotification(); // Call wrongCredentialsNotification to show the error message
+      setLoading(false);
 
     } else {
       // this dictates where the user goes after success auth
@@ -53,7 +54,7 @@ export default function LoginPage() {
         localStorage.clear();
       }
 
-      router.push("/manage");
+      router.push("/dashboard");
 
     }
     setWrong(false);
@@ -61,13 +62,6 @@ export default function LoginPage() {
     router.refresh()
   };
 
-  useEffect(() => {
-    if (textRef.current) {
-      setTimeout(() => {
-        textRef.current.classList.add("active");
-      }, 100);
-    }
-  }, []);
 
 
   return (

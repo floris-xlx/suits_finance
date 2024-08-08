@@ -13,7 +13,7 @@ export async function GET(request) {
       await supabase.auth.exchangeCodeForSession(code)
     }
 
-    return NextResponse.redirect('https://app.suits.finance/journal')
+    return NextResponse.redirect('https://app.suits.finance/dashboard')
   } catch (error) {
     console.error('Error during authentication callback:', error)
     return new Response('Internal Server Error', { status: 500 })

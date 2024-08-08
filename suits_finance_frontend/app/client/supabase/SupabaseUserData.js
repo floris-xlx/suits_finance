@@ -698,7 +698,7 @@ export async function IsUserOrgAdmin(userId) {
 export async function IsUserOrganizationAdmin(userId) {
   const { data, error } = await supabase
     .from('users')
-    .select('global_admin')
+    .select('super_admin')
     .eq('user_id', userId);
 
   if (error) throw error;
@@ -707,7 +707,7 @@ export async function IsUserOrganizationAdmin(userId) {
     return null;
   }
 
-  return data[0].global_admin;
+  return data[0].super_admin;
 }
 
 export async function GetUserFeatureFlags(userId) {
@@ -832,4 +832,57 @@ export async function GetTradesByStrategyId(strategy_id) {
   }
 
   return tradesData;
+}
+
+
+export async function UpsertUser(
+  user_id,
+  full_name,
+  email,
+  username
+) {
+  console.log('UpsertUser called with:', { user_id, full_name, email, username });
+
+  // Assume empty string if any parameter except user_id is null
+  full_name = full_name || '';
+  email = email || '';
+  username = username || '';
+
+  console.log('Processed input values:', { full_name, email, username });
+
+  const { data, error } = await supabase
+    .from('users')
+    .select('user_id')
+    .eq('user_id', user_id);
+
+  if (error) {
+    console.error('Error fetching user:', error);
+    throw error;
+  }
+
+  console.log('Fetched user data:', data);
+
+  if (data.length === 0) {
+    const { error: insertError } = await supabase
+      .from('users')
+      .insert({ 
+        "user_id": user_id,
+        "last_sign_in": Math.floor(Date.now() / 1000),
+        "full_name": full_name,
+        "email": email,
+        "username": username
+      });
+
+    if (insertError) {
+      console.error('Error inserting user:', insertError);
+      throw insertError;
+    }
+
+    console.log('User inserted successfully');
+    return { upserted: true };
+  }
+
+  
+  console.log('User already exists');
+  return { upserted: false };
 }

@@ -10,7 +10,7 @@ const supabase = createClient(supabaseUrl, SUPABASE_ANON_KEY);
 export async function IsUserIdGlobalAdmin(userId) {
   const { data, error } = await supabase
     .from('users')
-    .select('global_admin')
+    .select('super_admin')
     .eq('user_id', userId);
 
   if (error) throw error;
@@ -19,7 +19,7 @@ export async function IsUserIdGlobalAdmin(userId) {
     return false;
   }
 
-  return data[0].global_admin;
+  return data[0].super_admin;
 }
 
 

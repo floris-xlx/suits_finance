@@ -173,10 +173,12 @@ const ToggleBlockUsers = ({
               'justify-between cursor-pointer rounded-md gap-2 p-2 sm:p-4 border-2 border-transparent',
               'group-data-[pressed=true]:bg-brand-primary' // base color when pressed
             ),
+
             wrapper: cn(
               'p-0 h-4 overflow-visible bg-input-primary',
               'group-data-[selected=true]:bg-brand-primary' // wrapper color when pressed
             ),
+
             thumb: cn(
               'w-6 h-6 border-2 shadow-lg rounded-[9999px]',
               //selected
