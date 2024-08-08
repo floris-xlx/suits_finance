@@ -15,22 +15,19 @@ export function useRequireAuth() {
     const checkAuth = async () => {
       try {
         const { data: session } = await supabaseClient.auth.getSession();
-        if (!session.session) {
-          setAuthLoading(false);
-          return;
-        }
+        // if no session, set auth loading to false and return
+        if (!session.session) { setAuthLoading(false); return; }
 
         const user = session.session.user;
-        const username = user.user_metadata.full_name || stripNameFromEmail(user.email);
-
-        await UpsertUser(user.id, user.user_metadata.full_name, user.email, username);
-        setUsername(username);
-
-        const profilePic = await GetProfilePicById(user.id);
-        setProfilePicture(profilePic);
-        setProviderType('email');
-
         const userId = user.id;
+        const profilePic = await GetProfilePicById(user.id);
+        const username = user.user_metadata.full_name || stripNameFromEmail(user.email);
+        
+        // populate user if not already in db
+        await UpsertUser(user.id, user.user_metadata.full_name, user.email, username);
+
+        setUsername(username);        
+        setProfilePicture(profilePic);
         setUserId(userId);
         setId(userId);
       } catch (error) {
