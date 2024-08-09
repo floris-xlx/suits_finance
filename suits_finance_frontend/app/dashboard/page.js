@@ -16,11 +16,6 @@ import NewUserOnboarding from '@/app/components/layouts/Onboarding/NewUserOnboar
 import BalanceCard from '@/app/components/ui/Cards/BalanceCard';
 import CreditCard from '@/app/components/ui/Cards/CreditCard';
 import {
-  PaintBrushIcon,
-  Bars3Icon,
-  MagnifyingGlassIcon,
-  FunnelIcon,
-  BellAlertIcon,
   PlusIcon,
   CreditCardIcon,
   SpeedometerIcon,
@@ -90,17 +85,11 @@ export default function DashboardPage() {
 
 
           <div className="flex flex-row gap-x-8 w-fit mx-auto">
-
-
-
             <ButtonIconWithLabel label="Top up" > < PlusIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
             <ButtonIconWithLabel label="Transfer" > < ArrowUpIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
             <ButtonIconWithLabel label="Details" > < CreditCardIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
             <ButtonIconWithLabel label="Limits" > < GaugeIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
-
           </div>
-
-
         </div>
 
 
@@ -113,10 +102,6 @@ export default function DashboardPage() {
 
       <div className="hidden lg:block">
         <Header setIsPaletteSearchOpen={setIsPaletteSearchOpen} logoHref={'/journal'} />
-
-
-
-
       </div>
 
 
