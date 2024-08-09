@@ -30,7 +30,7 @@ const CreditCard = ({
 
 
     return (
-        <div class=" flex justify-center items-center scale-80 flex-col gap-y-1 select-none">
+        <div class="flex justify-center items-center scale-[75%] xs:scale-75 sm:scale-80 md:scale-80 lg:scale-80 xl:scale-85 flex-col gap-y-1 select-none w-fit mx-auto">
 
 
             {process.env.NEXT_PUBLIC_ENVIRONMENT === 'dev' && (

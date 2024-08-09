@@ -34,7 +34,9 @@ import {
 
 import { Button } from "@nextui-org/react";
 import ButtonIconWithLabel from '@/app/components/ui/Buttons/ButtonIconWithLabel';
-
+import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
+import { refreshPage } from '@/app/client/hooks/refreshPage';
+import { DrawerHero, useDrawer } from "@/app/components/ui/Drawers/DrawerViewTrade";
 
 export default function DashboardPage() {
   // auth
@@ -47,17 +49,36 @@ export default function DashboardPage() {
   const [pendingTradesUpdate, setPendingTradesUpdate] = useState(false);
 
 
-  // make sure to also get the state if the user is onboarderd
-  // if the user is not onboarded, show the onboarding screen
+  // FIXME: remove this
+  const DEMO_CARD = {
+    fullName: 'John Doe',
+    cardNumber: '4642348998677632',
+    expiryDate: '12/24',
+    balance: 6815.34,
+    currency: 'EUR',
+  }
+
+  const [currentCard, setCurrentCard] = useState(DEMO_CARD);
+
+
+
+  // drawer stuff
+  const { drawerRef: drawerRef_viewDetailsCard, handleOpenDrawer: handleOpenDrawer_DetailsCard } = useDrawer();
+
   if (loading.authLoading) {
     return <LoaderScreen />;
   }
 
-  const balance = 6815.34;
-  const currency = 'EUR';
+
+
 
   return (
     <div className={styles.containerLogin}>
+      <DrawerHero ref={drawerRef_viewDetailsCard}>
+        <p className="text-primary">Hello</p>
+      </DrawerHero>
+
+
 
       <div className="bg-primary  mt-0 lg:mt-[80px] h-[99%] min-h-[90.75vh]">
         <div className="flex flex-col items-center gap-3 max-w-[1400px] w-full lg:hidden pb-0 ">
@@ -73,32 +94,23 @@ export default function DashboardPage() {
         </div>
 
         {/* This is where the body layout goes */}
-        <div className="flex flex-col gap-y-2 mt-8">
+        <div className="flex flex-col gap-y-2 pt-8">
           < BalanceCard
-            balance={balance}
-            currency={currency}
-
+            balance={currentCard.balance}
+            currency={currentCard.currency}
           />
           < CreditCard
-            fullName={user.username}
+            fullName={currentCard.fullName}
           />
 
-
           <div className="flex flex-row gap-x-8 w-fit mx-auto">
-            <ButtonIconWithLabel label="Top up" > < PlusIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
-            <ButtonIconWithLabel label="Transfer" > < ArrowUpIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
-            <ButtonIconWithLabel label="Details" > < CreditCardIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
-            <ButtonIconWithLabel label="Limits" > < GaugeIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
+            <ButtonIconWithLabel label="Top up" > < PlusIcon className="h-8 lg:h-12 md:h-10 md:w-10 lg:w-12 w-8 text-primary" /> </ButtonIconWithLabel>
+            <ButtonIconWithLabel label="Transfer" > < ArrowUpIcon className="h-8 lg:h-12 md:h-10 md:w-10 lg:w-12 w-8 text-primary" /> </ButtonIconWithLabel>
+            <ButtonIconWithLabel label="Details" > < CreditCardIcon className="h-8 lg:h-12 md:h-10 md:w-10 lg:w-12 w-8 text-primary" /> </ButtonIconWithLabel>
+            <ButtonIconWithLabel label="Limits" > < GaugeIcon className="h-8 lg:h-12 md:h-10 md:w-10 lg:w-12 w-8 text-primary" /> </ButtonIconWithLabel>
           </div>
         </div>
-
-
-
       </div>
-
-
-
-
 
       <div className="hidden lg:block">
         <Header setIsPaletteSearchOpen={setIsPaletteSearchOpen} logoHref={'/journal'} />
