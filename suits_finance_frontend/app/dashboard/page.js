@@ -37,6 +37,7 @@ import ButtonIconWithLabel from '@/app/components/ui/Buttons/ButtonIconWithLabel
 import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
 import { refreshPage } from '@/app/client/hooks/refreshPage';
 import { DrawerHero, useDrawer } from "@/app/components/ui/Drawers/DrawerViewTrade";
+import CardDetailsLayout from '@/app/components/layouts/Modals/cardDetails';
 
 export default function DashboardPage() {
   // auth
@@ -47,6 +48,29 @@ export default function DashboardPage() {
 
   const [isPaletteSearchOpen, setIsPaletteSearchOpen] = useState(false);
   const [pendingTradesUpdate, setPendingTradesUpdate] = useState(false);
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1024) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+
+    if (typeof window !== 'undefined') {
+      handleResize();
+      window.addEventListener('resize', handleResize);
+    }
+
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', handleResize);
+      }
+    };
+  }, []);
 
 
   // FIXME: remove this
@@ -63,20 +87,29 @@ export default function DashboardPage() {
 
 
   // drawer stuff
-  const { drawerRef: drawerRef_viewDetailsCard, handleOpenDrawer: handleOpenDrawer_DetailsCard } = useDrawer();
+  const { modalRef: modalRef_viewDetailsCard, handleOpenModal: handleOpenModal_DetailsCard } = useModal();
 
   if (loading.authLoading) {
     return <LoaderScreen />;
   }
 
 
+  const handleOpenCardDetails = () => {
+    handleOpenModal_DetailsCard();
+  }
+
 
 
   return (
     <div className={styles.containerLogin}>
-      <DrawerHero ref={drawerRef_viewDetailsCard}>
-        <p className="text-primary">Hello</p>
-      </DrawerHero>
+      <Modal 
+        title={'Card Details'}
+        buttonText={'Close'}
+        ref={modalRef_viewDetailsCard}
+
+      >
+        <CardDetailsLayout card={currentCard}/>
+      </Modal>
 
 
 
@@ -104,10 +137,10 @@ export default function DashboardPage() {
           />
 
           <div className="flex flex-row gap-x-8 w-fit mx-auto">
-            <ButtonIconWithLabel label="Top up" > < PlusIcon className="h-8 lg:h-12 md:h-10 md:w-10 lg:w-12 w-8 text-primary" /> </ButtonIconWithLabel>
-            <ButtonIconWithLabel label="Transfer" > < ArrowUpIcon className="h-8 lg:h-12 md:h-10 md:w-10 lg:w-12 w-8 text-primary" /> </ButtonIconWithLabel>
-            <ButtonIconWithLabel label="Details" > < CreditCardIcon className="h-8 lg:h-12 md:h-10 md:w-10 lg:w-12 w-8 text-primary" /> </ButtonIconWithLabel>
-            <ButtonIconWithLabel label="Limits" > < GaugeIcon className="h-8 lg:h-12 md:h-10 md:w-10 lg:w-12 w-8 text-primary" /> </ButtonIconWithLabel>
+            <ButtonIconWithLabel label="Top up" > < PlusIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
+            <ButtonIconWithLabel label="Transfer" > < ArrowUpIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
+            <ButtonIconWithLabel label="Details" onClick={handleOpenCardDetails} > < CreditCardIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
+            <ButtonIconWithLabel label="Limits" > < GaugeIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
           </div>
         </div>
       </div>
