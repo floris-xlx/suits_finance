@@ -86,7 +86,7 @@ export default function DashboardPage() {
     amount: 500,
     currency: 'EUR',
     recipient: 'John Doe',
-    sender: 'John Doe',
+    sender: 'Floris Ramakers',
     status: 'completed',
     card: DEMO_CARD,
   }
