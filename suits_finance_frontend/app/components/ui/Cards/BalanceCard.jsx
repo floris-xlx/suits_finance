@@ -4,7 +4,8 @@ import convertCurrencyToSymbol from '@/app/client/hooks/formatting/CurrencySymbo
 const BalanceCard = ({
     balance,
     label = 'Current Balance',
-    currency = 'EUR'
+    currency = 'EUR',
+
 }) => {
     const formattedBalance = balance.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 

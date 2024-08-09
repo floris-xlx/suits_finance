@@ -2,7 +2,21 @@ import React, { useState, useEffect } from 'react';
 
 const CreditCard = ({
     fullName = "First Last", 
+    cardNumber = "4642348998677632",
 }) => {
+    const formatCardNumber = (cardNumber) => {
+        const cardNumberArray = cardNumber.split('');
+        const formattedCardNumber = cardNumberArray.map((digit, index) => {
+            if (index < cardNumberArray.length - 4) {
+                return '•';
+            } else {
+                return digit;
+            }
+        });
+        return formattedCardNumber.join('');
+    }
+
+
     return (
         <div class=" flex justify-center items-center scale-80 flex-col gap-y-1">
 
@@ -17,7 +31,7 @@ const CreditCard = ({
                                 Name
                             </p>
                             <p class="font-medium tracking-widest">
-                                Floris R
+                                {fullName.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                             </p>
                         </div>
                         <img class="w-14 h-14" src="https://i.imgur.com/bbPHJVe.png" />
@@ -28,7 +42,7 @@ const CreditCard = ({
                         </p>
 
                         <p class="font-medium tracking-more-wider">
-                            4642  3489  9867  7632
+                            {formatCardNumber(cardNumber).replace(/(.{4})/g, '$1 ')}
                         </p>
                     </div>
                     <div class="pt-6 pr-6">

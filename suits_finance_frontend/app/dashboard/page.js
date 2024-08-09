@@ -78,12 +78,15 @@ export default function DashboardPage() {
         </div>
 
         {/* This is where the body layout goes */}
-        <div className="flex flex-col gap-y-2">
+        <div className="flex flex-col gap-y-2 mt-8">
           < BalanceCard
             balance={balance}
             currency={currency}
+
           />
-          < CreditCard />
+          < CreditCard
+            fullName={user.username}
+          />
 
 
           <div className="flex flex-row gap-x-8 w-fit mx-auto">
