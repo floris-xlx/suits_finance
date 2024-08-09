@@ -11,6 +11,8 @@ import Xylex from "@/app/components/ui/Logos/Xylex.jsx";
 import ThemeButton from "@/app/components/ui/Theme/ThemeButton.jsx";
 import SignInButton from "@/app/components/ui/Buttons/SignIn.jsx";
 
+import InputFieldRead from "@/app/components/ui/InputFields/InputFieldRead.jsx";
+
 
 export default function LoginPage() {
   const [notification, setNotification] = useState(null);
@@ -187,49 +189,20 @@ export default function LoginPage() {
                 {isTbrOnboarding && (
                   <div className="mt-6">
                     <form method="POST" action="#" className="space-y-6">
-                      <div>
-                        <label
-                          htmlFor="email"
-                          className="block text-sm font-medium text-secondary"
-                        >
-                          Email address
-                        </label>
-                        <div className="mt-1">
-                          <input
-                            id="email"
-                            name="email"
-                            type="email"
-                            autoComplete="email"
-                            placeholder=""
-                            required
-                            onChange={(e) => setEmail(e.target.value)}
-                            value={email}
-                            className="block w-full appearance-none rounded-md px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary sm:text-sm font-medium"
-                          />
-                        </div>
-                      </div>
+                    < InputFieldRead
+                      value={email}
+                      setValue={setEmail}
+                      label={"Email Address"}
+                      type={"email"}
+                    />
 
-                      <div className="space-y-1">
-                        <label
-                          htmlFor="password"
-                          className="block text-sm font-medium text-secondary"
-                        >
-                          Password
-                        </label>
-                        <div className="mt-1">
-                          <input
-                            id="password"
-                            name="password"
-                            type="password"
-                            autoComplete="current-password"
-                            placeholder=""
-                            required
-                            onChange={(e) => setPassword(e.target.value)}
-                            value={password}
-                            className="block w-full appearance-none rounded-md px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary sm:text-sm font-medium"
-                          />
-                        </div>
-                      </div>
+                    < InputFieldRead
+                      value={password}
+                      setValue={setPassword}
+                      label={"Password"}
+                      type={"password"}
+                    />
+
 
                       <div>
                         <SignInButton handleSignIn={handleSignIn} isLoading={isLoading} SignInText={"Create account"} />

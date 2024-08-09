@@ -16,6 +16,8 @@ import {
   GoogleIcon
 } from "@/app/components/ui/Icon.jsx";
 
+import InputFieldRead from "@/app/components/ui/InputFields/InputFieldRead.jsx";
+
 
 export default function LoginPage() {
   const [notification, setNotification] = useState(null);
@@ -109,29 +111,12 @@ export default function LoginPage() {
                   <form method="POST" action="#" className="space-y-6">
 
 
-                    <div className="space-y-1">
-                      <label
-                        htmlFor="password"
-                        className="block text-sm font-medium text-secondary"
-                      >
-                        New Password
-                      </label>
-                      <div className="mt-1">
-                        <input
-                          id="password"
-                          name="password"
-                          type="password"
-                          autoComplete="current-password"
-                          placeholder=""
-                          required
-                          onChange={(e) => setPassword(e.target.value)}
-                          value={password}
-                          className="block w-full appearance-none rounded-md px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary sm:text-sm font-medium"
-                        />
-                      </div>
-                    </div>
-
-
+                  < InputFieldRead
+                      value={password}
+                      setValue={setPassword}
+                      label={"Password"}
+                      type={"password"}
+                    />
 
                     <div>
 
