@@ -58,7 +58,7 @@ const InputField = ({
                             placeholder={placeholder}
                             required
                             onChange={(e) => setValue(e.target.value)}
-                            step={0.00001}
+                            step={10}
 
                             value={value}
                             className={`block w-full appearance-none px-3 py-2 shadow-sm ${type === 'text' ? 'focus:ring-2' : 'focus:ring-1'} sm:text-sm focus:ring-purple-600 font-medium bg-input-primary rounded-md !border border-primary h-[40px] text-secondary select-none`}

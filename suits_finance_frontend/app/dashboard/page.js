@@ -136,6 +136,9 @@ export default function DashboardPage() {
     handleOpenModal_TopUpBalance();
   }
 
+
+  const [topUpAmount, setTopUpAmount] = useState(0);
+
   // card limits
   const handleCardLimits = () => {
     handleOpenModal_CardLimits();
@@ -167,7 +170,7 @@ export default function DashboardPage() {
         ref={modalRef_topUpBalance}
 
       >
-        <TopUpBalanceLayout balance={currentCard.balance} />
+        <TopUpBalanceLayout setPaymentAmount={setTopUpAmount} balance={topUpAmount} />
       </Modal>
 
 
@@ -209,7 +212,7 @@ export default function DashboardPage() {
             <ButtonIconWithLabel label="Top up" onClick={handleTopUpBalance} > < PlusIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
             <ButtonIconWithLabel label="Transfer" onClick={handleTransfer} > < ArrowUpIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
             <ButtonIconWithLabel label="Details" onClick={handleOpenCardDetails} > < CreditCardIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
-            <ButtonIconWithLabel label="Limits" > < GaugeIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
+            <ButtonIconWithLabel label="Limits" onClick={handleCardLimits} > < GaugeIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
           </div>
         </div>
 
