@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect, Fragment } from 'react';
-import styles from './styles.module.css';
+import styles from '../styles.module.css';
 import ThemeButton from '@/app/components/ui/Theme/ThemeButton';
 import LoggedInUserCard from '@/app/components/ui/Cards/LoggedInUserCard';
 
@@ -32,9 +32,11 @@ import { DrawerHero, useDrawer } from "@/app/components/ui/Drawers/DrawerViewTra
 import CardDetailsLayout from '@/app/components/layouts/Modals/cardDetails';
 import { TransfersBlockedNoBalanceNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
 import TransactionsTableMobile from '@/app/components/ui/Tables/TransactionsTableMobile';
-import TransactionsOverviewLayout  from '@/app/components/layouts/Modals/transactionsOverview';
-import TopUpBalanceLayout  from '@/app/components/layouts/Modals/topUpBalance';
+import TransactionsOverviewLayout from '@/app/components/layouts/Modals/transactionsOverview';
+import TopUpBalanceLayout from '@/app/components/layouts/Modals/topUpBalance';
 import CardLimitsLayout from '@/app/components/layouts/Modals/cardLimits';
+
+import Stacked from '@/app/components/ui/Invoices/stacked';
 
 
 export default function DashboardPage() {
@@ -148,45 +150,11 @@ export default function DashboardPage() {
 
   return (
     <div className={styles.containerLogin}>
-      <Modal
-        title={'Card Details'}
-        buttonText={'Close'}
-        ref={modalRef_viewDetailsCard}
-
-      >
-        <CardDetailsLayout card={currentCard} />
-      </Modal>
-      <Modal
-        title={'Transactions'}
-        buttonText={'Close'}
-        ref={modalRef_viewTransactions}
-
-      >
-        <TransactionsOverviewLayout transactions={[DEMO_TRANSACTION]} />
-      </Modal>
-
-      <Modal
-        title={'Top Up Balance'}
-        buttonText={'Continue'}
-        ref={modalRef_topUpBalance}
-
-      >
-        <TopUpBalanceLayout setPaymentAmount={setTopUpAmount} balance={topUpAmount} />
-      </Modal>
-
-
-      <Modal
-        title={'Card Limits'}
-        buttonText={'Close'}
-
-        ref={modalRef_cardLimits}
-      >
-        <CardLimitsLayout />
-      </Modal>
 
 
 
-      <div className="bg-primary  mt-0 lg:mt-[80px] h-[99%] min-h-[90.75vh]">
+
+      <div className="bg-primary  mt-0 lg:mt-[80px] h-[120vh] mb-[400px] min-h-[90.75vh]">
         <div className="flex flex-col items-center gap-3 max-w-[1400px] w-full lg:hidden pb-0 ">
           <div className="w-[96%]">
             <LoggedInUserCard
@@ -201,28 +169,11 @@ export default function DashboardPage() {
 
         {/* This is where the body layout goes */}
         <div className="flex flex-col gap-y-2 pt-8">
-          < BalanceCard
-            balance={currentCard.balance}
-            currency={currentCard.currency}
-          />
-          < CreditCard
-            fullName={currentCard.fullName}
-          />
 
-          <div className="flex flex-row gap-x-8 w-fit mx-auto">
-            <ButtonIconWithLabel label="Top up" onClick={handleTopUpBalance} > < PlusIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
-            <ButtonIconWithLabel label="Transfer" onClick={handleTransfer} > < ArrowUpIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
-            <ButtonIconWithLabel label="Details" onClick={handleOpenCardDetails} > < CreditCardIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
-            <ButtonIconWithLabel label="Limits" onClick={handleCardLimits} > < GaugeIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
-          </div>
+
+          < Stacked />
+
         </div>
-
-        <div className="flex flex-row mx-auto max-w-[400px] mt-[45px]">
-          < TransactionsTableMobile transactions={[DEMO_TRANSACTION]} handleViewTransactions={handleViewTransactions} />
-        </div>
-
-
-
       </div>
 
       <div className="hidden lg:block">
