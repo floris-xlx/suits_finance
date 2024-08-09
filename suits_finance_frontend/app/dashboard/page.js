@@ -38,6 +38,9 @@ import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
 import { refreshPage } from '@/app/client/hooks/refreshPage';
 import { DrawerHero, useDrawer } from "@/app/components/ui/Drawers/DrawerViewTrade";
 import CardDetailsLayout from '@/app/components/layouts/Modals/cardDetails';
+import { TransfersBlockedNoBalanceNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
+
+
 
 export default function DashboardPage() {
   // auth
@@ -78,7 +81,7 @@ export default function DashboardPage() {
     fullName: 'John Doe',
     cardNumber: '4642348998677632',
     expiryDate: '12/24',
-    balance: 6815.34,
+    balance: -6815.34,
     currency: 'EUR',
   }
 
@@ -98,6 +101,16 @@ export default function DashboardPage() {
     handleOpenModal_DetailsCard();
   }
 
+
+  const isBalanceNegative = currentCard.balance < 0;
+
+  const handleTransfer = () => {
+    console.log('Transfer');
+
+    if (isBalanceNegative) {
+      TransfersBlockedNoBalanceNotification();
+    }
+  }
 
 
   return (
@@ -138,7 +151,7 @@ export default function DashboardPage() {
 
           <div className="flex flex-row gap-x-8 w-fit mx-auto">
             <ButtonIconWithLabel label="Top up" > < PlusIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
-            <ButtonIconWithLabel label="Transfer" > < ArrowUpIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
+            <ButtonIconWithLabel label="Transfer" onClick={handleTransfer} > < ArrowUpIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
             <ButtonIconWithLabel label="Details" onClick={handleOpenCardDetails} > < CreditCardIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
             <ButtonIconWithLabel label="Limits" > < GaugeIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
           </div>
