@@ -8,8 +8,6 @@ const BalanceCard = ({
     label = 'Current Balance',
     currency = 'EUR',
 }) => {
-    console.log('BalanceCard -> balance', balance);
-
     const { loading, setBalanceLoading } = useLoadingStore();
     const [isBalanceNegative, setIsBalanceNegative] = useState(false);
 
