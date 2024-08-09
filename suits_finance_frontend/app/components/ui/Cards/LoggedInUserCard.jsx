@@ -8,6 +8,7 @@ import {
   Bars3Icon,
   MagnifyingGlassIcon,
   FunnelIcon,
+  BellAlertIcon
 } from '@heroicons/react/24/outline';
 import CapitalizeFirstLetter from '@/app/client/hooks/formatting/CapitalizeLetter';
 import { ProfilePicTiny } from '@/app/components/ui/User/User';
@@ -166,12 +167,16 @@ const LoggedInUserCard = ({
                   <FunnelIcon className="icon" />
                 </ButtonIcon>
 
-                <ButtonIcon onPress={handleOpenSearch} hide={view.isInJournal}>
+                <ButtonIcon onPress={handleOpenSearch} >
                   <MagnifyingGlassIcon className="icon" />
                 </ButtonIcon>
 
                 <ButtonIcon onPress={handleOpenModal_customization} >
                   <PaintBrushIcon className="icon" />
+                </ButtonIcon>
+
+                <ButtonIcon onPress={handleOpenModal_customization}>
+                  <BellAlertIcon className="icon" />
                 </ButtonIcon>
               </div>
 
