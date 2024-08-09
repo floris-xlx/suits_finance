@@ -10,6 +10,7 @@ import { useRequireAuth } from '@/app/auth/hooks/useRequireAuth';
 import LoaderScreen from '@/app/components/ui/Loading/LoaderScreen';
 import Header from '@/app/components/ui/Headers/Header';
 import { HomeIcon, ArrowUpIcon, DeviceTabletIcon, BoltIcon } from '@heroicons/react/24/outline';
+import { GaugeIcon } from '@/app/components/ui/Icon';
 
 import NewUserOnboarding from '@/app/components/layouts/Onboarding/NewUserOnboarding';
 import BalanceCard from '@/app/components/ui/Cards/BalanceCard';
@@ -20,7 +21,9 @@ import {
   MagnifyingGlassIcon,
   FunnelIcon,
   BellAlertIcon,
-  PlusIcon
+  PlusIcon,
+  CreditCardIcon,
+  SpeedometerIcon,
 } from '@heroicons/react/24/outline';
 
 // zustand
@@ -35,6 +38,8 @@ import {
 } from '@/app/stores/stores';
 
 import { Button } from "@nextui-org/react";
+import ButtonIconWithLabel from '@/app/components/ui/Buttons/ButtonIconWithLabel';
+
 
 export default function DashboardPage() {
   // auth
@@ -82,38 +87,17 @@ export default function DashboardPage() {
 
 
           <div className="flex flex-row gap-x-8 w-fit mx-auto">
-            <div className="flex flex-col gap-y-1 items-center">
-              <button className="bg-accent rounded-md p-2 hover:transition hover:bg-brand-primary">
-                < PlusIcon className="h-8 w-8 text-primary" />
-              </button>
 
-              <p className="text-primary text-xs select-none mt-[5px]">Top up</p>
-            </div>
 
-            <div className="flex flex-col gap-y-1 items-center">
-              <button className="bg-accent rounded-md p-2 hover:transition hover:bg-brand-primary">
-                < ArrowUpIcon className="h-8 w-8 text-primary" />
-              </button>
 
-              <p className="text-primary text-xs select-none mt-[5px]">Transfer</p>
-            </div>
+            <ButtonIconWithLabel label="Top up" > < PlusIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
+            <ButtonIconWithLabel label="Transfer" > < ArrowUpIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
+            <ButtonIconWithLabel label="Details" > < CreditCardIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
+            <ButtonIconWithLabel label="Limits" > < GaugeIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
 
-            <div className="flex flex-col gap-y-1 items-center">
-              <button className="bg-accent rounded-md p-2 hover:transition hover:bg-brand-primary">
-                < DeviceTabletIcon className="h-8 w-8 text-primary" />
-              </button>
-
-              <p className="text-primary text-xs select-none mt-[5px]">Details</p>
-            </div>
-
-            <div className="flex flex-col gap-y-1 items-center">
-              <button className="bg-accent rounded-md p-2 hover:transition hover:bg-brand-primary">
-                < BoltIcon className="h-8 w-8 text-primary" />
-              </button>
-
-              <p className="text-primary text-xs select-none mt-[5px]">Limits</p>
-            </div>
           </div>
+
+
         </div>
 
 

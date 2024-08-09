@@ -9,6 +9,7 @@ import CrossIcon from './Icons/CrossIcon.jsx';
 import RulerIcon from './Icons/RulerIcon.jsx';
 import HeartBeatIcon from './Icons/HeartBeatIcon.jsx';
 import ChartUpIcon from './Icons/ChartUpIcon.jsx';
+import GaugeIcon from './Icons/GaugeIcon.jsx';
 
 export { 
     DiscordIcon, 
@@ -20,5 +21,6 @@ export {
     CrossIcon, 
     RulerIcon,
     HeartBeatIcon,
-    ChartUpIcon
+    ChartUpIcon,
+    GaugeIcon
 };

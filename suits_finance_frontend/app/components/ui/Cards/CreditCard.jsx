@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const CreditCard = ({
+    fullName = "First Last", 
 }) => {
     return (
         <div class=" flex justify-center items-center scale-80 flex-col gap-y-1">
