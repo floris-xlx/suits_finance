@@ -8,7 +8,7 @@ import LoaderScreen from '@/app/components/ui/Loading/LoaderScreen';
 
 // layouts
 import BaseLayout from '@/app/components/layouts/Base/BaseLayout';
-import SettingsUserLayout from '@/app/components/layouts/Forms/SettingsUser'; 
+import SettingsUserLayout from '@/app/components/layouts/Forms/SettingsUser';
 
 // zustand
 import {
@@ -25,17 +25,14 @@ export default function SettingsPage() {
   const { user } = useUserStore();
   const { loading } = useLoadingStore();
 
-  // if (loading.authLoading) {
-  //   return <LoaderScreen />;
-  // }
+  if (loading.authLoading) {
+    return <LoaderScreen />;
+  }
 
 
   return (
-<p className="text-primary text-xl">Settings Page</p>
-
-    // <BaseLayout>
-    // <p className="text-primary text-xl">Settings Page</p>
-    //   <SettingsUserLayout user={user} />
-    // </BaseLayout>
+    <BaseLayout>
+      <SettingsUserLayout user={user} />
+    </BaseLayout>
   );
 }

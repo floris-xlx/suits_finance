@@ -27,7 +27,7 @@ const BaseLayout = ({ children, href = '/settings' }) => {
                 setIsPaletteSearchOpen={setIsPaletteSearchOpen}
             />
 
-            <div className="flex-grow">
+            <div className="flex-grow pt-[10px] mx-auto w-full max-w-[1250px] h-full">
                 {children}
             </div>
 

@@ -36,7 +36,7 @@ const TabHorizontal = ({
         aria-label="Options" 
         fullWidth 
         size="lg"
-        className="border border-primary rounded-md shadow-sm"
+        className="border border-primary rounded-md shadow-sm select-none"
         selectedKey={value}
         onSelectionChange={setValue}
     >
