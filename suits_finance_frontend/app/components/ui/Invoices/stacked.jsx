@@ -26,6 +26,7 @@ import {
   HeartIcon,
   PaperClipIcon,
   UserCircleIcon,
+  CheckIcon,
   XMarkIcon as XMarkIconMini,
 } from '@heroicons/react/20/solid'
 import { BellIcon, XMarkIcon as XMarkIconOutline } from '@heroicons/react/24/outline'
@@ -117,7 +118,7 @@ export default function Example() {
       
 
       <main>
-        <header className="relative isolate pt-16">
+        <header className="relative isolate">
           <div className="absolute inset-0 -z-10 " aria-hidden="true">
             
             <div className="absolute inset-x-0 bottom-0 h-px bg-primary" />
@@ -139,18 +140,16 @@ export default function Example() {
                 </h1>
               </div>
               <div className="flex items-center gap-x-4 sm:gap-x-6">
-                <button type="button" className="hidden text-sm font-semibold leading-6 text-primary sm:block">
-                  Copy URL
-                </button>
-                <a href="#" className="hidden text-sm font-semibold leading-6 text-primary sm:block">
-                  Edit
-                </a>
+               
+           
                 <a
                   href="#"
-                  className="rounded-md bg-brand-primary px-3 py-2 text-sm font-semibold text-primary shadow-sm hover:bg-brand-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className="rounded-md bg-green-primary px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-green-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:transition flex-row flex items-center gap-x-2"
                 >
+                  <CheckIcon className="h-6 w-6 text-black" aria-hidden="true" />
                   Authorize
                 </a>
+                
 
                 <Menu as="div" className="relative sm:hidden">
                   <Menu.Button className="-m-3 block p-3">

@@ -128,7 +128,7 @@ const LoggedInUserCard = ({
       </Modal>
 
 
-      <div className="ml-[11px] z-0 px-2 ">
+      <div className="ml-[11px] z-0 px-2 active:ring-blue-500 ring-blue-500">
         {loading.authLoading ? (
           <div className="h-[60px] w-[135px]">
             <SkeletonLoader width={'full'} />
