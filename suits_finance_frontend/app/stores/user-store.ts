@@ -8,6 +8,8 @@ interface User {
     provider_type?: string;
     organization?: string;
     admin?: boolean;
+    email?: string;
+    role?: string;
 }
 
 interface UserStore {
@@ -20,6 +22,9 @@ interface UserStore {
     setProviderType: (provider_type: string) => void;
     setOrganization: (organization: string) => void;
     setIsAdmin: (admin: boolean) => void;
+    
+    setEmail: (email: string) => void;
+    setRole: (role: string) => void;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -31,7 +36,9 @@ export const useUserStore = create<UserStore>()(
                 profile_picture: null,
                 provider_type: null,
                 organization: null,
-                admin: false
+                admin: false,
+                email: null,
+                role: null
             },
 
             // set id
@@ -42,7 +49,9 @@ export const useUserStore = create<UserStore>()(
                     profile_picture: state.user.profile_picture,
                     provider_type: state.user.provider_type,
                     organization: state.user.organization,
-                    admin: state.user.admin
+                    admin: state.user.admin,
+                    email: state.user.email,
+                    role: state.user.role
                 }
             })),
 
@@ -54,7 +63,9 @@ export const useUserStore = create<UserStore>()(
                     profile_picture: state.user.profile_picture,
                     provider_type: state.user.provider_type,
                     organization: state.user.organization,
-                    admin: state.user.admin
+                    admin: state.user.admin,
+                    email: state.user.email,
+                    role: state.user.role
                 }
             })),
 
@@ -66,7 +77,10 @@ export const useUserStore = create<UserStore>()(
                     profile_picture: profile_picture,
                     provider_type: state.user.provider_type,
                     organization: state.user.organization,
-                    admin: state.user.admin
+                    admin: state.user.admin,
+                    email: state.user.email,
+                    role: state.user.role
+                    
                 }
             })),
 
@@ -78,7 +92,9 @@ export const useUserStore = create<UserStore>()(
                     profile_picture: state.user.profile_picture,
                     provider_type: provider_type,
                     organization: state.user.organization,
-                    admin: state.user.admin
+                    admin: state.user.admin,
+                    email: state.user.email,
+                    role: state.user.role
                 }
             })),
 
@@ -90,7 +106,9 @@ export const useUserStore = create<UserStore>()(
                     profile_picture: state.user.profile_picture,
                     provider_type: state.user.provider_type,
                     organization: organization,
-                    admin: state.user.admin
+                    admin: state.user.admin,
+                    email: state.user.email,
+                    role: state.user.role
                 }
             })),
 
@@ -102,7 +120,37 @@ export const useUserStore = create<UserStore>()(
                     profile_picture: state.user.profile_picture,
                     provider_type: state.user.provider_type,
                     organization: state.user.organization,
-                    admin: admin
+                    admin: admin,
+                    email: state.user.email,
+                    role: state.user.role
+                }
+            })),
+
+            // set email
+            setEmail: (email: string) => set((state) => ({
+                user: {
+                    id: state.user.id,
+                    username: state.user.username,
+                    profile_picture: state.user.profile_picture,
+                    provider_type: state.user.provider_type,
+                    organization: state.user.organization,
+                    admin: state.user.admin,
+                    email: email,
+                    role: state.user.role
+                }
+            })),
+
+            // set role
+            setRole: (role: string) => set((state) => ({
+                user: {
+                    id: state.user.id,
+                    username: state.user.username,
+                    profile_picture: state.user.profile_picture,
+                    provider_type: state.user.provider_type,
+                    organization: state.user.organization,
+                    admin: state.user.admin,
+                    email: state.user.email,
+                    role: role
                 }
             }))
 

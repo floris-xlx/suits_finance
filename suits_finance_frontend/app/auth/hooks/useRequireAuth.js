@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { GetProfilePicById, UpsertUser } from '@/app/client/supabase/SupabaseUserData';
+import { GetProfilePicById, UpsertUser, getUserObjectById } from '@/app/client/supabase/SupabaseUserData';
 import stripNameFromEmail from '@/app/client/hooks/formatting/StripNameFromEmail';
 import { useUserStore, useLoadingStore } from '@/app/stores/stores';
 
 export function useRequireAuth() {
-  const { setId, setUsername, setProfilePicture, setProviderType } = useUserStore();
+  const { setId, setUsername, setProfilePicture, setProviderType, setEmail, setRole } = useUserStore();
   const { setAuthLoading } = useLoadingStore();
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(true);
   const supabaseClient = createClientComponentClient();
+
+  const [userObject, setUserObject] = useState([]);
+
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -20,13 +23,22 @@ export function useRequireAuth() {
 
         const user = session.session.user;
         const userId = user.id;
-        const profilePic = await GetProfilePicById(user.id);
+
+        const [profilePic, userObject] = await Promise.all([
+          GetProfilePicById(user.id),
+          getUserObjectById(user.id)
+        ]);
+
+        setRole(userObject.role);
+        setEmail(userObject.email);
+
+        setUserObject(userObject);
         const username = user.user_metadata.full_name || stripNameFromEmail(user.email);
-        
+
         // populate user if not already in db
         await UpsertUser(user.id, user.user_metadata.full_name, user.email, username);
 
-        setUsername(username);        
+        setUsername(username);
         setProfilePicture(profilePic);
         setUserId(userId);
         setId(userId);

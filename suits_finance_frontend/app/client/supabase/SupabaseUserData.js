@@ -841,14 +841,10 @@ export async function UpsertUser(
   email,
   username
 ) {
-  console.log('UpsertUser called with:', { user_id, full_name, email, username });
-
   // Assume empty string if any parameter except user_id is null
   full_name = full_name || '';
   email = email || '';
   username = username || '';
-
-  console.log('Processed input values:', { full_name, email, username });
 
   const { data, error } = await supabase
     .from('users')
@@ -859,8 +855,6 @@ export async function UpsertUser(
     console.error('Error fetching user:', error);
     throw error;
   }
-
-  console.log('Fetched user data:', data);
 
   if (data.length === 0) {
     const { error: insertError } = await supabase
@@ -877,12 +871,23 @@ export async function UpsertUser(
       console.error('Error inserting user:', insertError);
       throw insertError;
     }
-
-    console.log('User inserted successfully');
     return { upserted: true };
   }
 
-
-  console.log('User already exists');
   return { upserted: false };
+}
+
+export async function getUserObjectById(id) {
+  const { data, error } = await supabase
+    .from('users')
+    .select('*')
+    .eq('user_id', id);
+
+  if (error) throw error;
+
+  if (data.length === 0) {
+    return null;
+  }
+
+  return data[0];
 }

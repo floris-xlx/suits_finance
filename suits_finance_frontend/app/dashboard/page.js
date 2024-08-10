@@ -127,8 +127,6 @@ export default function DashboardPage() {
 
   // transaction view 
   const handleViewTransactions = () => {
-    console.log('view transactions');
-
     handleOpenModal_ViewTransactions();
   }
 
