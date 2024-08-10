@@ -47,7 +47,7 @@ const TabHorizontal = ({
           <Tab 
             key={name.toLowerCase().replace(/ /g, "_")} 
             title={name} 
-            className="focus:outline-none"
+            className="focus:outline-none text-xs font-semibold md:text-base md:font-normal"
           >
           </Tab>
         ))}
