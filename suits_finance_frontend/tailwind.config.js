@@ -89,8 +89,8 @@ module.exports = {
           colors: {
             primary: {
               foreground: '#9333ea',
-              DEFAULT: "var(--color-primary)",
-              primary: "var(--color-brand-primary)",
+              // DEFAULT: "var(--color-primary)",
+              // primary: "var(--color-brand-primary)",
               
             }
           }
@@ -101,8 +101,8 @@ module.exports = {
           colors: {
             primary: {
               foreground: '#9333ea',
-              DEFAULT: "var(--color-primary)",
-              primary: "var(--color-brand-primary)",
+              // DEFAULT: "var(--color-primary)",
+              // primary: "var(--color-brand-primary)",
             }
           }
         }

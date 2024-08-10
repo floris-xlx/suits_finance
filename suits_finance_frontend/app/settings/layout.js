@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ['latin'] })
 import { Toaster } from 'react-hot-toast';
 
 export const metadata = {
-  title: 'XYLEX',
+  title: 'Suits Finance',
   description: 'Account settings',
 }
 
@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <Toaster position={'top-left'} />
         {children}
-        </body>
+      </body>
     </html>
   )
 }
