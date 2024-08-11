@@ -32,7 +32,7 @@ const SettingsUserLayout = () => {
     // add table for billing history
     // only show for super admin and dev
     // show in billing the current rate of 1% fee
-    
+
 
     const isNullOrUndefined = (value) => {
         return value === null || value === undefined;
@@ -99,7 +99,7 @@ const SettingsUserLayout = () => {
                                 {userName}
                             </p>
                             <p className="text-xs text-secondary select-none">
-                                {userRole.charAt(0).toUpperCase() + userRole.slice(1)}
+                                {userRole}
                             </p>
                             <p className="mt-1 text-xs text-secondary">
                                 {userEmail}
