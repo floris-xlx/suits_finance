@@ -64,9 +64,9 @@ const Header = ({
             >
               <XylexLogo size={'medium'} href={logoHref} />
             </div>
-            < HeaderItem targetHref={'/manage'} currentHref={logoHref} hide={!featureFlag.isJournalFlag} label={'Manage'} />
+            {/* < HeaderItem targetHref={'/manage'} currentHref={logoHref} hide={!featureFlag.isJournalFlag} label={'Manage'} />
             < HeaderItem targetHref={'/journal'} currentHref={logoHref} hide={!featureFlag.isJournalFlag} label={'Journal'} />
-            < HeaderItem targetHref={'/signal'} currentHref={logoHref} hide={!user.admin} label={'Signal'} />
+            < HeaderItem targetHref={'/signal'} currentHref={logoHref} hide={!user.admin} label={'Signal'} /> */}
           </div>
 
           {/*

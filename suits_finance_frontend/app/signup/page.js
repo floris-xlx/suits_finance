@@ -4,9 +4,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { wrongCredentialsNotification, DuplicateValueFailNotification, PasswordTooShortInlineNotification, MissingFieldsNotification } from "@/app/components/ui/Notifications/Notifications.jsx";
 import styles from "./styles.module.css";
 
-import Popup from "@/app/components/ui/Notifications/Popup.jsx";
 import Xylex from "@/app/components/ui/Logos/Xylex.jsx";
 import ThemeButton from "@/app/components/ui/Theme/ThemeButton.jsx";
 import SignInButton from "@/app/components/ui/Buttons/SignIn.jsx";
@@ -15,7 +15,6 @@ import InputFieldRead from "@/app/components/ui/InputFields/InputFieldRead.jsx";
 
 
 export default function LoginPage() {
-  const [notification, setNotification] = useState(null);
   const textRef = useRef(null);
   const router = useRouter();
   const supabase = createClientComponentClient();
@@ -37,24 +36,15 @@ export default function LoginPage() {
 
 
   const invalidCredentials = () => {
-    setNotification("InvalidCredentials");
-    setTimeout(() => {
-      setNotification(null);
-    }, 5500);
+    wrongCredentialsNotification();
   }
 
   const EmailAlreadyExists = () => {
-    setNotification("EmailAlreadyExists");
-    setTimeout(() => {
-      setNotification(null);
-    }, 5500);
+    DuplicateValueFailNotification({ valueType: "email" });
   }
 
   const PasswordTooShort = () => {
-    setNotification("PasswordTooShort");
-    setTimeout(() => {
-      setNotification(null);
-    }, 5500);
+    PasswordTooShortInlineNotification();
   }
 
 
@@ -63,8 +53,7 @@ export default function LoginPage() {
 
     event.preventDefault(); // Prevent the default form submission behavior
     if (email.trim() === "" || password.trim() === "") {
-      setNotification("MissingFields");
-      setTimeout(() => { setNotification(null); }, 5500);
+      MissingFieldsNotification();
       return;
     }
 
@@ -118,13 +107,6 @@ export default function LoginPage() {
     router.refresh()
   };
 
-  useEffect(() => {
-    if (textRef.current) {
-      setTimeout(() => {
-        textRef.current.classList.add("active");
-      }, 100);
-    }
-  }, []);
 
   const metadata = {
     title: "Suites Finance",
@@ -189,19 +171,19 @@ export default function LoginPage() {
                 {isTbrOnboarding && (
                   <div className="mt-6">
                     <form method="POST" action="#" className="space-y-6">
-                    < InputFieldRead
-                      value={email}
-                      setValue={setEmail}
-                      label={"Email Address"}
-                      type={"email"}
-                    />
+                      < InputFieldRead
+                        value={email}
+                        setValue={setEmail}
+                        label={"Email Address"}
+                        type={"email"}
+                      />
 
-                    < InputFieldRead
-                      value={password}
-                      setValue={setPassword}
-                      label={"Password"}
-                      type={"password"}
-                    />
+                      < InputFieldRead
+                        value={password}
+                        setValue={setPassword}
+                        label={"Password"}
+                        type={"password"}
+                      />
 
 
                       <div>

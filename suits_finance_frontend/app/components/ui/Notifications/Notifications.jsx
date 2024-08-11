@@ -14,6 +14,7 @@ import LoadingErrorNotification from './loadingError.jsx';
 import BugReportSuccessNotification from './bugReportSuccess.jsx';
 import TransfersBlockedNoBalanceNotification from './transfersBlockedNoBalance.jsx';
 import DuplicateValueFailNotification from './duplicateValueFail.jsx';
+import PasswordTooShortInlineNotification from './passwordTooShort.jsx';
 
 export {
     wrongCredentialsNotification,
@@ -31,5 +32,6 @@ export {
     LoadingErrorNotification,
     BugReportSuccessNotification,
     TransfersBlockedNoBalanceNotification,
-    DuplicateValueFailNotification
+    DuplicateValueFailNotification,
+    PasswordTooShortInlineNotification
 }
