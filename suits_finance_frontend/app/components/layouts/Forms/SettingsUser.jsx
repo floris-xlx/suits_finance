@@ -40,6 +40,7 @@ const SettingsUserLayout = ({
     // add table fo members of team with roles and emails
     // add table for billing history
     // only show for super admin and dev
+    // show in billing the current rate of 1% fee
 
     const [selectedTab, setSelectedTab] = useState(settingOptions[0]);
     const [selectedCurrency, setSelectedCurrency] = useState('USD');
