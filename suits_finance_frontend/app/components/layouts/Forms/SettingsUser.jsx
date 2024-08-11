@@ -4,7 +4,7 @@ import SkeletonLoader from '@/app/components/ui/Loading/SkeletonLoader';
 import Image from 'next/image';
 
 //data
-import InputFieldDataWrapperUser from '@/app/components/dataWrappers/InputFieldWrapperUser';
+import InputFieldDataWrapperUser from '@/app/components/dataWrappers/inputFieldWrapperUser';
 
 const SettingsUserLayout = ({
     user
