@@ -131,7 +131,7 @@ const SettingsUserLayout = () => {
                             <p className="text-sm font-normal text-primary select-none">
                                 Personal Information
                             </p>
-                            <p className="text-xs text-primary select-none">
+                            <p className="text-xs text-secondary select-none">
                                 {userName}
                             </p>
                             <p className="mt-1 text-xs text-secondary">
