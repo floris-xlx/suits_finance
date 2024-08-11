@@ -32,7 +32,7 @@ export default function SettingsPage() {
 
   return (
     <BaseLayout>
-      <div className="px-4">
+      <div className="px-6 sm:px-[84px]">
         <SettingsUserLayout user={user} />
       </div>
 
