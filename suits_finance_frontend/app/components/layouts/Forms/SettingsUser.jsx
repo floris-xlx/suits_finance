@@ -5,6 +5,7 @@ import Image from 'next/image';
 
 //data
 import InputFieldDataWrapperUser from '@/app/components/dataWrappers/inputFieldWrapperUser';
+import convertCurrencyToSymbol from '@/app/client/hooks/formatting/CurrencySymbol';
 
 const SettingsUserLayout = ({
     user
@@ -14,6 +15,20 @@ const SettingsUserLayout = ({
         'Appearance',
         'Account',
         'Billing'
+    ];
+    const currencyOptionsNoSymbol = [
+        'usd',
+        'eur',
+        'gbp',
+        'yen',
+        'rub',
+    ];
+    const currencyOptions = [
+        '$ USD',
+        '€ EUR',
+        '£ GBP',
+        '¥ YEN',
+        '₽ RUB'
     ];
 
     const [selectedTab, setSelectedTab] = useState(settingOptions[0]);
@@ -128,6 +143,13 @@ const SettingsUserLayout = ({
                             auditLogRequest={'update_user_metadata'}
                             auditLog={true}
                             show={selectedTab === 'profile'}
+                        />
+
+                        <TabHorizontal 
+                            label={'Currency displayed'}
+                            options={currencyOptions} 
+                            setValueExternal={setSelectedCurrency} 
+                            show={selectedTab === 'appearance'}
                         />
 
                     </div>
