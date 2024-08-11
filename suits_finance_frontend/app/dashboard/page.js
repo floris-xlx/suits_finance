@@ -48,6 +48,67 @@ export default function DashboardPage() {
   const [pendingTradesUpdate, setPendingTradesUpdate] = useState(false);
 
   const [isMobile, setIsMobile] = useState(false);
+  const [topUpAmount, setTopUpAmount] = useState(0);
+
+  const [currentCard, setCurrentCard] = useState({
+    fullName: 'John Doe',
+    cardNumber: '4642348998677632',
+    expiryDate: '12/24',
+    balance: -6815.34,
+    currency: 'EUR',
+  });
+
+  const DEMO_TRANSACTION = {
+    id: '1',
+    date: '2024-09-08',
+    title: 'Balance Top Up',
+    amount: 500,
+    currency: 'EUR',
+    recipient: 'John Doe',
+    sender: 'Floris Ramakers',
+    status: 'completed',
+    card: currentCard,
+  };
+
+  // drawer stuff
+  const { modalRef: modalRef_viewDetailsCard, handleOpenModal: handleOpenModal_DetailsCard } = useModal();
+  const { modalRef: modalRef_viewTransactions, handleOpenModal: handleOpenModal_ViewTransactions } = useModal();
+  const { modalRef: modalRef_topUpBalance, handleOpenModal: handleOpenModal_TopUpBalance } = useModal();
+  const { modalRef: modalRef_cardLimits, handleOpenModal: handleOpenModal_CardLimits } = useModal();
+
+  // auth stuff
+  if (loading.authLoading) {
+    return <LoaderScreen />;
+  }
+
+  // open card details
+  const handleOpenCardDetails = () => {
+    handleOpenModal_DetailsCard();
+  }
+
+  const isBalanceNegative = currentCard.balance < 0;
+
+  // transfer money
+  const handleTransfer = () => {
+    if (isBalanceNegative) {
+      TransfersBlockedNoBalanceNotification();
+    }
+  }
+
+  // transaction view 
+  const handleViewTransactions = () => {
+    handleOpenModal_ViewTransactions();
+  }
+
+  // top up balance
+  const handleTopUpBalance = () => {
+    handleOpenModal_TopUpBalance();
+  }
+
+  // card limits
+  const handleCardLimits = () => {
+    handleOpenModal_CardLimits();
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -69,80 +130,6 @@ export default function DashboardPage() {
       }
     };
   }, []);
-
-
-  // FIXME: remove this
-  const DEMO_CARD = {
-    fullName: 'John Doe',
-    cardNumber: '4642348998677632',
-    expiryDate: '12/24',
-    balance: -6815.34,
-    currency: 'EUR',
-  }
-
-  const DEMO_TRANSACTION = {
-    id: '1',
-    date: '2024-09-08',
-    title: 'Balance Top Up',
-    amount: 500,
-    currency: 'EUR',
-    recipient: 'John Doe',
-    sender: 'Floris Ramakers',
-    status: 'completed',
-    card: DEMO_CARD,
-  }
-
-  const [currentCard, setCurrentCard] = useState(DEMO_CARD);
-
-
-
-  // drawer stuff
-  const { modalRef: modalRef_viewDetailsCard, handleOpenModal: handleOpenModal_DetailsCard } = useModal();
-  const { modalRef: modalRef_viewTransactions, handleOpenModal: handleOpenModal_ViewTransactions } = useModal();
-  const { modalRef: modalRef_topUpBalance, handleOpenModal: handleOpenModal_TopUpBalance } = useModal();
-  const { modalRef: modalRef_cardLimits, handleOpenModal: handleOpenModal_CardLimits } = useModal();
-
-  // auth stuff
-  if (loading.authLoading) {
-    return <LoaderScreen />;
-  }
-
-
-  // open card details
-  const handleOpenCardDetails = () => {
-    handleOpenModal_DetailsCard();
-  }
-
-
-
-  const isBalanceNegative = currentCard.balance < 0;
-
-  // transfer money
-  const handleTransfer = () => {
-
-    if (isBalanceNegative) {
-      TransfersBlockedNoBalanceNotification();
-    }
-  }
-
-  // transaction view 
-  const handleViewTransactions = () => {
-    handleOpenModal_ViewTransactions();
-  }
-
-  // top up balance
-  const handleTopUpBalance = () => {
-    handleOpenModal_TopUpBalance();
-  }
-
-
-  const [topUpAmount, setTopUpAmount] = useState(0);
-
-  // card limits
-  const handleCardLimits = () => {
-    handleOpenModal_CardLimits();
-  }
-
 
   return (
     <div className={styles.containerLogin}>

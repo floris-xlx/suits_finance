@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 const TabHorizontal = ({
     label = null,
     options = ["Option 1", "Option 2", "Option 3"],
-    cacheValueKey,
+    cacheValueKey = null,
     setCacheValue = null,
     setValueExternal = null,
 }) => {
@@ -18,8 +18,10 @@ const TabHorizontal = ({
   // value caching
   useEffect(() => {
     if (value) {
-      SetKeyLocalStorage(cacheValueKey, value);
-      setValueExternal(value);
+      //SetKeyLocalStorage(cacheValueKey, value);
+      if (setValueExternal) {
+        setValueExternal(value);
+      }
 
       if (setCacheValue) {
         setCacheValue(value);
