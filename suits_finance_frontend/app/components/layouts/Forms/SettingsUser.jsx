@@ -3,13 +3,18 @@ import TabHorizontal from '../../ui/Tabs/TabHorizontalWithValue';
 import SkeletonLoader from '@/app/components/ui/Loading/SkeletonLoader';
 import Image from 'next/image';
 
+
 //data
 import InputFieldDataWrapperUser from '@/app/components/dataWrappers/inputFieldWrapperUser';
 import convertCurrencyToSymbol from '@/app/client/hooks/formatting/CurrencySymbol';
 
+import { useUserViewStore } from '@/app/stores/stores';
+
 const SettingsUserLayout = ({
     user
 }) => {
+    const { view, setCurrentSettingsSection } = useUserViewStore();
+
     const settingOptions = [
         'Profile',
         'Appearance',
@@ -41,8 +46,16 @@ const SettingsUserLayout = ({
     // add table for billing history
     // only show for super admin and dev
     // show in billing the current rate of 1% fee
+    const [selectedTab, setSelectedTab] = useState(view.currentSettingsSection);
+    console.log(selectedTab);
 
-    const [selectedTab, setSelectedTab] = useState(settingOptions[0]);
+    useEffect(() => {
+        setCurrentSettingsSection(selectedTab);
+    }, [selectedTab]);
+
+
+
+    
     const [selectedCurrency, setSelectedCurrency] = useState('USD');
 
     const isNullOrUndefined = (value) => {
@@ -112,7 +125,7 @@ const SettingsUserLayout = ({
             >
                 <div className="relative flex w-full p-3 flex-auto flex-col place-content-inherit align-items-inherit h-auto break-words text-left overflow-y-auto subpixel-antialiased">
                     <div className="flex items-center gap-4">
-                        
+
                         <div>
                             <p className="text-sm font-medium text-primary select-none">
                                 {userName}
@@ -128,6 +141,14 @@ const SettingsUserLayout = ({
                     </div>
                 </div>
             </div>
+
+
+            <p className="text-base font-medium text-primary select-none mt-8">Billing Address</p>
+            <p className="mt-1 text-sm font-normal text-secondary select-none">
+                This billing address is used for your invoices.
+            </p>
+
+
         </div>
     );
 
@@ -159,12 +180,16 @@ const SettingsUserLayout = ({
                     Customize settings, preferences & personal details.
                 </h3>
 
-                <TabHorizontal options={settingOptions} setValueExternal={setSelectedTab} />
+                <TabHorizontal 
+                    options={settingOptions} 
+                    setValueExternal={setCurrentSettingsSection} 
+                    preSetValue={view.currentSettingsSection}
+                />
 
-                {selectedTab === 'profile' && <ProfileSection />}
-                {selectedTab === 'billing' && <BillingSection />}
-                {selectedTab === 'appearance' && <AppearanceSection />}
-                {selectedTab === 'account' && <AccountSection />}
+                {view.currentSettingsSection === 'profile' && <ProfileSection />}
+                {view.currentSettingsSection === 'billing' && <BillingSection />}
+                {view.currentSettingsSection === 'appearance' && <AppearanceSection />}
+                {view.currentSettingsSection === 'account' && <AccountSection />}
 
                 <div className="mt-4">
 
@@ -179,13 +204,13 @@ const SettingsUserLayout = ({
                             userId={user.id}
                             auditLogRequest={'update_user_metadata'}
                             auditLog={true}
-                            show={selectedTab === 'profile'}
+                            show={view.currentSettingsSection === 'profile'}
                             setReadOnlyValue={setFullName}
                         />
 
                         <InputFieldDataWrapperUser
                             title={'Email Address'}
-                            label={'The email address associated with your account'}
+                            label={'Email linked to your account'}
                             supabaseKey='email'
                             disabled={false}
                             type='text'
@@ -193,7 +218,7 @@ const SettingsUserLayout = ({
                             auditLogRequest={'update_user_metadata'}
                             auditLog={true}
                             setReadOnlyValue={setEmail}
-                            show={selectedTab === 'profile'}
+                            show={view.currentSettingsSection === 'profile'}
                         />
 
                         <InputFieldDataWrapperUser
@@ -205,17 +230,41 @@ const SettingsUserLayout = ({
                             userId={user.id}
                             auditLogRequest={'update_user_metadata'}
                             auditLog={true}
-                            show={selectedTab === 'profile'}
+                            show={view.currentSettingsSection === 'profile'}
                         />
+
 
                         <TabHorizontal
                             title={'Currency displayed'}
                             label={'This is the currency that will be reflected in your account'}
                             options={currencyOptions}
                             setValueExternal={setSelectedCurrency}
-                            show={selectedTab === 'appearance'}
+                            show={view.currentSettingsSection === 'appearance'}
                         />
 
+                    </div>
+
+                    <div className="flex flex-col max-w-[50%]">
+                        <InputFieldDataWrapperUser
+                            label={'Address Line 1'}
+                            supabaseKey='address_line_1'
+                            disabled={false}
+                            type='text'
+                            userId={user.id}
+                            auditLogRequest={'update_user_metadata'}
+                            auditLog={true}
+                            show={view.currentSettingsSection === 'billing'}
+                        />
+                        <InputFieldDataWrapperUser
+                            label={'Address Line 2'}
+                            supabaseKey='address_line_2'
+                            disabled={false}
+                            type='text'
+                            userId={user.id}
+                            auditLogRequest={'update_user_metadata'}
+                            auditLog={true}
+                            show={view.currentSettingsSection === 'billing'}
+                        />
                     </div>
 
                 </div>

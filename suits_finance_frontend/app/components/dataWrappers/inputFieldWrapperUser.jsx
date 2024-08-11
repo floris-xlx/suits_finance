@@ -148,7 +148,6 @@ const InputFieldDataWrapperUser = ({
                 });
                 resultUpdate.catch(error => {
                     if (supabaseKey === 'email' && error.message.includes('duplicate key value violates unique constraint "users_email_key"')) {
-                        console.log('duplicate key value violates unique constraint "users_email_key"');
                         DuplicateValueFailNotification({ valueType: 'email' });
                     }
                 });

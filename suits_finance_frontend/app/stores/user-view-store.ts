@@ -18,6 +18,7 @@ interface UserView {
     isInStrategyDrilldown?: boolean;
     strategyDrilldownSideBarItem?: string;
     journalEquityChartDateLength?: string;
+    currentSettingsSection: string;
 }
 
 interface UserViewStore {
@@ -38,9 +39,10 @@ interface UserViewStore {
     setIsInJournalStrategiesOverview: (isInJournal: boolean) => void;
     setIsInStrategyCreationFlow: (isInStrategyCreationFlow: boolean) => void;
     setIsInStrategyDrilldown: (isInStrategyDrilldown: boolean) => void;
-    strategyDrilldownSideBarItem?: string;
     setStrategyDrilldownSideBarItem: (sideBarItem: string) => void;
     setJournalEquityChartDateLength: (dateLength: string) => void;
+    setCurrentSettingsSection: (section: string) => void;
+
 }
 
 export const useUserViewStore = create<UserViewStore>()(
@@ -62,7 +64,8 @@ export const useUserViewStore = create<UserViewStore>()(
                 isInStrategyCreationFlow: false,
                 isInStrategyDrilldown: false,
                 strategyDrilldownSideBarItem: null,
-                journalEquityChartDateLength: "12_months"
+                journalEquityChartDateLength: "12_months",
+                currentSettingsSection: 'profile'
 
             },
 
@@ -84,7 +87,8 @@ export const useUserViewStore = create<UserViewStore>()(
                     isInStrategyCreationFlow: state.view.isInStrategyCreationFlow,
                     isInStrategyDrilldown: state.view.isInStrategyDrilldown,
                     strategyDrilldownSideBarItem: state.view.strategyDrilldownSideBarItem,
-                    journalEquityChartDateLength: state.view.journalEquityChartDateLength
+                    journalEquityChartDateLength: state.view.journalEquityChartDateLength,
+                    currentSettingsSection: state.view.currentSettingsSection
                 }
             })),
 
@@ -106,7 +110,8 @@ export const useUserViewStore = create<UserViewStore>()(
                     isInStrategyCreationFlow: state.view.isInStrategyCreationFlow,
                     isInStrategyDrilldown: state.view.isInStrategyDrilldown,
                     strategyDrilldownSideBarItem: state.view.strategyDrilldownSideBarItem,
-                    journalEquityChartDateLength: state.view.journalEquityChartDateLength
+                    journalEquityChartDateLength: state.view.journalEquityChartDateLength,
+                    currentSettingsSection: state.view.currentSettingsSection
                 }
             })),
 
@@ -128,7 +133,8 @@ export const useUserViewStore = create<UserViewStore>()(
                     isInStrategyCreationFlow: state.view.isInStrategyCreationFlow,
                     isInStrategyDrilldown: state.view.isInStrategyDrilldown,
                     strategyDrilldownSideBarItem: state.view.strategyDrilldownSideBarItem,
-                    journalEquityChartDateLength: state.view.journalEquityChartDateLength
+                    journalEquityChartDateLength: state.view.journalEquityChartDateLength,
+                    currentSettingsSection: state.view.currentSettingsSection
                 }
             })),
 
@@ -150,7 +156,8 @@ export const useUserViewStore = create<UserViewStore>()(
                     isInStrategyCreationFlow: state.view.isInStrategyCreationFlow,
                     isInStrategyDrilldown: state.view.isInStrategyDrilldown,
                     strategyDrilldownSideBarItem: state.view.strategyDrilldownSideBarItem,
-                    journalEquityChartDateLength: state.view.journalEquityChartDateLength
+                    journalEquityChartDateLength: state.view.journalEquityChartDateLength,
+                    currentSettingsSection: state.view.currentSettingsSection
 
                 }
             })),
@@ -173,7 +180,8 @@ export const useUserViewStore = create<UserViewStore>()(
                     isInStrategyCreationFlow: state.view.isInStrategyCreationFlow,
                     isInStrategyDrilldown: state.view.isInStrategyDrilldown,
                     strategyDrilldownSideBarItem: state.view.strategyDrilldownSideBarItem,
-                    journalEquityChartDateLength: state.view.journalEquityChartDateLength
+                    journalEquityChartDateLength: state.view.journalEquityChartDateLength,
+                    currentSettingsSection: state.view.currentSettingsSection
                 }
             })),
 
@@ -195,7 +203,8 @@ export const useUserViewStore = create<UserViewStore>()(
                     isInStrategyCreationFlow: state.view.isInStrategyCreationFlow,
                     isInStrategyDrilldown: state.view.isInStrategyDrilldown,
                     strategyDrilldownSideBarItem: state.view.strategyDrilldownSideBarItem,
-                    journalEquityChartDateLength: state.view.journalEquityChartDateLength
+                    journalEquityChartDateLength: state.view.journalEquityChartDateLength,
+                    currentSettingsSection: state.view.currentSettingsSection
 
                 }
             })),
@@ -218,7 +227,8 @@ export const useUserViewStore = create<UserViewStore>()(
                     isInStrategyCreationFlow: state.view.isInStrategyCreationFlow,
                     isInStrategyDrilldown: state.view.isInStrategyDrilldown,
                     strategyDrilldownSideBarItem: state.view.strategyDrilldownSideBarItem,
-                    journalEquityChartDateLength: state.view.journalEquityChartDateLength
+                    journalEquityChartDateLength: state.view.journalEquityChartDateLength,
+                    currentSettingsSection: state.view.currentSettingsSection
                 }
             })),
 
@@ -240,7 +250,8 @@ export const useUserViewStore = create<UserViewStore>()(
                     isInStrategyCreationFlow: state.view.isInStrategyCreationFlow,
                     isInStrategyDrilldown: state.view.isInStrategyDrilldown,
                     strategyDrilldownSideBarItem: state.view.strategyDrilldownSideBarItem,
-                    journalEquityChartDateLength: state.view.journalEquityChartDateLength
+                    journalEquityChartDateLength: state.view.journalEquityChartDateLength,
+                    currentSettingsSection: state.view.currentSettingsSection
                 }
             })),
 
@@ -262,7 +273,8 @@ export const useUserViewStore = create<UserViewStore>()(
                     isInStrategyCreationFlow: state.view.isInStrategyCreationFlow,
                     isInStrategyDrilldown: state.view.isInStrategyDrilldown,
                     strategyDrilldownSideBarItem: state.view.strategyDrilldownSideBarItem,
-                    journalEquityChartDateLength: state.view.journalEquityChartDateLength
+                    journalEquityChartDateLength: state.view.journalEquityChartDateLength,
+                    currentSettingsSection: state.view.currentSettingsSection
                 }
             })),
 
@@ -284,7 +296,8 @@ export const useUserViewStore = create<UserViewStore>()(
                     isInStrategyCreationFlow: state.view.isInStrategyCreationFlow,
                     isInStrategyDrilldown: state.view.isInStrategyDrilldown,
                     strategyDrilldownSideBarItem: state.view.strategyDrilldownSideBarItem,
-                    journalEquityChartDateLength: state.view.journalEquityChartDateLength
+                    journalEquityChartDateLength: state.view.journalEquityChartDateLength,
+                    currentSettingsSection: state.view.currentSettingsSection
                 }
             })),
 
@@ -306,7 +319,8 @@ export const useUserViewStore = create<UserViewStore>()(
                     isInStrategyCreationFlow: state.view.isInStrategyCreationFlow,
                     isInStrategyDrilldown: state.view.isInStrategyDrilldown,
                     strategyDrilldownSideBarItem: state.view.strategyDrilldownSideBarItem,
-                    journalEquityChartDateLength: state.view.journalEquityChartDateLength
+                    journalEquityChartDateLength: state.view.journalEquityChartDateLength,
+                    currentSettingsSection: state.view.currentSettingsSection
                 }
             })),
 
@@ -328,7 +342,8 @@ export const useUserViewStore = create<UserViewStore>()(
                     isInStrategyCreationFlow: state.view.isInStrategyCreationFlow,
                     isInStrategyDrilldown: state.view.isInStrategyDrilldown,
                     strategyDrilldownSideBarItem: state.view.strategyDrilldownSideBarItem,
-                    journalEquityChartDateLength: state.view.journalEquityChartDateLength
+                    journalEquityChartDateLength: state.view.journalEquityChartDateLength,
+                    currentSettingsSection: state.view.currentSettingsSection
                 }
             })),
 
@@ -350,7 +365,8 @@ export const useUserViewStore = create<UserViewStore>()(
                     isInStrategyCreationFlow: isInStrategyCreationFlow,
                     isInStrategyDrilldown: state.view.isInStrategyDrilldown,
                     strategyDrilldownSideBarItem: state.view.strategyDrilldownSideBarItem,
-                    journalEquityChartDateLength: state.view.journalEquityChartDateLength
+                    journalEquityChartDateLength: state.view.journalEquityChartDateLength,
+                    currentSettingsSection: state.view.currentSettingsSection
                 }
             })),
 
@@ -372,7 +388,8 @@ export const useUserViewStore = create<UserViewStore>()(
                     isInStrategyCreationFlow: state.view.isInStrategyCreationFlow,
                     isInStrategyDrilldown: isInStrategyDrilldown,
                     strategyDrilldownSideBarItem: state.view.strategyDrilldownSideBarItem,
-                    journalEquityChartDateLength: state.view.journalEquityChartDateLength
+                    journalEquityChartDateLength: state.view.journalEquityChartDateLength,
+                    currentSettingsSection: state.view.currentSettingsSection
                 }
             })),
 
@@ -394,7 +411,8 @@ export const useUserViewStore = create<UserViewStore>()(
                     isInStrategyCreationFlow: state.view.isInStrategyCreationFlow,
                     isInStrategyDrilldown: state.view.isInStrategyDrilldown,
                     strategyDrilldownSideBarItem: sideBarItem,
-                    journalEquityChartDateLength: state.view.journalEquityChartDateLength
+                    journalEquityChartDateLength: state.view.journalEquityChartDateLength,
+                    currentSettingsSection: state.view.currentSettingsSection
                 }
             })),
 
@@ -416,7 +434,31 @@ export const useUserViewStore = create<UserViewStore>()(
                     isInStrategyCreationFlow: state.view.isInStrategyCreationFlow,
                     isInStrategyDrilldown: state.view.isInStrategyDrilldown,
                     strategyDrilldownSideBarItem: state.view.strategyDrilldownSideBarItem,
-                    journalEquityChartDateLength: dateLength
+                    journalEquityChartDateLength: dateLength,
+                    currentSettingsSection: state.view.currentSettingsSection
+                }
+            })),
+
+            // set current settings section
+            setCurrentSettingsSection: (section: string) => set((state) => ({
+                view: {
+                    isEditingModePendingTrades: state.view.isEditingModePendingTrades,
+                    filterTradesByKeyPendingTrades: state.view.filterTradesByKeyPendingTrades,
+                    noPendingTrades: state.view.noPendingTrades,
+                    noFilteredTrades: state.view.noFilteredTrades,
+                    desktopView: state.view.desktopView,
+                    currentAlgorithmId: state.view.currentAlgorithmId,
+                    drilldownTradeHashPendingTrades: state.view.drilldownTradeHashPendingTrades,
+                    maxTradeCardsOnViewPort: state.view.maxTradeCardsOnViewPort,
+                    isInDropdownPendingTrades: state.view.isInDropdownPendingTrades,
+                    isInJournal: state.view.isInJournal,
+                    isInDropdownUserSettings: state.view.isInDropdownUserSettings,
+                    isInJournalStrategiesOverview: state.view.isInJournalStrategiesOverview,
+                    isInStrategyCreationFlow: state.view.isInStrategyCreationFlow,
+                    isInStrategyDrilldown: state.view.isInStrategyDrilldown,
+                    strategyDrilldownSideBarItem: state.view.strategyDrilldownSideBarItem,
+                    journalEquityChartDateLength: state.view.journalEquityChartDateLength,
+                    currentSettingsSection: section
                 }
             })),
 

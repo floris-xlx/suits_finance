@@ -14,8 +14,9 @@ const TabHorizontal = ({
     setValueExternal = null,
     show = true,
     title = null,
+    preSetValue = null,
 }) => {
-  const [value, setValue] = useState(options[0]);
+  const [value, setValue] = useState(preSetValue || options[0]);
 
   // value caching
   useEffect(() => {
