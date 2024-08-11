@@ -99,6 +99,33 @@ const SettingsUserLayout = ({
         </div>
     );
 
+    const BillingSection = () => (
+        <div className="pt-[20px]">
+            <p className="text-base font-medium text-primary select-none">Billing</p>
+            <p className="mt-1 text-sm font-normal text-secondary select-none">
+                This displays your billing information.
+            </p>
+        </div>
+    );
+
+    const AppearanceSection = () => (
+        <div className="pt-[20px]">
+            <p className="text-base font-medium text-primary select-none">Appearance</p>
+            <p className="mt-1 text-sm font-normal text-secondary select-none">
+                This displays your appearance settings.
+            </p>
+        </div>
+    );
+
+    const AccountSection = () => (
+        <div className="pt-[20px]">
+            <p className="text-base font-medium text-primary select-none">Account</p>
+            <p className="mt-1 text-sm font-normal text-secondary select-none">
+                This displays your account settings.
+            </p>
+        </div>
+    );
+
     return (
         <Fragment>
             <div className="w-full h-full">
@@ -115,6 +142,9 @@ const SettingsUserLayout = ({
                 <TabHorizontal options={settingOptions} setValueExternal={setSelectedTab} />
 
                 {selectedTab === 'profile' && <ProfileSection />}
+                {selectedTab === 'billing' && <BillingSection />}
+                {selectedTab === 'appearance' && <AppearanceSection />}
+                {selectedTab === 'account' && <AccountSection />}
 
                 <div className="mt-4">
 
