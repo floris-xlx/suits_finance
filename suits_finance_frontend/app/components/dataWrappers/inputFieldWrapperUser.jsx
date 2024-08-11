@@ -182,7 +182,7 @@ const InputFieldDataWrapperUser = ({
     return (
         <div className="">
             <div>
-                <div className="mt-[18px]">
+                <div className="mt-[12px]">
                     {title && <p className="text-base font-medium text-primary select-none">{title}</p>}
                     <label
                         className="block text-sm font-medium text-accent select-none"

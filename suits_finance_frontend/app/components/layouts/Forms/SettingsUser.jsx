@@ -55,7 +55,7 @@ const SettingsUserLayout = ({
 
 
 
-    
+
     const [selectedCurrency, setSelectedCurrency] = useState('USD');
 
     const isNullOrUndefined = (value) => {
@@ -180,9 +180,9 @@ const SettingsUserLayout = ({
                     Customize settings, preferences & personal details.
                 </h3>
 
-                <TabHorizontal 
-                    options={settingOptions} 
-                    setValueExternal={setCurrentSettingsSection} 
+                <TabHorizontal
+                    options={settingOptions}
+                    setValueExternal={setCurrentSettingsSection}
                     preSetValue={view.currentSettingsSection}
                 />
 
@@ -258,6 +258,16 @@ const SettingsUserLayout = ({
                         <InputFieldDataWrapperUser
                             label={'Address Line 2'}
                             supabaseKey='address_line_2'
+                            disabled={false}
+                            type='text'
+                            userId={user.id}
+                            auditLogRequest={'update_user_metadata'}
+                            auditLog={true}
+                            show={view.currentSettingsSection === 'billing'}
+                        />
+                        <InputFieldDataWrapperUser
+                            label={'City'}
+                            supabaseKey='city'
                             disabled={false}
                             type='text'
                             userId={user.id}
