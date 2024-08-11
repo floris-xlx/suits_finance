@@ -170,7 +170,7 @@ const ToggleBlockUsers = ({
 
             handleToggle();
           }} // Ensure onClick is a function
-          width={'full'}
+       
           classNames={{
             base: cn(
               'inline-flex flex-row-reverse w-full bg-primary hover:bg-accent items-center transition',
@@ -193,7 +193,7 @@ const ToggleBlockUsers = ({
             ),
           }}
         >
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 w-full">
             <p className="text-small sm:text-medium font-[12px] sm:font-[15px]">{label}</p>
             <p className="text-tiny text-secondary">{subText}</p>
           </div>

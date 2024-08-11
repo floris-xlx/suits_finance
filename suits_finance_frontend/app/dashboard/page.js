@@ -67,6 +67,20 @@ export default function DashboardPage() {
     card: currentCard,
   };
 
+  useEffect(() => {
+    const fetchBalance = async () => {
+      const balance = await getUserBalance(user.id);
+      setCurrentCard(prevState => {
+        return {
+          ...prevState,
+          balance: balance
+        }
+      });
+    }
+
+    fetchBalance();
+  }, [user.id]);
+
   // drawer stuff
   const { modalRef: modalRef_viewDetailsCard, handleOpenModal: handleOpenModal_DetailsCard } = useModal();
   const { modalRef: modalRef_viewTransactions, handleOpenModal: handleOpenModal_ViewTransactions } = useModal();
@@ -107,19 +121,7 @@ export default function DashboardPage() {
     handleOpenModal_CardLimits();
   }
 
-  useEffect(() => {
-    const fetchBalance = async () => {
-      const balance = await getUserBalance(user.id);
-      setCurrentCard(prevState => {
-        return {
-          ...prevState,
-          balance: balance
-        }
-      });
-    }
 
-    fetchBalance();
-  }, [user.id]);
 
 
   return (
