@@ -5,7 +5,7 @@ import { GET_VALUE_USERS } from "@/app/client/graphql/query";
 import client from "@/app/client/graphql/ApolloClient.jsx";
 import { SuccessSyncValueNotification } from "@/app/components/ui/Notifications/Notifications.jsx";
 import SkeletonLoader from "@/app/components/ui/Loading/SkeletonLoader";
-import { SetKeyLocalStorage, GetKeyLocalStorage } from "@/app/client/caching/LocalStorageRouter";
+import { SetKeyLocalStorage, GetKeyLocalStorage, SetKeyLocalStorage_UNSAFE } from "@/app/client/caching/LocalStorageRouter";
 
 import PropTypes from 'prop-types';
 
@@ -16,7 +16,8 @@ const InputFieldDataWrapperUser = ({
     supabaseKey,
     disabled = false,
     type = 'number',
-    setReadOnlyValue = null
+    setReadOnlyValue = null,
+    width = 'full'
 }) => {
     // local loading state
     const [loading, setLoading] = useState(true);
@@ -63,7 +64,7 @@ const InputFieldDataWrapperUser = ({
 
     useEffect(() => {
         // set current unix time to local storage
-        SetKeyLocalStorage(CACHEKEY, currentUnixTime);
+        SetKeyLocalStorage_UNSAFE(CACHEKEY, currentUnixTime);
     }, []);
 
 
@@ -81,7 +82,7 @@ const InputFieldDataWrapperUser = ({
 
     // cache the keystroke to cachedKeyStroke_[supabaseKey]
     useEffect(() => {
-        SetKeyLocalStorage(`cachedKeyStroke_${supabaseKey}`, lastKeyStrokeTime);
+        SetKeyLocalStorage_UNSAFE(`cachedKeyStroke_${supabaseKey}`, lastKeyStrokeTime);
     }, [value]);
 
 
@@ -102,9 +103,9 @@ const InputFieldDataWrapperUser = ({
                 }
             });
             
-            if (setReadOnlyValue !== null) {
-                setReadOnlyValue(value);
-            }
+            // if (setReadOnlyValue !== null) {
+            //     setReadOnlyValue(value);
+            // }
 
             // set loading to false
             setSyncing(false);
@@ -126,7 +127,7 @@ const InputFieldDataWrapperUser = ({
     }
 
     return (
-        <div className="">
+        <div className={`w-${width}`}>
             <div>
                 <div className="mt-[18px]">
                     <label

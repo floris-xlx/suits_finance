@@ -3,6 +3,9 @@ import TabHorizontal from '../../ui/Tabs/TabHorizontalWithValue';
 import SkeletonLoader from '@/app/components/ui/Loading/SkeletonLoader';
 import Image from 'next/image';
 
+//data
+import InputFieldDataWrapperUser from '@/app/components/dataWrappers/InputFieldWrapperUser';
+
 const SettingsUserLayout = ({
     user
 }) => {
@@ -57,6 +60,29 @@ const SettingsUserLayout = ({
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div className="mt-4 sm:mt-8">
+
+                <div className="w-full sm:max-w-[300px] flex flex-col gap-y-4">
+
+                    <InputFieldDataWrapperUser
+                        label={'Full name'}
+                        supabaseKey='full_name'
+                        disabled={false}
+                        type='text'
+
+                    />
+
+                    <InputFieldDataWrapperUser
+                        label={'Email'}
+                        supabaseKey='email'
+                        disabled={false}
+                        type='text'
+
+                    />
+                </div>
+
             </div>
         </div>
     );
