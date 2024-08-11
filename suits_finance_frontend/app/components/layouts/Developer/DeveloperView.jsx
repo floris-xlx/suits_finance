@@ -11,9 +11,7 @@ import InputFieldDataWrapperUser from '@/app/components/dataWrappers/inputFieldW
 const DeveloperViewLayout = () => {
     const { user } = useUserStore();
     const [isDeveloper, setIsDeveloper] = useState(false);
-    console.log('user_id',)
-
-    const { modalRef: modalRef_developer, handleOpenModal: handleOpenModal_developer } = useModal();
+     const { modalRef: modalRef_developer, handleOpenModal: handleOpenModal_developer } = useModal();
 
     useEffect(() => {
         const checkDeveloper = async () => {
@@ -25,12 +23,12 @@ const DeveloperViewLayout = () => {
         checkDeveloper();
     }, []);
 
+    // if not developer, return null (no button)
     if (!isDeveloper) {
         return null;
     }
 
     const handleDeveloperView = () => {
-        console.log('Developer View')
         handleOpenModal_developer();
     }
 

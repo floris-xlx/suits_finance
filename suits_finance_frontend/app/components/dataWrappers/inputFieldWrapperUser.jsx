@@ -3,7 +3,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { UPDATE_VALUE_USERS } from "@/app/client/graphql/mutation";
 import { GET_VALUE_USERS } from "@/app/client/graphql/query";
 import client from "@/app/client/graphql/ApolloClient.jsx";
-import { SuccessSyncValueNotification, DuplicateValueFailNotification  } from "@/app/components/ui/Notifications/Notifications.jsx";
+import { SuccessSyncValueNotification, DuplicateValueFailNotification } from "@/app/components/ui/Notifications/Notifications.jsx";
 import SkeletonLoader from "@/app/components/ui/Loading/SkeletonLoader";
 import { SetKeyLocalStorage, GetKeyLocalStorage } from "@/app/client/caching/LocalStorageRouter";
 import { IsEmailUnique } from "../../client/supabase/SupabaseUserData";
@@ -152,7 +152,7 @@ const InputFieldDataWrapperUser = ({
                     }
                 });
 
-                
+
                 const mountTime = GetKeyLocalStorage(CACHEKEY);
                 const currentTime = Math.floor(Date.now() / 1000);
 
@@ -180,35 +180,35 @@ const InputFieldDataWrapperUser = ({
     }
 
     return (
-        <div className="">
-            <div>
-                <div className="mt-[12px]">
-                    {title && <p className="text-base font-medium text-primary select-none">{title}</p>}
-                    <label
-                        className="block text-sm font-medium text-accent select-none"
-                    >
-                        {label}
-                    </label>
+        <div className="w-full">
 
-                    {loading ? (
-                        <div className="flex h-[40px] min-w-[220px] w-full mt-1">
-                            <SkeletonLoader width={"full"} height={'full'} />
-                        </div>
-                    ) : (
-                        <input
-                            id="account-size"
-                            name="account-size"
-                            type={type}
-                            required
-                            onChange={handleOnChange}
-                            step={1}
-                            disabled={disabled}
-                            value={value}
-                            className={`block w-full appearance-none px-3 py-2 shadow-sm ${type === 'text' ? 'focus:ring-2' : 'focus:ring-1'} sm:text-sm focus:ring-purple-600 font-medium bg-input-primary rounded-md !border border-primary h-[40px] text-secondary select-none mt-1`}
-                        />
-                    )}
-                </div>
+            <div className="mt-[12px] w-full">
+                {title && <p className="text-base font-medium text-primary select-none">{title}</p>}
+                <label
+                    className="block text-sm font-medium text-accent select-none"
+                >
+                    {label}
+                </label>
+
+                {loading ? (
+                    <div className="flex h-[40px] min-w-[220px] w-full mt-1">
+                        <SkeletonLoader width={"full"} height={'full'} />
+                    </div>
+                ) : (
+                    <input
+                        id="account-size"
+                        name="account-size"
+                        type={type}
+                        required
+                        onChange={handleOnChange}
+                        step={1}
+                        disabled={disabled}
+                        value={value}
+                        className={`block w-full appearance-none px-3 py-2 shadow-sm ${type === 'text' ? 'focus:ring-2' : 'focus:ring-1'} sm:text-sm focus:ring-purple-600 font-medium bg-input-primary rounded-md !border border-primary h-[40px] text-secondary select-none mt-1`}
+                    />
+                )}
             </div>
+
         </div>
     );
 }

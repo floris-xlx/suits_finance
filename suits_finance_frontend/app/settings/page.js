@@ -26,9 +26,9 @@ export default function SettingsPage() {
   const { user } = useUserStore();
   const { loading } = useLoadingStore();
 
-  if (loading.authLoading) {
-    return <LoaderScreen />;
-  }
+  // if (loading.authLoading) {
+  //   return <LoaderScreen />;
+  // }
 
 
   return (

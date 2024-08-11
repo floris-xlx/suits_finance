@@ -154,7 +154,10 @@ const ToggleBlockUsers = ({
 
   return (
     initialLoading ? (
-      <SkeletonLoader width={"full"} height={'full'} />
+      <div className="h-[80px] w-[220px]">
+        <SkeletonLoader />
+      </div>
+    
     ) : (
       <div
         className="mt-1 sm:mt-2  transition-height overflow-hidden"
@@ -167,6 +170,7 @@ const ToggleBlockUsers = ({
 
             handleToggle();
           }} // Ensure onClick is a function
+          width={'full'}
           classNames={{
             base: cn(
               'inline-flex flex-row-reverse w-full bg-primary hover:bg-accent items-center transition',
