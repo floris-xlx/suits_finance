@@ -13,6 +13,7 @@ const TabHorizontal = ({
     setCacheValue = null,
     setValueExternal = null,
     show = true,
+    title = null,
 }) => {
   const [value, setValue] = useState(options[0]);
 
@@ -36,6 +37,7 @@ const TabHorizontal = ({
 
   return (
     <div className="flex w-full flex-col mt-4">
+      {title && <p className="text-base font-medium text-primary select-none">{title}</p>}
         <label className="block text-sm font-medium text-accent mb-1">
             {label}
         </label>

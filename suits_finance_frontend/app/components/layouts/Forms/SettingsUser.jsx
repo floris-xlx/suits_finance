@@ -159,7 +159,8 @@ const SettingsUserLayout = ({
                         />
 
                         <TabHorizontal 
-                            label={'Currency displayed'}
+                            title={'Currency displayed'}
+                            label={'This is the currency that will be reflected in your account'}
                             options={currencyOptions} 
                             setValueExternal={setSelectedCurrency} 
                             show={selectedTab === 'appearance'}
