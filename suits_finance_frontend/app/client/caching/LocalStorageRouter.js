@@ -60,7 +60,7 @@ function RemoveKeyLocalStorage_UNSAFE(key) {
 
 
 function SetKeyLocalStorage(key, value) {
-  if (AllowedKeys.includes(key) && key.startsWith('cached')) {
+  if (key.startsWith('cached') || AllowedKeys.includes(key)) {
     if (value !== undefined && value !== null) {
       localStorage.setItem(key, value);
     } else {
@@ -68,8 +68,8 @@ function SetKeyLocalStorage(key, value) {
       console.warn(`Value for key "${key}" is undefined or null.`);
     }
   } else {
-    // key is not allowed in AllowedKeys or starts with 'cached'
-    console.warn(`Key "${key}" is not allowed or starts with 'cached'.`);
+    // key is not allowed in AllowedKeys or does not start with 'cached'
+    console.warn(`Key "${key}" is not allowed and does not start with 'cached'.`);
   }
 }
 
