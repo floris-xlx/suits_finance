@@ -13,7 +13,7 @@ const SettingsUserLayout = () => {
     const { user, setEmail, setFullName, setRole, setProfilePicture, setCity, setCountry, setAddressLine1, setAddressLine2, setPostalCode, setState, setCurrency } = useUserStore();
 
     const settingOptions = [
-        'Profile', 'Appearance', 'Account', 'Billing'
+        'Profile', 'Appearance', 'Payoneer', 'Billing'
     ];
 
     const currencyOptions = [
@@ -32,6 +32,7 @@ const SettingsUserLayout = () => {
     // add table for billing history
     // only show for super admin and dev
     // show in billing the current rate of 1% fee
+    
 
     const isNullOrUndefined = (value) => {
         return value === null || value === undefined;
@@ -199,6 +200,7 @@ const SettingsUserLayout = () => {
 
                 <div className="mt-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-1 transition-all">
+
                         <InputFieldDataWrapperUser
                             title={'Full name'}
                             label={'Government Name'}
@@ -259,6 +261,7 @@ const SettingsUserLayout = () => {
                             setReadOnlyValue={setAddressLine1}
                             show={view.currentSettingsSection === 'billing'}
                         />
+
                         <InputFieldDataWrapperUser
                             label={'Address Line 2'}
                             supabaseKey='address_line_2'
@@ -270,6 +273,7 @@ const SettingsUserLayout = () => {
                             setReadOnlyValue={setAddressLine2}
                             show={view.currentSettingsSection === 'billing'}
                         />
+
                         <InputFieldDataWrapperUser
                             label={'City'}
                             supabaseKey='city'
@@ -319,6 +323,7 @@ const SettingsUserLayout = () => {
                             setReadOnlyValue={setCountry}
                             show={view.currentSettingsSection === 'billing'}
                         />
+
                     </div>
                 </div>
             </div>

@@ -907,3 +907,18 @@ export async function IsEmailUnique(email, userId) {
 
   return false;
 }
+
+export async function getUserBalance(id) {
+  const { data, error } = await supabase
+    .from('users')
+    .select('balance')
+    .eq('user_id', id);
+
+  if (error) throw error;
+
+  if (data.length === 0) {
+    return null;
+  }
+
+  return data[0].balance;
+}

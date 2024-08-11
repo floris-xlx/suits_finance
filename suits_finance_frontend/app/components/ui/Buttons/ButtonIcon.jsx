@@ -9,6 +9,7 @@ const ButtonIcon = ({
   hide = false,
   border = false,
   transparent = true,
+
 }) => {
 
   if (hide) {

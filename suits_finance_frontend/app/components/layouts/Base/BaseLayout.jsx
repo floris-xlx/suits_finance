@@ -4,6 +4,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import LoggedInUserCard from '@/app/components/ui/Cards/LoggedInUserCard';
 import Header from '@/app/components/ui/Headers/Header';
 import ThemeButton from '@/app/components/ui/Theme/ThemeButton';
+import DeveloperViewLayout from '@/app/components/layouts/Developer/DeveloperView';
 
 // zustand
 import {
@@ -39,6 +40,7 @@ const BaseLayout = ({ children, href = '/settings' }) => {
             <div className="fixed bottom-0 left-0 p-4 ml-[1px]  ">
                 <div className="flex flex-col gap-y-3 items-center">
                     <ThemeButton />
+                    <DeveloperViewLayout />
                 </div>
             </div>
         </div>

@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './styles.module.css';
 import ThemeButton from '@/app/components/ui/Theme/ThemeButton';
 import LoggedInUserCard from '@/app/components/ui/Cards/LoggedInUserCard';
+import { getUserBalance } from '@/app/client/supabase/SupabaseUserData';
 
 import { useRequireAuth } from '@/app/auth/hooks/useRequireAuth';
 import LoaderScreen from '@/app/components/ui/Loading/LoaderScreen';
@@ -32,7 +33,7 @@ import TransactionsTableMobile from '@/app/components/ui/Tables/TransactionsTabl
 import TransactionsOverviewLayout  from '@/app/components/layouts/Modals/transactionsOverview';
 import TopUpBalanceLayout  from '@/app/components/layouts/Modals/topUpBalance';
 import CardLimitsLayout from '@/app/components/layouts/Modals/cardLimits';
-
+import DeveloperView from '@/app/components/layouts/Developer/DeveloperView';
 
 export default function DashboardPage() {
   // auth
@@ -105,6 +106,20 @@ export default function DashboardPage() {
   const handleCardLimits = () => {
     handleOpenModal_CardLimits();
   }
+
+  useEffect(() => {
+    const fetchBalance = async () => {
+      const balance = await getUserBalance(user.id);
+      setCurrentCard(prevState => {
+        return {
+          ...prevState,
+          balance: balance
+        }
+      });
+    }
+
+    fetchBalance();
+  }, [user.id]);
 
 
   return (
@@ -192,6 +207,7 @@ export default function DashboardPage() {
       <div className="fixed bottom-0 left-0 p-4 ml-[1px]  ">
         <div className="flex flex-col gap-y-3 items-center">
           <ThemeButton />
+          <DeveloperView />
         </div>
       </div>
     </div>
