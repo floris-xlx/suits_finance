@@ -145,7 +145,7 @@ export default function DashboardPage() {
 
 
 
-      <div className="bg-primary  mt-0 lg:mt-[80px] h-[99%] min-h-[90.75vh]">
+      <div className="bg-primary  mt-0 lg:mt-[80px] h-[99%] min-h-[90.75vh] pb-[100px]">
         <div className="flex flex-col items-center gap-3 max-w-[1400px] w-full lg:hidden pb-0 ">
           <div className="w-[96%]">
             <LoggedInUserCard
