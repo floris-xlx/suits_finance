@@ -60,7 +60,7 @@ function RemoveKeyLocalStorage_UNSAFE(key) {
 
 
 function SetKeyLocalStorage(key, value) {
-  if (AllowedKeys.includes(key) && !key.startsWith('cached')) {
+  if (AllowedKeys.includes(key) && key.startsWith('cached')) {
     if (value !== undefined && value !== null) {
       localStorage.setItem(key, value);
     } else {
