@@ -167,11 +167,11 @@ const SettingsUserLayout = () => {
         </div>
     );
 
-    const AccountSection = () => (
+    const PayoneerSection = () => (
         <div className="pt-[20px]">
-            <p className="text-base font-medium text-primary select-none">Account</p>
+            <p className="text-base font-medium text-primary select-none">Payoneer</p>
             <p className="mt-1 text-sm font-normal text-secondary select-none">
-                This displays your account settings.
+                This displays your Payoneer settings and it's details.
             </p>
         </div>
     );
@@ -195,7 +195,7 @@ const SettingsUserLayout = () => {
                 {view.currentSettingsSection === 'profile' && <ProfileSection />}
                 {view.currentSettingsSection === 'billing' && <BillingSection />}
                 {view.currentSettingsSection === 'appearance' && <AppearanceSection />}
-                {view.currentSettingsSection === 'account' && <AccountSection />}
+                {view.currentSettingsSection === 'payoneer' && <PayoneerSection />}
 
                 <div className="mt-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-1 transition-all">

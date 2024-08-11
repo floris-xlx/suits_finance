@@ -5,7 +5,7 @@ import stripNameFromEmail from '@/app/client/hooks/formatting/StripNameFromEmail
 import { useUserStore, useLoadingStore } from '@/app/stores/stores';
 
 export function useRequireAuth() {
-  const { user, setId, setUsername, setProfilePicture, setProviderType, setEmail, setRole, setFullName } = useUserStore();
+  const { user, setId, setUsername, setProfilePicture, setProviderType, setEmail, setRole, setFullName, setState, setAddressLine1, setAddressLine2, setCity, setCountry, setCurrency } = useUserStore();
   const { setAuthLoading } = useLoadingStore();
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -33,6 +33,13 @@ export function useRequireAuth() {
         setRole(userObject.role);
         setEmail(userObject.email);
         setFullName(userObject.full_name);
+        setState(userObject.state);
+        setAddressLine1(userObject.address_line_1);
+        setAddressLine2(userObject.address_line_2);
+        setCity(userObject.city);
+        setCountry(userObject.country);
+        setCurrency(userObject.currency);
+          
 
 
         setUserObject(userObject);
