@@ -11,6 +11,17 @@ interface User {
     email?: string;
     role?: string;
     full_name: string;
+
+    // address settings
+    country?: string;
+    city?: string;
+    address_line_1?: string;
+    address_line_2?: string;
+    postal_code?: string;
+    state?: string;
+
+    // view
+    currency: string;
 }
 
 interface UserStore {
@@ -23,10 +34,22 @@ interface UserStore {
     setProviderType: (provider_type: string) => void;
     setOrganization: (organization: string) => void;
     setIsAdmin: (admin: boolean) => void;
-    
+
     setEmail: (email: string) => void;
     setRole: (role: string) => void;
     setFullName: (full_name: string) => void;
+
+    // address actions
+    setCountry: (country: string) => void;
+    setCity: (city: string) => void;
+    setAddressLine1: (address_line_1: string) => void;
+    setAddressLine2: (address_line_2: string) => void;
+    setPostalCode: (postal_code: string) => void;
+    setState: (state: string) => void;
+
+    // misc
+    setCurrency: (currency: string) => void;
+
 }
 
 export const useUserStore = create<UserStore>()(
@@ -41,7 +64,14 @@ export const useUserStore = create<UserStore>()(
                 admin: false,
                 email: null,
                 role: null,
-                full_name: null
+                full_name: null,
+                country: null,
+                city: null,
+                address_line_1: null,
+                address_line_2: null,
+                postal_code: null,
+                state: null,
+                currency: 'EUR'
             },
 
             // set id
@@ -55,7 +85,15 @@ export const useUserStore = create<UserStore>()(
                     admin: state.user.admin,
                     email: state.user.email,
                     role: state.user.role,
-                    full_name: state.user.full_name
+                    full_name: state.user.full_name,
+                    country: state.user.country,
+                    city: state.user.city,
+                    address_line_1: state.user.address_line_1,
+                    address_line_2: state.user.address_line_2,
+                    postal_code: state.user.postal_code,
+                    state: state.user.state,
+                    currency: state.user.currency
+
                 }
             })),
 
@@ -70,7 +108,15 @@ export const useUserStore = create<UserStore>()(
                     admin: state.user.admin,
                     email: state.user.email,
                     role: state.user.role,
-                    full_name: state.user.full_name
+                    full_name: state.user.full_name,
+                    country: state.user.country,
+                    city: state.user.city,
+                    address_line_1: state.user.address_line_1,
+                    address_line_2: state.user.address_line_2,
+                    postal_code: state.user.postal_code,
+                    state: state.user.state,
+                    currency: state.user.currency
+
                 }
             })),
 
@@ -85,8 +131,16 @@ export const useUserStore = create<UserStore>()(
                     admin: state.user.admin,
                     email: state.user.email,
                     role: state.user.role,
-                    full_name: state.user.full_name
-                    
+                    full_name: state.user.full_name,
+                    country: state.user.country,
+                    city: state.user.city,
+                    address_line_1: state.user.address_line_1,
+                    address_line_2: state.user.address_line_2,
+                    postal_code: state.user.postal_code,
+                    state: state.user.state,
+                    currency: state.user.currency
+
+
                 }
             })),
 
@@ -101,7 +155,15 @@ export const useUserStore = create<UserStore>()(
                     admin: state.user.admin,
                     email: state.user.email,
                     role: state.user.role,
-                    full_name: state.user.full_name
+                    full_name: state.user.full_name,
+                    country: state.user.country,
+                    city: state.user.city,
+                    address_line_1: state.user.address_line_1,
+                    address_line_2: state.user.address_line_2,
+                    postal_code: state.user.postal_code,
+                    state: state.user.state,
+                    currency: state.user.currency
+
                 }
             })),
 
@@ -116,7 +178,15 @@ export const useUserStore = create<UserStore>()(
                     admin: state.user.admin,
                     email: state.user.email,
                     role: state.user.role,
-                    full_name: state.user.full_name
+                    full_name: state.user.full_name,
+                    country: state.user.country,
+                    city: state.user.city,
+                    address_line_1: state.user.address_line_1,
+                    address_line_2: state.user.address_line_2,
+                    postal_code: state.user.postal_code,
+                    state: state.user.state,
+                    currency: state.user.currency
+
                 }
             })),
 
@@ -131,7 +201,15 @@ export const useUserStore = create<UserStore>()(
                     admin: admin,
                     email: state.user.email,
                     role: state.user.role,
-                    full_name: state.user.full_name
+                    full_name: state.user.full_name,
+                    country: state.user.country,
+                    city: state.user.city,
+                    address_line_1: state.user.address_line_1,
+                    address_line_2: state.user.address_line_2,
+                    postal_code: state.user.postal_code,
+                    state: state.user.state,
+                    currency: state.user.currency
+
                 }
             })),
 
@@ -146,7 +224,15 @@ export const useUserStore = create<UserStore>()(
                     admin: state.user.admin,
                     email: email,
                     role: state.user.role,
-                    full_name: state.user.full_name
+                    full_name: state.user.full_name,
+                    country: state.user.country,
+                    city: state.user.city,
+                    address_line_1: state.user.address_line_1,
+                    address_line_2: state.user.address_line_2,
+                    postal_code: state.user.postal_code,
+                    state: state.user.state,
+                    currency: state.user.currency
+
                 }
             })),
 
@@ -161,7 +247,15 @@ export const useUserStore = create<UserStore>()(
                     admin: state.user.admin,
                     email: state.user.email,
                     role: role,
-                    full_name: state.user.full_name
+                    full_name: state.user.full_name,
+                    country: state.user.country,
+                    city: state.user.city,
+                    address_line_1: state.user.address_line_1,
+                    address_line_2: state.user.address_line_2,
+                    postal_code: state.user.postal_code,
+                    state: state.user.state,
+                    currency: state.user.currency
+
                 }
             })),
 
@@ -176,9 +270,181 @@ export const useUserStore = create<UserStore>()(
                     admin: state.user.admin,
                     email: state.user.email,
                     role: state.user.role,
-                    full_name: full_name
+                    full_name: full_name,
+                    country: state.user.country,
+                    city: state.user.city,
+                    address_line_1: state.user.address_line_1,
+                    address_line_2: state.user.address_line_2,
+                    postal_code: state.user.postal_code,
+                    state: state.user.state,
+                    currency: state.user.currency
+
                 }
-            }))
+            })),
+
+            // set country
+            setCountry: (country: string) => set((state) => ({
+                user: {
+                    id: state.user.id,
+                    username: state.user.username,
+                    profile_picture: state.user.profile_picture,
+                    provider_type: state.user.provider_type,
+                    organization: state.user.organization,
+                    admin: state.user.admin,
+                    email: state.user.email,
+                    role: state.user.role,
+                    full_name: state.user.full_name,
+                    country: country,
+                    city: state.user.city,
+                    address_line_1: state.user.address_line_1,
+                    address_line_2: state.user.address_line_2,
+                    postal_code: state.user.postal_code,
+                    state: state.user.state,
+                    currency: state.user.currency
+
+                }
+            })),
+
+            // set city
+            setCity: (city: string) => set((state) => ({
+                user: {
+                    id: state.user.id,
+                    username: state.user.username,
+                    profile_picture: state.user.profile_picture,
+                    provider_type: state.user.provider_type,
+                    organization: state.user.organization,
+                    admin: state.user.admin,
+                    email: state.user.email,
+                    role: state.user.role,
+                    full_name: state.user.full_name,
+                    country: state.user.country,
+                    city: city,
+                    address_line_1: state.user.address_line_1,
+                    address_line_2: state.user.address_line_2,
+                    postal_code: state.user.postal_code,
+                    state: state.user.state,
+                    currency: state.user.currency
+
+                }
+            })),
+
+            // set address line 1
+            setAddressLine1: (address_line_1: string) => set((state) => ({
+                user: {
+                    id: state.user.id,
+                    username: state.user.username,
+                    profile_picture: state.user.profile_picture,
+                    provider_type: state.user.provider_type,
+                    organization: state.user.organization,
+                    admin: state.user.admin,
+                    email: state.user.email,
+                    role: state.user.role,
+                    full_name: state.user.full_name,
+                    country: state.user.country,
+                    city: state.user.city,
+                    address_line_1: address_line_1,
+                    address_line_2: state.user.address_line_2,
+                    postal_code: state.user.postal_code,
+                    state: state.user.state,
+                    currency: state.user.currency
+
+                }
+            })),
+
+            // set address line 2
+            setAddressLine2: (address_line_2: string) => set((state) => ({
+                user: {
+                    id: state.user.id,
+                    username: state.user.username,
+                    profile_picture: state.user.profile_picture,
+                    provider_type: state.user.provider_type,
+                    organization: state.user.organization,
+                    admin: state.user.admin,
+                    email: state.user.email,
+                    role: state.user.role,
+                    full_name: state.user.full_name,
+                    country: state.user.country,
+                    city: state.user.city,
+                    address_line_1: state.user.address_line_1,
+                    address_line_2: address_line_2,
+                    postal_code: state.user.postal_code,
+                    state: state.user.state,
+                    currency: state.user.currency
+
+                }
+            })),
+
+            // set postal code
+            setPostalCode: (postal_code: string) => set((state) => ({
+                user: {
+                    id: state.user.id,
+                    username: state.user.username,
+                    profile_picture: state.user.profile_picture,
+                    provider_type: state.user.provider_type,
+                    organization: state.user.organization,
+                    admin: state.user.admin,
+                    email: state.user.email,
+                    role: state.user.role,
+                    full_name: state.user.full_name,
+                    country: state.user.country,
+                    city: state.user.city,
+                    address_line_1: state.user.address_line_1,
+                    address_line_2: state.user.address_line_2,
+                    postal_code: postal_code,
+                    state: state.user.state,
+                    currency: state.user.currency
+
+                }
+            })),
+
+            // set state
+            setState: (state_name: string) => set((state) => ({
+                user: {
+                    id: state.user.id,
+                    username: state.user.username,
+                    profile_picture: state.user.profile_picture,
+                    provider_type: state.user.provider_type,
+                    organization: state.user.organization,
+                    admin: state.user.admin,
+                    email: state.user.email,
+                    role: state.user.role,
+                    full_name: state.user.full_name,
+                    country: state.user.country,
+                    city: state.user.city,
+                    address_line_1: state.user.address_line_1,
+                    address_line_2: state.user.address_line_2,
+                    postal_code: state.user.postal_code,
+                    state: state_name,
+                    currency: state.user.currency
+
+                }
+            })),
+
+            // set currency
+            setCurrency: (currency: string) => set((state) => ({
+                user: {
+                    id: state.user.id,
+                    username: state.user.username,
+                    profile_picture: state.user.profile_picture,
+                    provider_type: state.user.provider_type,
+                    organization: state.user.organization,
+                    admin: state.user.admin,
+                    email: state.user.email,
+                    role: state.user.role,
+                    full_name: state.user.full_name,
+                    country: state.user.country,
+                    city: state.user.city,
+                    address_line_1: state.user.address_line_1,
+                    address_line_2: state.user.address_line_2,
+                    postal_code: state.user.postal_code,
+                    state: state.user.state,
+                    currency: currency
+
+                }
+            })),
+
+
+
 
 
 

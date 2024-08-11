@@ -1,33 +1,21 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment, useRef } from 'react';
 import TabHorizontal from '../../ui/Tabs/TabHorizontalWithValue';
 import SkeletonLoader from '@/app/components/ui/Loading/SkeletonLoader';
 import Image from 'next/image';
 
-
-//data
+// Data
 import InputFieldDataWrapperUser from '@/app/components/dataWrappers/inputFieldWrapperUser';
 import convertCurrencyToSymbol from '@/app/client/hooks/formatting/CurrencySymbol';
+import { useUserViewStore, useUserStore } from '@/app/stores/stores';
 
-import { useUserViewStore } from '@/app/stores/stores';
-
-const SettingsUserLayout = ({
-    user
-}) => {
+const SettingsUserLayout = () => {
     const { view, setCurrentSettingsSection } = useUserViewStore();
+    const { user, setEmail, setFullName, setRole, setProfilePicture, setCity, setCountry, setAddressLine1, setAddressLine2, setPostalCode, setState, setCurrency } = useUserStore();
 
     const settingOptions = [
-        'Profile',
-        'Appearance',
-        'Account',
-        'Billing'
+        'Profile', 'Appearance', 'Account', 'Billing'
     ];
-    const currencyOptionsNoSymbol = [
-        'usd',
-        'eur',
-        'gbp',
-        'yen',
-        'rub',
-    ];
+
     const currencyOptions = [
         '$ USD',
         '€ EUR',
@@ -36,7 +24,7 @@ const SettingsUserLayout = ({
         '₽ RUB'
     ];
 
-    // chore: 
+    // Chore:
     // add user team management for inviting by email, removing, and changing roles
     // prevent email changing to non unique email in db
     // allow for role changing in db by dev or super admin
@@ -46,31 +34,43 @@ const SettingsUserLayout = ({
     // add table for billing history
     // only show for super admin and dev
     // show in billing the current rate of 1% fee
-    const [selectedTab, setSelectedTab] = useState(view.currentSettingsSection);
-    console.log(selectedTab);
-
-    useEffect(() => {
-        setCurrentSettingsSection(selectedTab);
-    }, [selectedTab]);
-
-
-
-
-    const [selectedCurrency, setSelectedCurrency] = useState('USD');
 
     const isNullOrUndefined = (value) => {
         return value === null || value === undefined;
     };
-
-    const [fullName, setFullName] = useState(user.full_name || '');
-    const [email, setEmail] = useState(user.email || '');
-
-
+    const containerRef = useRef(null);
 
     const userRole = isNullOrUndefined(user.role) ? <div className="h-[16px] w-[60px]"><SkeletonLoader /></div> : user.role;
-    const userName = isNullOrUndefined(fullName) ? <div className="h-[20px] w-[60px] mb-[2px]"><SkeletonLoader /></div> : fullName;
+    const userName = isNullOrUndefined(user.full_name) ? <div className="h-[20px] w-[60px] mb-[2px]"><SkeletonLoader /></div> : user.full_name;
     const userPicture = isNullOrUndefined(user.profile_picture) ? <div className="h-[64px] w-[64px]"><SkeletonLoader /></div> : <Image src={user.profile_picture} alt="Profile Picture" width={64} height={64} />;
-    const userEmail = isNullOrUndefined(email) ? <div className="h-[16px] w-[80px]"><SkeletonLoader /></div> : email;
+    const userEmail = isNullOrUndefined(user.email) ? <div className="h-[16px] w-[80px]"><SkeletonLoader /></div> : user.email;
+
+    const [showCountry, setShowCountry] = useState(true);
+    const [showCity, setShowCity] = useState(true);
+    const [showAddressLine1, setShowAddressLine1] = useState(true);
+    const [showAddressLine2, setShowAddressLine2] = useState(true);
+    const [showPostalCode, setShowPostalCode] = useState(true);
+    const [showState, setShowState] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (isNullOrUndefined(user.country)) setShowCountry(false);
+            if (isNullOrUndefined(user.city)) setShowCity(false);
+            if (isNullOrUndefined(user.address_line_1)) setShowAddressLine1(false);
+            if (isNullOrUndefined(user.address_line_2)) setShowAddressLine2(false);
+            if (isNullOrUndefined(user.postal_code)) setShowPostalCode(false);
+            if (isNullOrUndefined(user.state)) setShowState(false);
+        }, 2000);
+
+        return () => clearTimeout(timer);
+    }, [user]);
+
+    const userCountry = isNullOrUndefined(user.country) ? (showCountry && <div className="h-[16px] w-[80px]"><SkeletonLoader /></div>) : user.country;
+    const userCity = isNullOrUndefined(user.city) ? (showCity && <div className="h-[16px] w-[80px]"><SkeletonLoader /></div>) : user.city;
+    const userAddressLine1 = isNullOrUndefined(user.address_line_1) ? (showAddressLine1 && <div className="h-[16px] w-[80px]"><SkeletonLoader /></div>) : user.address_line_1;
+    const userAddressLine2 = isNullOrUndefined(user.address_line_2) ? (showAddressLine2 && <div className="h-[16px] w-[80px]"><SkeletonLoader /></div>) : user.address_line_2;
+    const userPostalCode = isNullOrUndefined(user.postal_code) ? (showPostalCode && <div className="h-[16px] w-[80px]"><SkeletonLoader /></div>) : user.postal_code;
+    const userState = isNullOrUndefined(user.state) ? (showState && <div className="h-[16px] w-[80px]"><SkeletonLoader /></div>) : user.state;
 
     const ProfileSection = () => (
         <div className="pt-[20px]">
@@ -119,36 +119,43 @@ const SettingsUserLayout = ({
                 This displays your billing information.
             </p>
 
-            <div
-                className="flex flex-col relative overflow-hidden h-auto text-foreground box-border outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 shadow-none rounded-md  motion-reduce:transition-none mt-4 bg-default-100 border border-primary"
+            <div 
+                ref={containerRef}
+                className="flex flex-col relative text-foreground box-border outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 shadow-none rounded-md motion-reduce:transition-none mt-4 bg-default-100 border border-primary overflow-hidden transition-all duration-300"
                 tabIndex="-1"
             >
                 <div className="relative flex w-full p-3 flex-auto flex-col place-content-inherit align-items-inherit h-auto break-words text-left overflow-y-auto subpixel-antialiased">
                     <div className="flex items-center gap-4">
-
                         <div>
-                            <p className="text-sm font-medium text-primary select-none">
-                                {userName}
+                            <p className="text-sm font-normal text-primary select-none">
+                                Personal Information
                             </p>
-                            <p className="text-xs text-secondary select-none">
-                                {userRole}
+                            <p className="text-xs text-primary select-none">
+                                {userName}
                             </p>
                             <p className="mt-1 text-xs text-secondary">
                                 {userEmail}
                             </p>
-                        </div>
 
+                            <p className="mt-4 text-sm font-normal text-primary select-none">
+                                Address Information
+                            </p>
+
+                            {userCountry && <p className="mt-1 text-xs text-secondary">{userCountry}</p>}
+                            {userCity && <p className="mt-1 text-xs text-secondary">{userCity}</p>}
+                            {userAddressLine1 && <p className="mt-1 text-xs text-secondary">{userAddressLine1}</p>}
+                            {userAddressLine2 && <p className="mt-1 text-xs text-secondary">{userAddressLine2}</p>}
+                            {userPostalCode && <p className="mt-1 text-xs text-secondary">{userPostalCode}</p>}
+                            {userState && <p className="mt-1 text-xs text-secondary">{userState}</p>}
+                        </div>
                     </div>
                 </div>
             </div>
-
 
             <p className="text-base font-medium text-primary select-none mt-8">Billing Address</p>
             <p className="mt-1 text-sm font-normal text-secondary select-none">
                 This billing address is used for your invoices.
             </p>
-
-
         </div>
     );
 
@@ -192,9 +199,7 @@ const SettingsUserLayout = ({
                 {view.currentSettingsSection === 'account' && <AccountSection />}
 
                 <div className="mt-4">
-
-                    <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-1 transition-all">
-
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-1 transition-all">
                         <InputFieldDataWrapperUser
                             title={'Full name'}
                             label={'Government Name'}
@@ -230,18 +235,17 @@ const SettingsUserLayout = ({
                             userId={user.id}
                             auditLogRequest={'update_user_metadata'}
                             auditLog={true}
+                            setReadOnlyValue={setCountry}
                             show={view.currentSettingsSection === 'profile'}
                         />
-
 
                         <TabHorizontal
                             title={'Currency displayed'}
                             label={'This is the currency that will be reflected in your account'}
                             options={currencyOptions}
-                            setValueExternal={setSelectedCurrency}
+                            setValueExternal={setCurrency}
                             show={view.currentSettingsSection === 'appearance'}
                         />
-
                     </div>
 
                     <div className="flex flex-col max-w-[50%]">
@@ -253,6 +257,7 @@ const SettingsUserLayout = ({
                             userId={user.id}
                             auditLogRequest={'update_user_metadata'}
                             auditLog={true}
+                            setReadOnlyValue={setAddressLine1}
                             show={view.currentSettingsSection === 'billing'}
                         />
                         <InputFieldDataWrapperUser
@@ -263,6 +268,7 @@ const SettingsUserLayout = ({
                             userId={user.id}
                             auditLogRequest={'update_user_metadata'}
                             auditLog={true}
+                            setReadOnlyValue={setAddressLine2}
                             show={view.currentSettingsSection === 'billing'}
                         />
                         <InputFieldDataWrapperUser
@@ -273,10 +279,10 @@ const SettingsUserLayout = ({
                             userId={user.id}
                             auditLogRequest={'update_user_metadata'}
                             auditLog={true}
+                            setReadOnlyValue={setCity}
                             show={view.currentSettingsSection === 'billing'}
                         />
                     </div>
-
                 </div>
             </div>
         </Fragment>
