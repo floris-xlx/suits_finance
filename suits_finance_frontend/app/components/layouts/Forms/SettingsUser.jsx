@@ -31,6 +31,16 @@ const SettingsUserLayout = ({
         '₽ RUB'
     ];
 
+    // chore: 
+    // add user team management for inviting by email, removing, and changing roles
+    // prevent email changing to non unique email in db
+    // allow for role changing in db by dev or super admin
+    // add billing section for changing payment methods, viewing the 1% fee
+    // add appearance section for changing theme, language, and currency
+    // add table fo members of team with roles and emails
+    // add table for billing history
+    // only show for super admin and dev
+
     const [selectedTab, setSelectedTab] = useState(settingOptions[0]);
     const [selectedCurrency, setSelectedCurrency] = useState('USD');
 
@@ -110,7 +120,8 @@ const SettingsUserLayout = ({
                     <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-1 transition-all">
 
                         <InputFieldDataWrapperUser
-                            label={'Full name'}
+                            title={'Full name'}
+                            label={'Government Name'}
                             supabaseKey='full_name'
                             disabled={false}
                             type='text'
@@ -123,7 +134,8 @@ const SettingsUserLayout = ({
 
 
                         <InputFieldDataWrapperUser
-                            label={'Email'}
+                            title={'Email Address'}
+                            label={'The email address associated with your account'}
                             supabaseKey='email'
                             disabled={false}
                             type='text'
@@ -135,7 +147,8 @@ const SettingsUserLayout = ({
                         />
 
                         <InputFieldDataWrapperUser
-                            label={'Country'}
+                            title={'Country'}
+                            label={'The country you are tax liable'}
                             supabaseKey='country'
                             disabled={false}
                             type='text'

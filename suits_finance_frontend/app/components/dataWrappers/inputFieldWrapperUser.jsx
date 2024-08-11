@@ -22,6 +22,7 @@ const InputFieldDataWrapperUser = ({
     show = true,
     auditLogRequest = null,
     auditLog = false,
+    title = null
     
 }) => {
     // zustand
@@ -153,6 +154,7 @@ const InputFieldDataWrapperUser = ({
         <div className="">
             <div>
                 <div className="mt-[18px]">
+                {title && <p className="text-base font-medium text-primary select-none">{title}</p>}
                     <label
                         className="block text-sm font-medium text-accent select-none"
                     >
