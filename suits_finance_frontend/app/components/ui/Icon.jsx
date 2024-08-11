@@ -10,6 +10,13 @@ import RulerIcon from './Icons/RulerIcon.jsx';
 import HeartBeatIcon from './Icons/HeartBeatIcon.jsx';
 import ChartUpIcon from './Icons/ChartUpIcon.jsx';
 import GaugeIcon from './Icons/GaugeIcon.jsx';
+import ApplePayIcon from './Icons/ApplePayIcon.jsx';
+import MasterCardIcon from './Icons/MasterCardIcon.jsx';
+import PayoneerIcon from './Icons/PayoneerIcon.jsx';
+import PayPalIcon from './Icons/PayPalIcon.jsx';
+import StripeIcon from './Icons/StripeIcon.jsx';
+import CreditCardIcon from './Icons/CreditCardIcon.jsx';
+
 
 export { 
     DiscordIcon, 
@@ -22,5 +29,12 @@ export {
     RulerIcon,
     HeartBeatIcon,
     ChartUpIcon,
-    GaugeIcon
+    GaugeIcon,
+    ApplePayIcon,
+    MasterCardIcon,
+    PayoneerIcon,
+    PayPalIcon,
+    StripeIcon,
+    CreditCardIcon
+
 };
