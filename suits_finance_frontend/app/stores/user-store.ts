@@ -10,6 +10,7 @@ interface User {
     admin?: boolean;
     email?: string;
     role?: string;
+    full_name: string;
 }
 
 interface UserStore {
@@ -25,6 +26,7 @@ interface UserStore {
     
     setEmail: (email: string) => void;
     setRole: (role: string) => void;
+    setFullName: (full_name: string) => void;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -38,7 +40,8 @@ export const useUserStore = create<UserStore>()(
                 organization: null,
                 admin: false,
                 email: null,
-                role: null
+                role: null,
+                full_name: null
             },
 
             // set id
@@ -51,7 +54,8 @@ export const useUserStore = create<UserStore>()(
                     organization: state.user.organization,
                     admin: state.user.admin,
                     email: state.user.email,
-                    role: state.user.role
+                    role: state.user.role,
+                    full_name: state.user.full_name
                 }
             })),
 
@@ -65,7 +69,8 @@ export const useUserStore = create<UserStore>()(
                     organization: state.user.organization,
                     admin: state.user.admin,
                     email: state.user.email,
-                    role: state.user.role
+                    role: state.user.role,
+                    full_name: state.user.full_name
                 }
             })),
 
@@ -79,7 +84,8 @@ export const useUserStore = create<UserStore>()(
                     organization: state.user.organization,
                     admin: state.user.admin,
                     email: state.user.email,
-                    role: state.user.role
+                    role: state.user.role,
+                    full_name: state.user.full_name
                     
                 }
             })),
@@ -94,7 +100,8 @@ export const useUserStore = create<UserStore>()(
                     organization: state.user.organization,
                     admin: state.user.admin,
                     email: state.user.email,
-                    role: state.user.role
+                    role: state.user.role,
+                    full_name: state.user.full_name
                 }
             })),
 
@@ -108,7 +115,8 @@ export const useUserStore = create<UserStore>()(
                     organization: organization,
                     admin: state.user.admin,
                     email: state.user.email,
-                    role: state.user.role
+                    role: state.user.role,
+                    full_name: state.user.full_name
                 }
             })),
 
@@ -122,7 +130,8 @@ export const useUserStore = create<UserStore>()(
                     organization: state.user.organization,
                     admin: admin,
                     email: state.user.email,
-                    role: state.user.role
+                    role: state.user.role,
+                    full_name: state.user.full_name
                 }
             })),
 
@@ -136,7 +145,8 @@ export const useUserStore = create<UserStore>()(
                     organization: state.user.organization,
                     admin: state.user.admin,
                     email: email,
-                    role: state.user.role
+                    role: state.user.role,
+                    full_name: state.user.full_name
                 }
             })),
 
@@ -150,7 +160,23 @@ export const useUserStore = create<UserStore>()(
                     organization: state.user.organization,
                     admin: state.user.admin,
                     email: state.user.email,
-                    role: role
+                    role: role,
+                    full_name: state.user.full_name
+                }
+            })),
+
+            // set full name
+            setFullName: (full_name: string) => set((state) => ({
+                user: {
+                    id: state.user.id,
+                    username: state.user.username,
+                    profile_picture: state.user.profile_picture,
+                    provider_type: state.user.provider_type,
+                    organization: state.user.organization,
+                    admin: state.user.admin,
+                    email: state.user.email,
+                    role: state.user.role,
+                    full_name: full_name
                 }
             }))
 

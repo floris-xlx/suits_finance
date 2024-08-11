@@ -131,6 +131,9 @@ const InputFieldDataWrapperUser = ({
                 if (currentTime - mountTime >= 3) {
                     SuccessSyncValueNotification({ valueType: supabaseKey });
                     handleAuditLog('success', value);
+                    if (value !== null) {
+                        setReadOnlyValue(value);
+                    }
                 }
             }, 500);
 

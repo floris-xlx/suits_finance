@@ -24,10 +24,17 @@ const SettingsUserLayout = ({
         return value === null || value === undefined;
     };
 
+    const [fullName, setFullName] = useState(user.full_name || '');
+    const [email, setEmail] = useState(user.email || '');
+    console.log('user', user);
+    console.log('fullName', fullName);
+    console.log('email', email);
+
+
     const userRole = isNullOrUndefined(user.role) ? <div className="h-[16px] w-[60px]"><SkeletonLoader /></div> : user.role;
-    const userName = isNullOrUndefined(user.full_name) ? <div className="h-[20px] w-[60px] mb-[2px]"><SkeletonLoader /></div> : user.full_name;
+    const userName = isNullOrUndefined(fullName) ? <div className="h-[20px] w-[60px] mb-[2px]"><SkeletonLoader /></div> : fullName;
     const userPicture = isNullOrUndefined(user.profile_picture) ? <div className="h-[64px] w-[64px]"><SkeletonLoader /></div> : <Image src={user.profile_picture} alt="Profile Picture" width={64} height={64} />;
-    const userEmail = isNullOrUndefined(user.email) ? <div className="h-[16px] w-[80px]"><SkeletonLoader /></div> : user.email;
+    const userEmail = isNullOrUndefined(email) ? <div className="h-[16px] w-[80px]"><SkeletonLoader /></div> : email;
 
     const ProfileSection = () => (
         <div className="pt-[20px]">
@@ -98,6 +105,7 @@ const SettingsUserLayout = ({
                             auditLogRequest={'update_user_metadata'}
                             auditLog={true}
                             show={selectedTab === 'profile'}
+                            setReadOnlyValue={setFullName}
                         />
 
                         <InputFieldDataWrapperUser
@@ -108,6 +116,7 @@ const SettingsUserLayout = ({
                             userId={user.id}
                             auditLogRequest={'update_user_metadata'}
                             auditLog={true}
+                            setReadOnlyValue={setEmail}
                             show={selectedTab === 'profile'}
                         />
 
