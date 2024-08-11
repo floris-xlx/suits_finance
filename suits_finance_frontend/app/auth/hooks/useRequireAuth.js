@@ -5,13 +5,14 @@ import stripNameFromEmail from '@/app/client/hooks/formatting/StripNameFromEmail
 import { useUserStore, useLoadingStore } from '@/app/stores/stores';
 
 export function useRequireAuth() {
-  const { setId, setUsername, setProfilePicture, setProviderType, setEmail, setRole } = useUserStore();
+  const { user, setId, setUsername, setProfilePicture, setProviderType, setEmail, setRole } = useUserStore();
   const { setAuthLoading } = useLoadingStore();
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(true);
   const supabaseClient = createClientComponentClient();
 
   const [userObject, setUserObject] = useState([]);
+
 
 
   useEffect(() => {

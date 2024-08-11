@@ -30,7 +30,7 @@ const CreditCard = ({
 
 
     return (
-        <div class="flex justify-center items-center scale-[75%] xs:scale-75 sm:scale-80 md:scale-80 lg:scale-80 xl:scale-85 flex-col gap-y-1 select-none w-fit mx-auto">
+        <div className="flex justify-center items-center scale-[75%] xs:scale-75 sm:scale-80 md:scale-80 lg:scale-80 xl:scale-85 flex-col gap-y-1 select-none w-fit mx-auto">
 
 
             {process.env.NEXT_PUBLIC_ENVIRONMENT === 'dev' && (
@@ -41,28 +41,28 @@ const CreditCard = ({
             )}
 
 
-            <div class="w-96 h-56 m-auto bg-red-100 rounded-xl relative text-white shadow-2xl transition-transform transform hover:scale-105">
+            <div className="w-96 h-56 m-auto bg-red-100 rounded-xl relative text-white shadow-2xl transition-transform transform hover:scale-105">
 
-                <div class="relative w-full h-full rounded-xl bg-brand-primary"></div>
+                <div className="relative w-full h-full rounded-xl bg-brand-primary"></div>
 
-                <div class="w-full px-8 absolute top-8">
-                    <div class="flex justify-between">
-                        <div class="">
-                            <p class="font-light select-none">
+                <div className="w-full px-8 absolute top-8">
+                    <div className="flex justify-between">
+                        <div className="">
+                            <p className="font-light select-none">
                                 Name
                             </p>
-                            <p class="font-medium tracking-widest select-none">
+                            <p className="font-medium tracking-widest select-none">
                                 {fullName.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                             </p>
                         </div>
-                        <img class="w-14 h-14" src="https://i.imgur.com/bbPHJVe.png" />
+                        <img className="w-14 h-14" src="https://i.imgur.com/bbPHJVe.png" />
                     </div>
-                    <div class="pt-1">
-                        <p class="font-light select-none">
+                    <div className="pt-1">
+                        <p className="font-light select-none">
                             Card Number
                         </p>
 
-                        <div class="font-medium tracking-widest select-none">
+                        <div className="font-medium tracking-widest select-none">
                             {loading.cardNumberLoading ? (
                                 <div className="w-[220px] h-[24px]">
                                     <SkeletonLoader transparent={true} />
@@ -72,11 +72,11 @@ const CreditCard = ({
                             )}
                         </div>
                     </div>
-                    <div class="pt-6 pr-6">
-                        <div class="flex justify-between">
+                    <div className="pt-6 pr-6">
+                        <div className="flex justify-between">
 
-                            <div class="">
-                                <p class="font-light text-xs select-none mb-1">
+                            <div className="">
+                                <p className="font-light text-xs select-none mb-1">
                                     Expiry
                                 </p>
                                 {loading.expiryDateLoading ? (
@@ -84,17 +84,17 @@ const CreditCard = ({
                                         <SkeletonLoader transparent={true} />
                                     </div>
                                 ) : (
-                                    <p class="font-medium tracking-wider text-sm select-none">
+                                    <p className="font-medium tracking-wider text-sm select-none">
                                         03/25
                                     </p>
                                 )}
                             </div>
 
-                            <div class="">
-                                <p class="font-light text-xs select-none">
+                            <div className="">
+                                <p className="font-light text-xs select-none">
                                     CVV
                                 </p>
-                                <p class="font-bold tracking-more-wider text-sm select-none">
+                                <p className="font-bold tracking-more-wider text-sm select-none">
                                     ···
                                 </p>
                             </div>

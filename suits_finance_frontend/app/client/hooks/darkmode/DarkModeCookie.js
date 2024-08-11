@@ -5,8 +5,8 @@ export function setTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     // Save the theme to localStorage
     localStorage.setItem('theme', theme);
-    // Save the theme to cookies
-    document.cookie = `theme=${theme}; path=/; max-age=31536000`; // 1 year expiration
+    // Save the theme to cookies with SameSite attribute
+    document.cookie = `theme=${theme}; path=/; max-age=31536000; SameSite=Lax`; // 1 year expiration
   }
 }
 

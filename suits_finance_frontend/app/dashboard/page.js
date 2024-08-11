@@ -1,7 +1,7 @@
 // app/page.js
 'use client';
 
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './styles.module.css';
 import ThemeButton from '@/app/components/ui/Theme/ThemeButton';
 import LoggedInUserCard from '@/app/components/ui/Cards/LoggedInUserCard';
@@ -9,7 +9,7 @@ import LoggedInUserCard from '@/app/components/ui/Cards/LoggedInUserCard';
 import { useRequireAuth } from '@/app/auth/hooks/useRequireAuth';
 import LoaderScreen from '@/app/components/ui/Loading/LoaderScreen';
 import Header from '@/app/components/ui/Headers/Header';
-import { HomeIcon, ArrowUpIcon, DeviceTabletIcon, BoltIcon } from '@heroicons/react/24/outline';
+import {  ArrowUpIcon } from '@heroicons/react/24/outline';
 import { GaugeIcon } from '@/app/components/ui/Icon';
 import BalanceCard from '@/app/components/ui/Cards/BalanceCard';
 import CreditCard from '@/app/components/ui/Cards/CreditCard';
@@ -24,11 +24,8 @@ import {
   useLoadingStore,
 } from '@/app/stores/stores';
 
-import { Button } from "@nextui-org/react";
 import ButtonIconWithLabel from '@/app/components/ui/Buttons/ButtonIconWithLabel';
 import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
-import { refreshPage } from '@/app/client/hooks/refreshPage';
-import { DrawerHero, useDrawer } from "@/app/components/ui/Drawers/DrawerViewTrade";
 import CardDetailsLayout from '@/app/components/layouts/Modals/cardDetails';
 import { TransfersBlockedNoBalanceNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
 import TransactionsTableMobile from '@/app/components/ui/Tables/TransactionsTableMobile';
@@ -47,7 +44,6 @@ export default function DashboardPage() {
   const [isPaletteSearchOpen, setIsPaletteSearchOpen] = useState(false);
   const [pendingTradesUpdate, setPendingTradesUpdate] = useState(false);
 
-  const [isMobile, setIsMobile] = useState(false);
   const [topUpAmount, setTopUpAmount] = useState(0);
 
   const [currentCard, setCurrentCard] = useState({
@@ -110,26 +106,6 @@ export default function DashboardPage() {
     handleOpenModal_CardLimits();
   }
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 1024) {
-        setIsMobile(true);
-      } else {
-        setIsMobile(false);
-      }
-    };
-
-    if (typeof window !== 'undefined') {
-      handleResize();
-      window.addEventListener('resize', handleResize);
-    }
-
-    return () => {
-      if (typeof window !== 'undefined') {
-        window.removeEventListener('resize', handleResize);
-      }
-    };
-  }, []);
 
   return (
     <div className={styles.containerLogin}>
@@ -158,8 +134,6 @@ export default function DashboardPage() {
       >
         <TopUpBalanceLayout setPaymentAmount={setTopUpAmount} balance={topUpAmount} />
       </Modal>
-
-
       <Modal
         title={'Card Limits'}
         buttonText={'Close'}

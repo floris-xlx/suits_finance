@@ -5,7 +5,8 @@ import { GET_VALUE_USERS } from "@/app/client/graphql/query";
 import client from "@/app/client/graphql/ApolloClient.jsx";
 import { SuccessSyncValueNotification } from "@/app/components/ui/Notifications/Notifications.jsx";
 import SkeletonLoader from "@/app/components/ui/Loading/SkeletonLoader";
-import { SetKeyLocalStorage, SetKeyLocalStorage_UNSAFE } from "@/app/client/caching/LocalStorageRouter";
+import { SetKeyLocalStorage, GetKeyLocalStorage } from "@/app/client/caching/LocalStorageRouter";
+import { AddAuditLogEntry } from "@/app/client/supabase/auditLog.ts";
 
 import PropTypes from 'prop-types';
 
@@ -17,13 +18,30 @@ const InputFieldDataWrapperUser = ({
     disabled = false,
     type = 'number',
     setReadOnlyValue = null,
-    width = 'full'
+    userId = null,
+    show = true,
+    auditLogRequest = null,
+    auditLog = false,
+    
 }) => {
+    // zustand
+    const { user } = useUserStore();
+
     // local loading state
     const [loading, setLoading] = useState(true);
     const [loadingTime, setLoadingTime] = useState(0);
 
-    const { user } = useUserStore();
+    const handleAuditLog = (status, value) => {
+        if (auditLog && value !== null && value !== undefined && value !== '') {
+            AddAuditLogEntry({
+                request: auditLogRequest,
+                route: '/settings',
+                status: status,
+                user_id: user.id,
+                message: `User metadata updated field: ${supabaseKey} to ${value}`
+            });
+        }
+    }
 
 
     // loading time can load up to 5 seconds
@@ -32,7 +50,7 @@ const InputFieldDataWrapperUser = ({
             setLoadingTime(loadingTime + 1);
         }, 1000);
 
-        if (loadingTime >= 5) {
+        if (loadingTime >= 3) {
             setLoading(false);
             clearInterval(interval);
         }
@@ -44,10 +62,11 @@ const InputFieldDataWrapperUser = ({
 
     const { data } = useQuery(GET_VALUE_USERS(supabaseKey), {
         variables: {
-            user_id: user.id
+            user_id: userId
         },
         client: client
     });
+
 
     const queryResult = data?.usersCollection?.edges[0]?.node?.[supabaseKey];
 
@@ -64,7 +83,7 @@ const InputFieldDataWrapperUser = ({
 
     useEffect(() => {
         // set current unix time to local storage
-        SetKeyLocalStorage_UNSAFE(CACHEKEY, currentUnixTime);
+        SetKeyLocalStorage(CACHEKEY, currentUnixTime);
     }, []);
 
 
@@ -82,52 +101,53 @@ const InputFieldDataWrapperUser = ({
 
     // cache the keystroke to cachedKeyStroke_[supabaseKey]
     useEffect(() => {
-        SetKeyLocalStorage_UNSAFE(`cachedKeyStroke_${supabaseKey}`, lastKeyStrokeTime);
+        SetKeyLocalStorage(`cachedKeyStroke_${supabaseKey}`, lastKeyStrokeTime);
     }, [value]);
 
 
     useEffect(() => {
         if (value !== lastValue && value !== undefined) {
-            setLastValue(value);
+            const debounceSave = setTimeout(() => {
+                setLastValue(value);
+                setLastKeyStrokeTime(Math.floor(Date.now() / 1000));
+                setSyncing(true);
+                setItemsLeft(1);
 
-            // save last key stroke time
-            setLastKeyStrokeTime(Math.floor(Date.now() / 1000));
+                updateValueDynamic({
+                    variables: {
+                        user_id: userId ,
+                        dynamicValue: `${value}` // replace with actual channel id
+                    }
+                }).then(() => {
+                    setSyncing(false);
+                    setItemsLeft(0);
 
-            setSyncing(true);
-            setItemsLeft(1);
+                    
+                });
 
-            updateValueDynamic({
-                variables: {
-                    user_id: user.id,
-                    dynamicValue: `${value}` // replace with actual channel id
+                const mountTime = GetKeyLocalStorage(CACHEKEY);
+                const currentTime = Math.floor(Date.now() / 1000);
+
+                if (currentTime - mountTime >= 3) {
+                    SuccessSyncValueNotification({ valueType: supabaseKey });
+                    handleAuditLog('success', value);
                 }
-            });
-            
-            // if (setReadOnlyValue !== null) {
-            //     setReadOnlyValue(value);
-            // }
+            }, 500);
 
-            // set loading to false
-            setSyncing(false);
-            setItemsLeft(0);
-        }
-
-
-        const mountTime = GetKeyLocalStorage(CACHEKEY);
-        const currentTime = Math.floor(Date.now() / 1000);
-
-        if (currentTime - mountTime >= 3) {
-            SuccessSyncValueNotification({ valueType: supabaseKey });
+            return () => clearTimeout(debounceSave);
         }
     }, [value]);
 
-
     const handleOnChange = (e) => {
         setLocalValue(e.target.value);
+    };
+
+    if (!show) {
+        return null;
     }
 
     return (
-        <div className={`w-${width}`}>
+        <div className="">
             <div>
                 <div className="mt-[18px]">
                     <label
@@ -163,9 +183,12 @@ export default InputFieldDataWrapperUser;
 
 InputFieldDataWrapperUser.propTypes = {
     label: PropTypes.string.isRequired,
-    algorithm_id: PropTypes.string.isRequired,
-    organization: PropTypes.string.isRequired,
     supabaseKey: PropTypes.string.isRequired,
     disabled: PropTypes.bool,
-    type: PropTypes.string
+    type: PropTypes.string,
+    setReadOnlyValue: PropTypes.func,
+    userId: PropTypes.string,
+    show: PropTypes.bool,
+    auditLogRequest: PropTypes.object,
+    auditLog: PropTypes.bool
 };
