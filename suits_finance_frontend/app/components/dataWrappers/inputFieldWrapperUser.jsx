@@ -5,7 +5,7 @@ import { GET_VALUE_USERS } from "@/app/client/graphql/query";
 import client from "@/app/client/graphql/ApolloClient.jsx";
 import { SuccessSyncValueNotification } from "@/app/components/ui/Notifications/Notifications.jsx";
 import SkeletonLoader from "@/app/components/ui/Loading/SkeletonLoader";
-import { SetKeyLocalStorage, GetKeyLocalStorage, SetKeyLocalStorage_UNSAFE } from "@/app/client/caching/LocalStorageRouter";
+import { SetKeyLocalStorage, SetKeyLocalStorage_UNSAFE } from "@/app/client/caching/LocalStorageRouter";
 
 import PropTypes from 'prop-types';
 
