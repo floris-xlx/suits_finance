@@ -159,9 +159,6 @@ const SettingsUserLayout = ({
                     Customize settings, preferences & personal details.
                 </h3>
 
-
-
-
                 <TabHorizontal options={settingOptions} setValueExternal={setSelectedTab} />
 
                 {selectedTab === 'profile' && <ProfileSection />}
@@ -185,7 +182,6 @@ const SettingsUserLayout = ({
                             show={selectedTab === 'profile'}
                             setReadOnlyValue={setFullName}
                         />
-
 
                         <InputFieldDataWrapperUser
                             title={'Email Address'}
