@@ -26,10 +26,8 @@ const SettingsUserLayout = () => {
 
     // Chore:
     // add user team management for inviting by email, removing, and changing roles
-    // prevent email changing to non unique email in db
     // allow for role changing in db by dev or super admin
     // add billing section for changing payment methods, viewing the 1% fee
-    // add appearance section for changing theme, language, and currency
     // add table fo members of team with roles and emails
     // add table for billing history
     // only show for super admin and dev
@@ -100,7 +98,7 @@ const SettingsUserLayout = () => {
                                 {userName}
                             </p>
                             <p className="text-xs text-secondary select-none">
-                                {userRole}
+                                {userRole.charAt(0).toUpperCase() + userRole.slice(1)}
                             </p>
                             <p className="mt-1 text-xs text-secondary">
                                 {userEmail}
