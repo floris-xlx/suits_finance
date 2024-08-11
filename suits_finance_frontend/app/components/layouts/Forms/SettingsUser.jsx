@@ -38,7 +38,6 @@ const SettingsUserLayout = () => {
     const isNullOrUndefined = (value) => {
         return value === null || value === undefined;
     };
-    const containerRef = useRef(null);
 
     const userRole = isNullOrUndefined(user.role) ? <div className="h-[16px] w-[60px]"><SkeletonLoader /></div> : user.role;
     const userName = isNullOrUndefined(user.full_name) ? <div className="h-[20px] w-[60px] mb-[2px]"><SkeletonLoader /></div> : user.full_name;
@@ -65,6 +64,8 @@ const SettingsUserLayout = () => {
         return () => clearTimeout(timer);
     }, [user]);
 
+    const containerRef = useRef(null);
+
     const userCountry = isNullOrUndefined(user.country) ? (showCountry && <div className="h-[16px] w-[80px]"><SkeletonLoader /></div>) : user.country;
     const userCity = isNullOrUndefined(user.city) ? (showCity && <div className="h-[16px] w-[80px]"><SkeletonLoader /></div>) : user.city;
     const userAddressLine1 = isNullOrUndefined(user.address_line_1) ? (showAddressLine1 && <div className="h-[16px] w-[80px]"><SkeletonLoader /></div>) : user.address_line_1;
@@ -80,7 +81,7 @@ const SettingsUserLayout = () => {
             </p>
 
             <div
-                className="flex flex-col relative overflow-hidden h-auto text-foreground box-border outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 shadow-none rounded-md  motion-reduce:transition-none mt-4 bg-default-100 border border-primary"
+                className="flex flex-col relative overflow-hidden h-auto text-foreground box-border outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 shadow-none rounded-md motion-reduce:transition-none mt-4 bg-default-100 border border-primary"
                 tabIndex="-1"
             >
                 <div className="relative flex w-full p-3 flex-auto flex-col place-content-inherit align-items-inherit h-auto break-words text-left overflow-y-auto subpixel-antialiased">
@@ -105,7 +106,6 @@ const SettingsUserLayout = () => {
                                 {userEmail}
                             </p>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -113,15 +113,16 @@ const SettingsUserLayout = () => {
     );
 
     const BillingSection = () => (
-        <div className="pt-[20px]">
+        <div className="pt-[20px] transition-height">
             <p className="text-base font-medium text-primary select-none">Billing</p>
             <p className="mt-1 text-sm font-normal text-secondary select-none">
                 This displays your billing information.
             </p>
 
-            <div 
+            <div
                 ref={containerRef}
-                className="flex flex-col relative text-foreground box-border outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 shadow-none rounded-md motion-reduce:transition-none mt-4 bg-default-100 border border-primary overflow-hidden transition-all duration-300"
+                className="flex flex-col relative text-foreground box-border outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 shadow-none rounded-md motion-reduce:transition-none mt-4 bg-default-100 border border-primary overflow-hidden transition-height duration-300 ease-in-out"
+                style={{ maxHeight: '500px' }}
                 tabIndex="-1"
             >
                 <div className="relative flex w-full p-3 flex-auto flex-col place-content-inherit align-items-inherit h-auto break-words text-left overflow-y-auto subpixel-antialiased">
@@ -141,12 +142,12 @@ const SettingsUserLayout = () => {
                                 Address Information
                             </p>
 
-                            {userCountry && <p className="mt-1 text-xs text-secondary">{userCountry}</p>}
-                            {userCity && <p className="mt-1 text-xs text-secondary">{userCity}</p>}
                             {userAddressLine1 && <p className="mt-1 text-xs text-secondary">{userAddressLine1}</p>}
                             {userAddressLine2 && <p className="mt-1 text-xs text-secondary">{userAddressLine2}</p>}
-                            {userPostalCode && <p className="mt-1 text-xs text-secondary">{userPostalCode}</p>}
+                            {userCity && <p className="mt-1 text-xs text-secondary">{userCity}</p>}
                             {userState && <p className="mt-1 text-xs text-secondary">{userState}</p>}
+                            {userPostalCode && <p className="mt-1 text-xs text-secondary">{userPostalCode}</p>}
+                            {userCountry && <p className="mt-1 text-xs text-secondary">{userCountry}</p>}
                         </div>
                     </div>
                 </div>
@@ -179,7 +180,7 @@ const SettingsUserLayout = () => {
 
     return (
         <Fragment>
-            <div className="w-full h-full">
+            <div className="w-full h-full transition-height">
                 <h1 className="text-3xl leading-9 text-primary font-bold select-none sm:mt-[20px]">
                     Settings
                 </h1>
@@ -248,7 +249,7 @@ const SettingsUserLayout = () => {
                         />
                     </div>
 
-                    <div className="flex flex-col max-w-[50%]">
+                    <div className="flex flex-col w-full sm:max-w-[50%] pb-[100px]">
                         <InputFieldDataWrapperUser
                             label={'Address Line 1'}
                             supabaseKey='address_line_1'
@@ -280,6 +281,44 @@ const SettingsUserLayout = () => {
                             auditLogRequest={'update_user_metadata'}
                             auditLog={true}
                             setReadOnlyValue={setCity}
+                            show={view.currentSettingsSection === 'billing'}
+                        />
+
+                        <div className="flex flex-row gap-x-2 w-full justify-between">
+                            <InputFieldDataWrapperUser
+                                label={'State / Province'}
+                                supabaseKey='state'
+                                disabled={false}
+                                type='text'
+                                userId={user.id}
+                                auditLogRequest={'update_user_metadata'}
+                                auditLog={true}
+                                setReadOnlyValue={setState}
+
+                                show={view.currentSettingsSection === 'billing'}
+                            />
+                            <InputFieldDataWrapperUser
+                                label={'Postal code'}
+                                supabaseKey='postal_code'
+                                disabled={false}
+                                type='text'
+                                userId={user.id}
+                                auditLogRequest={'update_user_metadata'}
+                                auditLog={true}
+                                setReadOnlyValue={setPostalCode}
+                                show={view.currentSettingsSection === 'billing'}
+                            />
+                        </div>
+
+                        <InputFieldDataWrapperUser
+                            label={'Country'}
+                            supabaseKey='country'
+                            disabled={false}
+                            type='text'
+                            userId={user.id}
+                            auditLogRequest={'update_user_metadata'}
+                            auditLog={true}
+                            setReadOnlyValue={setCountry}
                             show={view.currentSettingsSection === 'billing'}
                         />
                     </div>
