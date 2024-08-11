@@ -13,6 +13,7 @@ import TradeArchivedSuccessNotification from './tradeArchivedSuccess.jsx';
 import LoadingErrorNotification from './loadingError.jsx';
 import BugReportSuccessNotification from './bugReportSuccess.jsx';
 import TransfersBlockedNoBalanceNotification from './transfersBlockedNoBalance.jsx';
+import DuplicateValueFailNotification from './duplicateValueFail.jsx';
 
 export {
     wrongCredentialsNotification,
@@ -29,5 +30,6 @@ export {
     TradeArchivedSuccessNotification,
     LoadingErrorNotification,
     BugReportSuccessNotification,
-    TransfersBlockedNoBalanceNotification
+    TransfersBlockedNoBalanceNotification,
+    DuplicateValueFailNotification
 }

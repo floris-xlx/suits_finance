@@ -3,9 +3,10 @@ import { useMutation, useQuery } from '@apollo/client';
 import { UPDATE_VALUE_USERS } from "@/app/client/graphql/mutation";
 import { GET_VALUE_USERS } from "@/app/client/graphql/query";
 import client from "@/app/client/graphql/ApolloClient.jsx";
-import { SuccessSyncValueNotification } from "@/app/components/ui/Notifications/Notifications.jsx";
+import { SuccessSyncValueNotification, DuplicateValueFailNotification  } from "@/app/components/ui/Notifications/Notifications.jsx";
 import SkeletonLoader from "@/app/components/ui/Loading/SkeletonLoader";
 import { SetKeyLocalStorage, GetKeyLocalStorage } from "@/app/client/caching/LocalStorageRouter";
+import { IsEmailUnique } from "../../client/supabase/SupabaseUserData";
 import { AddAuditLogEntry } from "@/app/client/supabase/auditLog.ts";
 
 import PropTypes from 'prop-types';
@@ -22,8 +23,9 @@ const InputFieldDataWrapperUser = ({
     show = true,
     auditLogRequest = null,
     auditLog = false,
-    title = null
-    
+    title = null,
+    email = false
+
 }) => {
     // zustand
     const { user } = useUserStore();
@@ -31,6 +33,7 @@ const InputFieldDataWrapperUser = ({
     // local loading state
     const [loading, setLoading] = useState(true);
     const [loadingTime, setLoadingTime] = useState(0);
+    const [isValueUnique, setIsValueUnique] = useState(false);
 
     const handleAuditLog = (status, value) => {
         if (auditLog && value !== null && value !== undefined && value !== '') {
@@ -105,27 +108,52 @@ const InputFieldDataWrapperUser = ({
         SetKeyLocalStorage(`cachedKeyStroke_${supabaseKey}`, lastKeyStrokeTime);
     }, [value]);
 
+    useEffect(() => {
+        if (supabaseKey === 'email') {
+            const checkValueUnique = async () => {
+                const result = await IsEmailUnique(value, userId);
+                setIsValueUnique(result);
+
+                if (result === false) {
+                    DuplicateValueFailNotification({ valueType: 'email' });
+                    setLocalValue(queryResult);
+                }
+            };
+
+            if (value !== null) {
+                checkValueUnique();
+            }
+        }
+    }, [value]);
 
     useEffect(() => {
-        if (value !== lastValue && value !== undefined) {
+        if (value !== lastValue && value !== undefined && (supabaseKey !== 'email' || isValueUnique === true)) {
             const debounceSave = setTimeout(() => {
                 setLastValue(value);
                 setLastKeyStrokeTime(Math.floor(Date.now() / 1000));
                 setSyncing(true);
                 setItemsLeft(1);
 
-                updateValueDynamic({
+                const resultUpdate = updateValueDynamic({
                     variables: {
-                        user_id: userId ,
+                        user_id: userId,
                         dynamicValue: `${value}` // replace with actual channel id
                     }
+
                 }).then(() => {
                     setSyncing(false);
                     setItemsLeft(0);
 
-                    
+
+                });
+                resultUpdate.catch(error => {
+                    if (supabaseKey === 'email' && error.message.includes('duplicate key value violates unique constraint "users_email_key"')) {
+                        console.log('duplicate key value violates unique constraint "users_email_key"');
+                        DuplicateValueFailNotification({ valueType: 'email' });
+                    }
                 });
 
+                
                 const mountTime = GetKeyLocalStorage(CACHEKEY);
                 const currentTime = Math.floor(Date.now() / 1000);
 
@@ -137,6 +165,8 @@ const InputFieldDataWrapperUser = ({
                     }
                 }
             }, 500);
+
+            console.log('debounce save', debounceSave);
 
             return () => clearTimeout(debounceSave);
         }
@@ -154,7 +184,7 @@ const InputFieldDataWrapperUser = ({
         <div className="">
             <div>
                 <div className="mt-[18px]">
-                {title && <p className="text-base font-medium text-primary select-none">{title}</p>}
+                    {title && <p className="text-base font-medium text-primary select-none">{title}</p>}
                     <label
                         className="block text-sm font-medium text-accent select-none"
                     >

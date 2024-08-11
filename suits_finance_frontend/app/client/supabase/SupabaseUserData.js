@@ -891,3 +891,19 @@ export async function getUserObjectById(id) {
 
   return data[0];
 }
+
+export async function IsEmailUnique(email, userId) {
+  const { data, error } = await supabase
+    .from('users')
+    .select('email')
+    .eq('email', email)
+    .neq('user_id', userId);
+
+  if (error) throw error;
+
+  if (data.length === 0) {
+    return true;
+  }
+
+  return false;
+}
