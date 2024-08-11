@@ -11,6 +11,10 @@ function convertCurrencyToSymbol(currency = 'usd') {
       return '£';
     case 'yen':
       return '¥';
+    case 'rub':
+      return '₽';
+    case 'inr':
+      return '₹';
     default:
       return '';
   }

@@ -12,6 +12,7 @@ const TabHorizontal = ({
     cacheValueKey = null,
     setCacheValue = null,
     setValueExternal = null,
+    show = true,
 }) => {
   const [value, setValue] = useState(options[0]);
 
@@ -28,6 +29,10 @@ const TabHorizontal = ({
       }
     }
   }, [value]);
+
+  if (!show) {
+    return null;
+  }
 
   return (
     <div className="flex w-full flex-col mt-4">

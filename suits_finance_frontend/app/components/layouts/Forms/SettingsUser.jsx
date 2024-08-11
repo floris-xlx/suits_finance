@@ -17,8 +17,7 @@ const SettingsUserLayout = ({
     ];
 
     const [selectedTab, setSelectedTab] = useState(settingOptions[0]);
-
-    const [testValue, setTestValue] = useState(0);
+    const [selectedCurrency, setSelectedCurrency] = useState('USD');
 
     const isNullOrUndefined = (value) => {
         return value === null || value === undefined;
@@ -26,9 +25,7 @@ const SettingsUserLayout = ({
 
     const [fullName, setFullName] = useState(user.full_name || '');
     const [email, setEmail] = useState(user.email || '');
-    console.log('user', user);
-    console.log('fullName', fullName);
-    console.log('email', email);
+
 
 
     const userRole = isNullOrUndefined(user.role) ? <div className="h-[16px] w-[60px]"><SkeletonLoader /></div> : user.role;
@@ -95,7 +92,8 @@ const SettingsUserLayout = ({
 
                 <div className="mt-4">
 
-                    <div className="w-full sm:max-w-[300px] flex flex-col gap-y-4">
+                    <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-1 transition-all">
+
                         <InputFieldDataWrapperUser
                             label={'Full name'}
                             supabaseKey='full_name'
@@ -108,6 +106,7 @@ const SettingsUserLayout = ({
                             setReadOnlyValue={setFullName}
                         />
 
+
                         <InputFieldDataWrapperUser
                             label={'Email'}
                             supabaseKey='email'
@@ -117,6 +116,17 @@ const SettingsUserLayout = ({
                             auditLogRequest={'update_user_metadata'}
                             auditLog={true}
                             setReadOnlyValue={setEmail}
+                            show={selectedTab === 'profile'}
+                        />
+
+                        <InputFieldDataWrapperUser
+                            label={'Country'}
+                            supabaseKey='country'
+                            disabled={false}
+                            type='text'
+                            userId={user.id}
+                            auditLogRequest={'update_user_metadata'}
+                            auditLog={true}
                             show={selectedTab === 'profile'}
                         />
 
