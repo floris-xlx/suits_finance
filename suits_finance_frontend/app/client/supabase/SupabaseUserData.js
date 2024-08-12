@@ -962,3 +962,30 @@ export async function addPayoneerCard({
 
   return data;
 }
+
+export async function archivePayoneerCard({
+  card_id,
+}) {
+  const { data: cardData, error: fetchError } = await supabase
+    .from('cards')
+    .select('*')
+    .eq('card_id', card_id)
+    .single();
+
+  if (fetchError) throw fetchError;
+
+  const { data: archiveData, error: archiveError } = await supabase
+    .from('cards_archived')
+    .insert([cardData]);
+
+  if (archiveError) throw archiveError;
+
+  const { data: deleteData, error: deleteError } = await supabase
+    .from('cards')
+    .delete()
+    .eq('card_id', card_id);
+
+  if (deleteError) throw deleteError;
+
+  return archiveData;
+}
