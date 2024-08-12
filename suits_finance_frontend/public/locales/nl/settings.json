@@ -25,5 +25,11 @@
         "card_holder_name": "Naam kaarthouder",
         "iban": "IBAN",
         "expiry_date": "Vervaldatum"
+    },
+    "permission": {
+        "title": "Toestemming",
+        "description": "Dit toont de instellingen voor admin rechten.",
+        "invite_new_member_title": "Nodig nieuwe admin leden uit via e-mail",
+        "email_address": "E-mailadres"
     }
 }

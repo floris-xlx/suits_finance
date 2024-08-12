@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import InputFieldDataWrapperUser from '@/app/components/dataWrappers/inputFieldWrapperUser';
+
 import { useUserViewStore, useUserStore } from '@/app/stores/stores';
 import ButtonPrimary from '@/app/components/ui/Buttons/ButtonPrimary';
 import PayoneerCard from '@/app/components/ui/Cards/PayoneerCard';
@@ -62,14 +63,6 @@ export default function SettingsUserLayout() {
             i18n.changeLanguage(locale);
         }
     }, [router, i18n]);
-
-    const changeLanguage = (newLocale) => {
-        if (typeof window !== 'undefined') {
-            window.location.href = `${window.location.pathname}?locale=${newLocale}`;
-        }
-    };
-
-
 
 
     useEffect(() => {
@@ -164,7 +157,9 @@ export default function SettingsUserLayout() {
                 </div>
             </div>
 
-            <p className="text-base font-medium text-primary select-none mt-8">{t && t('billing.billing_address_title')}</p>
+            <p className="text-base font-medium text-primary select-none mt-8">
+                {t && t('billing.billing_address_title')}
+            </p>
             <p className="mt-1 text-sm font-normal text-secondary select-none">
                 {t && t('billing.billing_address_description')}
             </p>
@@ -178,14 +173,11 @@ export default function SettingsUserLayout() {
                 {t && t('appearance.description')}
             </p>
 
-
-
-
             {/* Language switcher example */}
-            <button style={{ backgroundColor: 'red', padding: '10px' }} onClick={() => changeLanguage('en')}>EN</button>
+            {/* <button style={{ backgroundColor: 'red', padding: '10px' }} onClick={() => changeLanguage('en')}>EN</button>
             <button style={{ backgroundColor: 'red', padding: '10px' }} onClick={() => changeLanguage('nl')}>NL</button>
             <button style={{ backgroundColor: 'red', padding: '10px' }} onClick={() => changeLanguage('de')}>DE</button>
-            <button style={{ backgroundColor: 'red', padding: '10px' }} onClick={() => changeLanguage('ru')}>RU</button>
+            <button style={{ backgroundColor: 'red', padding: '10px' }} onClick={() => changeLanguage('ru')}>RU</button> */}
 
         </div>
     );
@@ -205,14 +197,34 @@ export default function SettingsUserLayout() {
         refreshPage();
     }
 
+
+    // permission section usernames
+    const [inviteNewEmail, setInviteNewEmail] = useState('');
+
+    const PermissionSection = () => (
+        <div className="pt-[20px]">
+            <p className="text-base font-medium text-primary select-none">
+
+                {t && t('permission.title') ? t('permission.title') : <div className="h-[36px] w-[120px]"><SkeletonLoader /></div>}
+            </p>
+            <p className="mt-1 text-sm font-normal text-secondary select-none">
+
+                {t && t('permission.description') ? t('permission.description') : <div className="h-[36px] w-[120px]"><SkeletonLoader /></div>}
+            </p>
+        </div>
+    );
+
     const PayoneerSection = () => (
         <div className="pt-[20px]">
             <div className="flex flex-row gap-x-1 justify-between items-center">
 
                 <div className="flex-col flex gap-x-1">
-                    <p className="text-base font-medium text-primary select-none">{t && t('payoneer.title')}</p>
+                    <p className="text-base font-medium text-primary select-none">
+
+                        {t && t('payoneer.title') ? t('payoneer.title') : <div className="h-[36px] w-[120px]"><SkeletonLoader /></div>}
+                    </p>
                     <p className="mt-1 text-sm font-normal text-secondary select-none">
-                        {t && t('payoneer.description')}
+                        {t && t('payoneer.description') ? t('payoneer.description') : <div className="h-[36px] w-[120px]"><SkeletonLoader /></div>}
                     </p>
                 </div>
 
@@ -267,9 +279,6 @@ export default function SettingsUserLayout() {
                     {t && t('subtitle') ? t('subtitle') : <div className="h-[22px] w-[320px] mt-4"><SkeletonLoader /></div>}
                 </h3>
 
-
-
-
                 <TabHorizontal
                     options={settingOptions}
                     setValueExternal={setCurrentSettingsSection}
@@ -280,6 +289,28 @@ export default function SettingsUserLayout() {
                 {view.currentSettingsSection === 'billing' && <BillingSection />}
                 {view.currentSettingsSection === 'appearance' && <AppearanceSection />}
                 {view.currentSettingsSection === 'payoneer' && <PayoneerSection />}
+                {view.currentSettingsSection === 'permission' && <PermissionSection />}
+
+                {view.currentSettingsSection === 'permission' &&
+                    <div className="mt-4 bg-secondary p-2 rounded-md border border-primary">
+                        <div className="flex flex-col gap-y-1">
+                            <h3 className="text-sm leading-9 text-primary font-normal select-none px-2">
+                                {t && t('permission.invite_new_member_title') ? t('permission.invite_new_member_title') : <div className="h-[22px] w-[320px]"><SkeletonLoader /></div>}
+                            </h3>
+
+                            <div className="flex flex-row gap-x-1 items-center justify-between">
+                                <InputField
+                                    label={t && t('permission.email_address') ? t('permission.email_address') : <div className="h-[16px] w-[60px]"><SkeletonLoader /></div>}
+                                    value={inviteNewEmail}
+                                    setValue={setInviteNewEmail}
+                                    type='text'
+                                    width='full'
+                                />
+                            </div>    
+                        </div>
+                    </div>
+                }
+
 
                 {view.currentSettingsSection === 'payoneer' && (
                     <div className="mt-8">
@@ -433,7 +464,15 @@ export default function SettingsUserLayout() {
                         )}
 
                     </div>
+
+
+
                 </div>
+
+
+
+
+
             </div>
         </Fragment>
     );

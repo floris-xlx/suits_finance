@@ -25,5 +25,11 @@
         "card_holder_name": "Card Holder Name",
         "iban": "IBAN",
         "expiry_date": "Expiry Date"
+    },
+    "permission": {
+        "title": "Permission",
+        "description": "This displays admin permission settings.",
+        "invite_new_member_title": "Invite new members by Email",
+        "email_address": "Email Address"
     }
 }
