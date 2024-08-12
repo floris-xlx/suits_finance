@@ -1,4 +1,29 @@
 {
     "title": "Settings",
-    "subtitle": "Customize settings, preferences & personal details."
+    "subtitle": "Customize settings, preferences & personal details.",
+    "profile": {
+        "title": "Profile",
+        "description": "This displays your public profile on the site."
+    },
+    "billing": {
+        "title": "Billing",
+        "description": "This displays your billing information.",
+        "billing_address_title": "Billing Address",
+        "billing_address_description": "This billing address is used for your invoices.",
+        "personal_info": "Personal Information",
+        "address_info": "Address Information"
+    },
+    "appearance": {
+        "title": "Appearance",
+        "description": "This displays your appearance settings."
+    },
+    "payoneer": {
+        "title": "Payoneer",
+        "description": "This displays your Payoneer settings and its details.",
+        "connect_button": "Connect Payoneer",
+        "modal_title": "Connect Payoneer Card",
+        "card_holder_name": "Card Holder Name",
+        "iban": "IBAN",
+        "expiry_date": "Expiry Date"
+    }
 }

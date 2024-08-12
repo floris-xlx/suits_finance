@@ -18,7 +18,7 @@ import {
 } from '@/app/stores/stores';
 
 
-export default function SettingsPage() {
+export default function SettingsPage({ locale  }) {
   // auth
   const { userId } = useRequireAuth();
 

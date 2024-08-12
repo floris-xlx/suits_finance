@@ -1,0 +1,29 @@
+{
+    "title": "Настройки",
+    "subtitle": "Измените настройки, предпочтения и личные данные.",
+    "profile": {
+        "title": "Профиль",
+        "description": "Здесь отображается ваш общедоступный профиль на сайте."
+    },
+    "billing": {
+        "title": "Биллинг",
+        "description": "Здесь отображаются ваши платёжные данные.",
+        "billing_address_title": "Платёжный адрес",
+        "billing_address_description": "Этот адрес используется для ваших счетов.",
+        "personal_info": "Личная информация",
+        "address_info": "Информация об адресе"
+    },
+    "appearance": {
+        "title": "Внешний вид",
+        "description": "Здесь отображаются настройки вашего интерфейса."
+    },
+    "payoneer": {
+        "title": "Payoneer",
+        "description": "Здесь отображаются настройки и детали вашего аккаунта Payoneer.",
+        "connect_button": "Подключить Payoneer",
+        "modal_title": "Подключение карты Payoneer",
+        "card_holder_name": "Имя держателя карты",
+        "iban": "IBAN",
+        "expiry_date": "Срок действия"
+    }
+}

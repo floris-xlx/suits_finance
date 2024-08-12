@@ -1,0 +1,29 @@
+{
+    "title": "Instellingen",
+    "subtitle": "Verander instellingen, voorkeuren & persoonlijke details.",
+    "profile": {
+        "title": "Profiel",
+        "description": "Dit toont je openbare profiel op de site."
+    },
+    "billing": {
+        "title": "Facturering",
+        "description": "Dit toont je factuurgegevens.",
+        "billing_address_title": "Factuuradres",
+        "billing_address_description": "Dit factuuradres wordt gebruikt voor je facturen.",
+        "personal_info": "Persoonlijke Informatie",
+        "address_info": "Adresgegevens"
+    },
+    "appearance": {
+        "title": "Weergave",
+        "description": "Dit toont je weergave instellingen."
+    },
+    "payoneer": {
+        "title": "Payoneer",
+        "description": "Dit toont je Payoneer-instellingen en details.",
+        "connect_button": "Verbind Payoneer",
+        "modal_title": "Verbind Payoneer-kaart",
+        "card_holder_name": "Naam kaarthouder",
+        "iban": "IBAN",
+        "expiry_date": "Vervaldatum"
+    }
+}

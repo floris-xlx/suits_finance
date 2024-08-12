@@ -2,21 +2,20 @@ import React, { useState, useEffect, Fragment, useRef } from 'react';
 import TabHorizontal from '../../ui/Tabs/TabHorizontalWithValue';
 import SkeletonLoader from '@/app/components/ui/Loading/SkeletonLoader';
 import Image from 'next/image';
-
-// Data
+import { useRouter } from 'next/navigation';
+import { useTranslation } from 'next-i18next';
 import InputFieldDataWrapperUser from '@/app/components/dataWrappers/inputFieldWrapperUser';
-import convertCurrencyToSymbol from '@/app/client/hooks/formatting/CurrencySymbol';
 import { useUserViewStore, useUserStore } from '@/app/stores/stores';
 import ButtonPrimary from '@/app/components/ui/Buttons/ButtonPrimary';
-import { PayoneerIcon } from '@/app/components/ui/Icon';
 import PayoneerCard from '@/app/components/ui/Cards/PayoneerCard';
 import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
 import InputField from '@/app/components/ui/InputFields/InputField';
 import { getUserCards, addPayoneerCard, isUserSuperAdmin } from '@/app/client/supabase/SupabaseUserData';
 import { PayoneerCardAddSuccessNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
 import { refreshPage } from '@/app/client/hooks/refreshPage';
+import initTranslations from '@/app/i18n';
 
-const SettingsUserLayout = () => {
+export default function SettingsUserLayout({ locale  }) {
     const { view, setCurrentSettingsSection } = useUserViewStore();
     const { user, setEmail, setFullName, setRole, setProfilePicture, setCity, setCountry, setAddressLine1, setAddressLine2, setPostalCode, setState, setCurrency } = useUserStore();
 
@@ -24,7 +23,7 @@ const SettingsUserLayout = () => {
 
     const settingOptions = isAdmin ?
         ['Profile', 'Appearance', 'Payoneer', 'Billing', 'Permission'] :
-        ['Profile', 'Appearance', 'Payoneer', 'Billing']; 
+        ['Profile', 'Appearance', 'Payoneer', 'Billing'];
 
     const currencyOptions = [
         '$ USD',
@@ -34,14 +33,34 @@ const SettingsUserLayout = () => {
         '₽ RUB'
     ];
 
-    // Chore:
-    // add user team management for inviting by email, removing, and changing roles
-    // allow for role changing in db by dev or super admin
-    // add billing section for changing payment methods, viewing the 1% fee
-    // add table fo members of team with roles and emails
-    // add table for billing history
-    // only show for super admin and dev
-    // show in billing the current rate of 1% fee
+    // translations
+    const router = useRouter()
+    const { defaultLocale } = router;
+    useEffect(() => {
+        const initializeTranslations = async () => {
+            const { t, i18n } = await initTranslations(locale, ['settings']);
+            setTranslations({ t, i18n });
+        };
+        initializeTranslations();
+    }, [locale]);
+    
+    const [translations, setTranslations] = useState({});
+    const { t, i18n } = translations;
+    useEffect(() => {
+        if (locale && i18n && i18n.language !== locale) {
+            i18n.changeLanguage(locale);
+        }
+    }, [locale, i18n]);
+    const onToggleLanguageClick = (newLocale) => {
+        const { pathname, asPath, query } = router
+        router.push({ pathname, query }, asPath, { locale: newLocale })
+    }
+
+    const clientSideLanguageChange = (newLocale) => {
+        i18n.changeLanguage(newLocale)
+    }
+
+    const changeTo = router.locale === 'en' ? 'nl' : 'en'
 
     useEffect(() => {
         const checkAdmin = async () => {
@@ -93,9 +112,9 @@ const SettingsUserLayout = () => {
 
     const ProfileSection = () => (
         <div className="pt-[20px]">
-            <p className="text-base font-medium text-primary select-none">Profile</p>
+            <p className="text-base font-medium text-primary select-none">{t && t('profile.title')}</p>
             <p className="mt-1 text-sm font-normal text-secondary select-none">
-                This displays your public profile on the site.
+                {t && t('profile.description')}
             </p>
 
             <div
@@ -132,9 +151,9 @@ const SettingsUserLayout = () => {
 
     const BillingSection = () => (
         <div className="pt-[20px] transition-height">
-            <p className="text-base font-medium text-primary select-none">Billing</p>
+            <p className="text-base font-medium text-primary select-none">{t && t('billing.title')}</p>
             <p className="mt-1 text-sm font-normal text-secondary select-none">
-                This displays your billing information.
+                {t && t('billing.description')}
             </p>
 
             <div
@@ -147,7 +166,7 @@ const SettingsUserLayout = () => {
                     <div className="flex items-center gap-4">
                         <div>
                             <p className="text-sm font-normal text-primary select-none">
-                                Personal Information
+                                {t && t('billing.personal_info')}
                             </p>
                             <p className="text-xs text-secondary select-none">
                                 {userName}
@@ -157,7 +176,7 @@ const SettingsUserLayout = () => {
                             </p>
 
                             <p className="mt-4 text-sm font-normal text-primary select-none">
-                                Address Information
+                                {t && t('billing.address_info')}
                             </p>
 
                             {userAddressLine1 && <p className="mt-1 text-xs text-secondary">{userAddressLine1}</p>}
@@ -171,18 +190,18 @@ const SettingsUserLayout = () => {
                 </div>
             </div>
 
-            <p className="text-base font-medium text-primary select-none mt-8">Billing Address</p>
+            <p className="text-base font-medium text-primary select-none mt-8">{t && t('billing.billing_address_title')}</p>
             <p className="mt-1 text-sm font-normal text-secondary select-none">
-                This billing address is used for your invoices.
+                {t && t('billing.billing_address_description')}
             </p>
         </div>
     );
 
     const AppearanceSection = () => (
         <div className="pt-[20px]">
-            <p className="text-base font-medium text-primary select-none">Appearance</p>
+            <p className="text-base font-medium text-primary select-none">{t && t('appearance.title')}</p>
             <p className="mt-1 text-sm font-normal text-secondary select-none">
-                This displays your appearance settings.
+                {t && t('appearance.description')}
             </p>
         </div>
     );
@@ -208,15 +227,14 @@ const SettingsUserLayout = () => {
             <div className="flex flex-row gap-x-1 justify-between items-center">
 
                 <div className="flex-col flex gap-x-1">
-                    <p className="text-base font-medium text-primary select-none">Payoneer</p>
+                    <p className="text-base font-medium text-primary select-none">{t && t('payoneer.title')}</p>
                     <p className="mt-1 text-sm font-normal text-secondary select-none">
-                        This displays your Payoneer settings and it's details.
+                        {t && t('payoneer.description')}
                     </p>
                 </div>
 
                 <div>
-                    < ButtonPrimary label={'Connect Payoneer'} onClick={handleOpenModal_connectPayoneer} />
-
+                    <ButtonPrimary label={t && t('payoneer.connect_button')} onClick={handleOpenModal_connectPayoneer} />
                 </div>
             </div>
         </div>
@@ -227,12 +245,12 @@ const SettingsUserLayout = () => {
 
             <Modal
                 ref={modalRef_connectPayoneer}
-                title="Connect Payoneer Card"
-                buttonText={'Connect'}
+                title={t && t('payoneer.modal_title')}
+                buttonText={t && t('payoneer.connect_button')}
                 onButtonPress={handleConnectPayoneer}>
 
                 <InputField
-                    label={"Card Holder Name"}
+                    label={t && t('payoneer.card_holder_name')}
                     value={cardHolderName}
                     setValue={setCardHolderName}
                     type='text'
@@ -240,7 +258,7 @@ const SettingsUserLayout = () => {
                 />
 
                 <InputField
-                    label={"IBAN"}
+                    label={t && t('payoneer.iban')}
                     value={cardIban}
                     setValue={setCardIban}
                     type='text'
@@ -248,24 +266,21 @@ const SettingsUserLayout = () => {
                 />
 
                 <InputField
-                    label={"Expiry Date"}
+                    label={t && t('payoneer.expiry_date')}
                     value={expiryDate}
                     setValue={setExpiryDate}
                     type='text'
                     width='full'
                 />
 
-
             </Modal>
-
-
 
             <div className="w-full h-full transition-height">
                 <h1 className="text-3xl leading-9 text-primary font-bold select-none sm:mt-[20px]">
-                    Settings
+                    {t && t('title')}
                 </h1>
                 <h3 className="text-sm leading-9 text-secondary font-normal select-none">
-                    Customize settings, preferences & personal details.
+                    {t && t('subtitle')}
                 </h3>
 
                 <TabHorizontal
@@ -436,5 +451,3 @@ const SettingsUserLayout = () => {
         </Fragment>
     );
 };
-
-export default SettingsUserLayout;
