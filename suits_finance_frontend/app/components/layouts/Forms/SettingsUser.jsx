@@ -3,7 +3,7 @@ import TabHorizontal from '../../ui/Tabs/TabHorizontalWithValue';
 import SkeletonLoader from '@/app/components/ui/Loading/SkeletonLoader';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useTranslation } from 'next-i18next';
+
 import InputFieldDataWrapperUser from '@/app/components/dataWrappers/inputFieldWrapperUser';
 import { useUserViewStore, useUserStore } from '@/app/stores/stores';
 import ButtonPrimary from '@/app/components/ui/Buttons/ButtonPrimary';
@@ -14,6 +14,7 @@ import { getUserCards, addPayoneerCard, isUserSuperAdmin } from '@/app/client/su
 import { PayoneerCardAddSuccessNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
 import { refreshPage } from '@/app/client/hooks/refreshPage';
 import initTranslations from '@/app/i18n';
+import ProfileSection from '@/app/components/layouts/Settings/ProfileSection';
 
 export default function SettingsUserLayout() {
     const { view, setCurrentSettingsSection } = useUserViewStore();
@@ -121,48 +122,6 @@ export default function SettingsUserLayout() {
 
 
 
-
-
-    const ProfileSection = () => (
-        <div className="pt-[20px]">
-            <p className="text-base font-medium text-primary select-none">
-                {t && t('profile.title') ? t('profile.title') : <div className="h-[16px] w-[80px]"><SkeletonLoader /></div>}
-            </p>
-            <p className="mt-1 text-sm font-normal text-secondary select-none">
-                {t && t('profile.description') ? t('profile.description') : <div className="h-[16px] w-[280px]"><SkeletonLoader /></div>}
-            </p>
-
-            <div
-                className="flex flex-col relative overflow-hidden h-auto text-foreground box-border outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 shadow-none rounded-md motion-reduce:transition-none mt-4 bg-default-100 border border-primary"
-                tabIndex="-1"
-            >
-                <div className="relative flex w-full p-3 flex-auto flex-col place-content-inherit align-items-inherit h-auto break-words text-left overflow-y-auto subpixel-antialiased">
-                    <div className="flex items-center gap-4">
-                        <div className="relative inline-flex shrink-0">
-                            <span
-                                tabIndex="-1"
-                                className="flex relative justify-center items-center box-border overflow-hidden align-middle z-0 outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 text-tiny rounded-md h-16 w-16 select-none"
-                            >
-                                {userPicture}
-                            </span>
-                        </div>
-
-                        <div>
-                            <p className="text-sm font-medium text-primary select-none">
-                                {userName}
-                            </p>
-                            <p className="text-xs text-secondary select-none">
-                                {userRole}
-                            </p>
-                            <p className="mt-1 text-xs text-secondary">
-                                {userEmail}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
 
     const BillingSection = () => (
         <div className="pt-[20px] transition-height">
