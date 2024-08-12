@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { useUserViewStore, useUserStore } from '@/app/stores/stores';
 
-const ProfileSection = ({ user }) => {
+const ProfileSection = () => {
     const { user } = useUserStore();
 
     const isNullOrUndefined = (value) => {
