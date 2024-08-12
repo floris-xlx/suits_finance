@@ -29,9 +29,6 @@ const ProfileSection = () => {
         initializeTranslations();
     }, [router]);
 
- 
-
-
     const isNullOrUndefined = (value) => {
         return value === null || value === undefined;
     };
