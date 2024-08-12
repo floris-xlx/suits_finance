@@ -42,9 +42,10 @@ const PayoneerCard = () => {
         if (cardInFocus) {
             console.log('delete payoneer confirmed');
             await archivePayoneerCard({ card_id: cardInFocus.card_id });
-            setCards(cards.filter(card => card.card_id !== cardInFocus.card_id));
+            const updatedCards = cards.filter(card => card.card_id !== cardInFocus.card_id);
+            setCards(updatedCards.length > 0 ? updatedCards : null);
             setCardInFocus(null);
-            refreshPage();
+        
 
         }
     };

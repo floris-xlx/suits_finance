@@ -14,7 +14,7 @@ import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
 import InputField from '@/app/components/ui/InputFields/InputField';
 import { getUserCards, addPayoneerCard } from '@/app/client/supabase/SupabaseUserData';
 import { PayoneerCardAddSuccessNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
-import refreshPage from '@/app/client/hooks/refreshPage';
+import {refreshPage} from '@/app/client/hooks/refreshPage';
 
 const SettingsUserLayout = () => {
     const { view, setCurrentSettingsSection } = useUserViewStore();

@@ -926,7 +926,7 @@ export async function getUserBalance(id) {
 export async function getUserCards(id) {
   const { data, error } = await supabase
     .from('cards')
-    .select('user_id, card_holder_name, provider, last_4, iban')
+    .select('user_id, card_holder_name, provider, last_4, iban, card_id')
     .eq('user_id', id);
 
   if (error) throw error;
