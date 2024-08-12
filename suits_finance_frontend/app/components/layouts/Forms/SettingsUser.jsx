@@ -9,6 +9,7 @@ import convertCurrencyToSymbol from '@/app/client/hooks/formatting/CurrencySymbo
 import { useUserViewStore, useUserStore } from '@/app/stores/stores';
 import ButtonPrimary from '@/app/components/ui/Buttons/ButtonPrimary';
 import { PayoneerIcon } from '@/app/components/ui/Icon';
+import PayoneerCard from '@/app/components/ui/Cards/PayoneerCard';
 
 const SettingsUserLayout = () => {
     const { view, setCurrentSettingsSection } = useUserViewStore();
@@ -189,6 +190,11 @@ const SettingsUserLayout = () => {
 
 
             </div>
+
+
+            <div className="mt-4">
+                <PayoneerCard />
+            </div>
         </div>
     );
 
@@ -226,6 +232,7 @@ const SettingsUserLayout = () => {
                             auditLogRequest={'update_user_metadata'}
                             auditLog={true}
                             show={view.currentSettingsSection === 'profile'}
+                            preSeedValue={user.full_name}
                             setReadOnlyValue={setFullName}
                         />
 
@@ -239,6 +246,7 @@ const SettingsUserLayout = () => {
                             auditLogRequest={'update_user_metadata'}
                             auditLog={true}
                             setReadOnlyValue={setEmail}
+                            preSeedValue={user.email}
                             show={view.currentSettingsSection === 'profile'}
                         />
 
@@ -252,6 +260,7 @@ const SettingsUserLayout = () => {
                             auditLogRequest={'update_user_metadata'}
                             auditLog={true}
                             setReadOnlyValue={setCountry}
+                            preSeedValue={user.country}
                             show={view.currentSettingsSection === 'profile'}
                         />
 
