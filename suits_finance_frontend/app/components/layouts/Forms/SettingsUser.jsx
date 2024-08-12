@@ -50,6 +50,7 @@ const SettingsUserLayout = () => {
     const [showPostalCode, setShowPostalCode] = useState(true);
     const [showState, setShowState] = useState(true);
 
+
     useEffect(() => {
         const timer = setTimeout(() => {
             if (isNullOrUndefined(user.country)) setShowCountry(false);

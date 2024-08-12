@@ -11,7 +11,7 @@ const BalanceCard = ({
     const { loading, setBalanceLoading } = useLoadingStore();
     const [isBalanceNegative, setIsBalanceNegative] = useState(false);
 
-    const formattedBalance = balance.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const formattedBalance = balance !== null ? balance.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '';
 
     const balanceElement = loading.balanceLoading ? <div className="h-[36px] w-[152px]"><SkeletonLoader /></div> : `${convertCurrencyToSymbol(currency)} ${formattedBalance}`;
 

@@ -11,7 +11,7 @@ import InputFieldDataWrapperUser from '@/app/components/dataWrappers/inputFieldW
 const DeveloperViewLayout = () => {
     const { user } = useUserStore();
     const [isDeveloper, setIsDeveloper] = useState(false);
-     const { modalRef: modalRef_developer, handleOpenModal: handleOpenModal_developer } = useModal();
+    const { modalRef: modalRef_developer, handleOpenModal: handleOpenModal_developer } = useModal();
 
     useEffect(() => {
         const checkDeveloper = async () => {
