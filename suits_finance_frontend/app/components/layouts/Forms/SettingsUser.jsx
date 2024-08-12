@@ -274,6 +274,7 @@ const SettingsUserLayout = () => {
                             auditLogRequest={'update_user_metadata'}
                             auditLog={true}
                             setReadOnlyValue={setAddressLine1}
+                            preSeedValue={user.address_line_1}
                             show={view.currentSettingsSection === 'billing'}
                         />
 
@@ -286,6 +287,7 @@ const SettingsUserLayout = () => {
                             auditLogRequest={'update_user_metadata'}
                             auditLog={true}
                             setReadOnlyValue={setAddressLine2}
+                            preSeedValue={user.address_line_2}
                             show={view.currentSettingsSection === 'billing'}
                         />
 
@@ -298,6 +300,7 @@ const SettingsUserLayout = () => {
                             auditLogRequest={'update_user_metadata'}
                             auditLog={true}
                             setReadOnlyValue={setCity}
+                            preSeedValue={user.city}
                             show={view.currentSettingsSection === 'billing'}
                         />
 
@@ -311,7 +314,7 @@ const SettingsUserLayout = () => {
                                 auditLogRequest={'update_user_metadata'}
                                 auditLog={true}
                                 setReadOnlyValue={setState}
-
+                                preSeedValue={user.state}
                                 show={view.currentSettingsSection === 'billing'}
                             />
                             <InputFieldDataWrapperUser
@@ -323,6 +326,7 @@ const SettingsUserLayout = () => {
                                 auditLogRequest={'update_user_metadata'}
                                 auditLog={true}
                                 setReadOnlyValue={setPostalCode}
+                                preSeedValue={user.postal_code}
                                 show={view.currentSettingsSection === 'billing'}
                             />
                         </div>
@@ -336,6 +340,7 @@ const SettingsUserLayout = () => {
                             auditLogRequest={'update_user_metadata'}
                             auditLog={true}
                             setReadOnlyValue={setCountry}
+                            preSeedValue={user.country}
                             show={view.currentSettingsSection === 'billing'}
                         />
 

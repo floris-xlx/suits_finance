@@ -24,7 +24,8 @@ const InputFieldDataWrapperUser = ({
     auditLogRequest = null,
     auditLog = false,
     title = null,
-    email = false
+    email = false,
+    preSeedValue = null
 
 }) => {
     // zustand
@@ -72,11 +73,11 @@ const InputFieldDataWrapperUser = ({
     });
 
 
-    const queryResult = data?.usersCollection?.edges[0]?.node?.[supabaseKey];
+    const queryResult = preSeedValue !== null ? preSeedValue : data?.usersCollection?.edges[0]?.node?.[supabaseKey];
 
     // set local value
     useEffect(() => {
-        if (queryResult !== undefined && queryResult !== null) {
+        if (queryResult !== undefined && queryResult !== null ) {
             setLocalValue(queryResult);
             setLoading(false);
         }
@@ -125,9 +126,11 @@ const InputFieldDataWrapperUser = ({
             }
         }
     }, [value]);
-
     useEffect(() => {
-        if (value !== lastValue && value !== undefined && (supabaseKey !== 'email' || isValueUnique === true)) {
+        const mountTime = GetKeyLocalStorage("cachedMountTimeDataWrapper");
+        const currentTime = Math.floor(Date.now() / 1000);
+
+        if (value !== lastValue && value !== undefined && (supabaseKey !== 'email' || isValueUnique === true) && (currentTime - mountTime >= 2)) {
             const debounceSave = setTimeout(() => {
                 setLastValue(value);
                 setLastKeyStrokeTime(Math.floor(Date.now() / 1000));
@@ -159,7 +162,7 @@ const InputFieldDataWrapperUser = ({
                 if (currentTime - mountTime >= 3) {
                     SuccessSyncValueNotification({ valueType: supabaseKey });
                     handleAuditLog('success', value);
-                    if (value !== null) {
+                    if (value !== null ) {
                         setReadOnlyValue(value);
                     }
                 }
