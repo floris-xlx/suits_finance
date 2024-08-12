@@ -115,12 +115,12 @@ export default function Example() {
 
   return (
     <>
-      
+
 
       <main>
         <header className="relative isolate">
           <div className="absolute inset-0 -z-10 " aria-hidden="true">
-            
+
             <div className="absolute inset-x-0 bottom-0 h-px bg-primary" />
           </div>
 
@@ -128,7 +128,7 @@ export default function Example() {
             <div className="mx-auto flex max-w-2xl items-center justify-between gap-x-8 lg:mx-0 lg:max-w-none">
               <div className="flex items-center gap-x-6">
                 <img
-                  src="https://tailwindui.com/img/logos/48x48/tuple.svg"
+                  src="https://xylex.ams3.cdn.digitaloceanspaces.com/profilePics/xylexIcon.png"
                   alt=""
                   className="h-16 w-16 flex-none rounded-full ring-1 ring-gray-900/10"
                 />
@@ -136,12 +136,12 @@ export default function Example() {
                   <div className="text-sm leading-6  bg-blue-primary text-blue border border-blue-500/30 rounded-md px-1">
                     Invoice #00011
                   </div>
-                  <div className="mt-1 text-base font-semibold leading-6 text-primary">Tuple, Inc</div>
+                  <div className="mt-1 text-base font-semibold leading-6 text-primary">Xylex, Enterprises</div>
                 </h1>
               </div>
               <div className="flex items-center gap-x-4 sm:gap-x-6">
-               
-           
+
+
                 <a
                   href="#"
                   className="rounded-md bg-green-primary px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-green-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:transition flex-row flex items-center gap-x-2"
@@ -149,7 +149,7 @@ export default function Example() {
                   <CheckIcon className="h-6 w-6 text-black" aria-hidden="true" />
                   Authorize
                 </a>
-                
+
 
                 <Menu as="div" className="relative sm:hidden">
                   <Menu.Button className="-m-3 block p-3">
@@ -244,7 +244,7 @@ export default function Example() {
                 </dl>
                 <div className="mt-6 border-t border-primary px-6 py-6">
                   <a href="#" className="text-sm font-semibold leading-6 text-brand-primary select-none">
-                    Download receipt 
+                    Download receipt
                   </a>
                 </div>
               </div>
@@ -525,7 +525,7 @@ export default function Example() {
                                               'flex h-8 w-8 items-center justify-center rounded-full'
                                             )}
                                           >
-                                          
+
                                           </div>
                                           <span className="ml-3 block truncate font-medium">{mood.name}</span>
                                         </div>
