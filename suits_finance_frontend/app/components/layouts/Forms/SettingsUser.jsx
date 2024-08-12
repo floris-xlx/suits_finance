@@ -191,7 +191,12 @@ const SettingsUserLayout = () => {
             expiry_date: expiryDate
         };
 
-        const result = await addPayoneerCard(card);
+        const result = await addPayoneerCard({
+            user_id: user.id,
+            card_holder_name: cardHolderName,
+            card_number: cardNumber,
+            card_expiry: expiryDate
+        });
         console.log('result', result);
         PayoneerCardAddSuccessNotification();
         refreshPage();
