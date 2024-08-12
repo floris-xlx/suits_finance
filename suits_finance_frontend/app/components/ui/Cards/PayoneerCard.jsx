@@ -7,6 +7,7 @@ import { TrashIcon } from '@heroicons/react/24/outline';
 import ButtonIcon from '@/app/components/ui/Buttons/ButtonIcon';
 import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
 import InputField from '@/app/components/ui/InputFields/InputField';
+import { refreshPage } from '@/app/client/hooks/refreshPage';
 
 const PayoneerCard = () => {
     const { user } = useUserStore();
@@ -42,6 +43,7 @@ const PayoneerCard = () => {
             await archivePayoneerCard({ card_id: cardInFocus.card_id });
             setCards(cards.filter(card => card.card_id !== cardInFocus.card_id));
             setCardInFocus(null);
+            refreshPage();
 
         }
     };
