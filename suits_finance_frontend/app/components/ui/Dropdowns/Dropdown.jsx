@@ -45,9 +45,9 @@ export default function App({ label = "Favorite Animal", options = animals }) {
                             defaultItems={options}
                             labelPlacement={placement}
                             label={label}
-                            className="max-w-xs"
+                            className="max-w-xs "
                         >
-                            {(item) => <AutocompleteItem key={item.value}>{item.value}</AutocompleteItem>}
+                            {(item) => <AutocompleteItem className="bg-secondary" key={item.value}>{item.value}</AutocompleteItem>}
                         </Autocomplete>
                     ))}
                 </div>
