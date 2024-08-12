@@ -70,7 +70,7 @@ export default function SettingsUserLayout() {
 
 
 
-    
+
     useEffect(() => {
         const checkAdmin = async () => {
             const admin = await isUserSuperAdmin({ user_id: user.id });
@@ -121,7 +121,7 @@ export default function SettingsUserLayout() {
 
 
 
- 
+
 
     const ProfileSection = () => (
         <div className="pt-[20px]">
@@ -218,6 +218,16 @@ export default function SettingsUserLayout() {
             <p className="mt-1 text-sm font-normal text-secondary select-none">
                 {t && t('appearance.description')}
             </p>
+
+
+
+
+            {/* Language switcher example */}
+            <button style={{ backgroundColor: 'red', padding: '10px' }} onClick={() => changeLanguage('en')}>EN</button>
+            <button style={{ backgroundColor: 'red', padding: '10px' }} onClick={() => changeLanguage('nl')}>NL</button>
+            <button style={{ backgroundColor: 'red', padding: '10px' }} onClick={() => changeLanguage('de')}>DE</button>
+            <button style={{ backgroundColor: 'red', padding: '10px' }} onClick={() => changeLanguage('ru')}>RU</button>
+
         </div>
     );
 
@@ -293,17 +303,12 @@ export default function SettingsUserLayout() {
 
             <div className="w-full h-full transition-height">
                 <h1 className="text-3xl leading-9 text-primary font-bold select-none sm:mt-[20px]">
-                    {t && t('title') ? t('title') : <div className="h-[16px] w-[80px]"><SkeletonLoader /></div>}
+                    {t && t('title') ? t('title') : <div className="h-[36px] w-[120px]"><SkeletonLoader /></div>}
                 </h1>
                 <h3 className="text-sm leading-9 text-secondary font-normal select-none">
-                    {t && t('subtitle') ? t('subtitle') : <div className="h-[16px] w-[80px]"><SkeletonLoader /></div>}
+                    {t && t('subtitle') ? t('subtitle') : <div className="h-[22px] w-[320px] mt-4"><SkeletonLoader /></div>}
                 </h3>
 
-                {/* Language switcher example */}
-                <button style={{ backgroundColor: 'red', padding: '10px' }} onClick={() => changeLanguage('en')}>EN</button>
-                <button style={{ backgroundColor: 'red', padding: '10px' }} onClick={() => changeLanguage('nl')}>NL</button>
-                <button style={{ backgroundColor: 'red', padding: '10px' }} onClick={() => changeLanguage('de')}>DE</button>
-                <button style={{ backgroundColor: 'red', padding: '10px' }} onClick={() => changeLanguage('ru')}>RU</button>
 
 
 
