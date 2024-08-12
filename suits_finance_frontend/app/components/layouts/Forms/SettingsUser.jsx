@@ -13,7 +13,7 @@ import PayoneerCard from '@/app/components/ui/Cards/PayoneerCard';
 import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
 import InputField from '@/app/components/ui/InputFields/InputField';
 import { getUserCards, addPayoneerCard } from '@/app/client/supabase/SupabaseUserData';
-import { PayoneerCardAddSuccessNotification } from '@/app/components/ui/Notifications/Notifications';
+import { PayoneerCardAddSuccessNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
 import refreshPage from '@/app/client/hooks/refreshPage';
 
 const SettingsUserLayout = () => {
@@ -180,24 +180,19 @@ const SettingsUserLayout = () => {
     const [cardHolderName, setCardHolderName] = useState('');
     const [cardNumber, setCardNumber] = useState('');
     const [expiryDate, setExpiryDate] = useState('');
+    const [cardIban, setCardIban] = useState('');
     const { modalRef: modalRef_connectPayoneer, handleOpenModal: handleOpenModal_connectPayoneer } = useModal();
     const handleConnectPayoneer = async () => {
 
         console.log('connect payoneer');
 
-        const card = {
-            card_holder_name: cardHolderName,
-            card_number: cardNumber,
-            expiry_date: expiryDate
-        };
-
         const result = await addPayoneerCard({
             user_id: user.id,
             card_holder_name: cardHolderName,
-            card_number: cardNumber,
+            card_iban: cardIban,
             card_expiry: expiryDate
         });
-        console.log('result', result);
+
         PayoneerCardAddSuccessNotification();
         refreshPage();
     }
@@ -222,9 +217,7 @@ const SettingsUserLayout = () => {
             </div>
 
 
-            <div className="mt-8">
-                <PayoneerCard />
-            </div>
+         
         </div>
     );
 
@@ -247,8 +240,8 @@ const SettingsUserLayout = () => {
 
                 <InputField
                     label={"IBAN"}
-                    value={cardNumber}
-                    setValue={setCardNumber}
+                    value={cardIban}
+                    setValue={setCardIban}
                     type='text'
                     width='full'
                 />
@@ -284,6 +277,12 @@ const SettingsUserLayout = () => {
                 {view.currentSettingsSection === 'billing' && <BillingSection />}
                 {view.currentSettingsSection === 'appearance' && <AppearanceSection />}
                 {view.currentSettingsSection === 'payoneer' && <PayoneerSection />}
+
+                {view.currentSettingsSection === 'payoneer' && (
+                    <div className="mt-8">
+                        <PayoneerCard />
+                    </div>
+                )}
 
                 <div className="mt-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-1 transition-all">

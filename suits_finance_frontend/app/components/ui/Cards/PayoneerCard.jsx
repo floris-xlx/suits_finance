@@ -70,13 +70,13 @@ const PayoneerCard = () => {
                 </div>
             ) : (
                 cards.map((card, index) => (
-                    <div key={index} className="border-primary border bg-secondary rounded-md w-full p-4 flex flex-row gap-x-1 items-center">
+                    <div key={index} className="border-primary border bg-secondary rounded-md w-full p-4 flex flex-row gap-x-1 items-center mt-4">
                         <div className="bg-accent border border-primary p-2 rounded-md">
                             <PayoneerIcon className="w-12 h-12" />
                         </div>
                         <div className="flex flex-col gap-y-1 ml-4 rounded-md bg-accent p-2 w-fit">
                             <p className="text-primary text-xs">{card.card_holder_name}</p>
-                            <p className="text-primary text-xs font-normal flex justify-center w-full">**** **** **** {card.last_4}</p>
+                            <p className="text-primary text-xs">{card.iban}</p>
                             <p className="text-secondary text-xs ">Provider: {card.provider}</p>
                         </div>
 

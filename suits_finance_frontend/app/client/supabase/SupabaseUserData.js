@@ -926,7 +926,7 @@ export async function getUserBalance(id) {
 export async function getUserCards(id) {
   const { data, error } = await supabase
     .from('cards')
-    .select('user_id, card_holder_name, provider, last_4')
+    .select('user_id, card_holder_name, provider, last_4, iban')
     .eq('user_id', id);
 
   if (error) throw error;
@@ -941,20 +941,20 @@ export async function getUserCards(id) {
 export async function addPayoneerCard({
   user_id,
   card_holder_name,
-  card_number,
   card_expiry,
+  card_iban,
 }) {
-  const last_4 = card_number.slice(-4);
+  const last_4 = card_iban.slice(-4);
   const provider = 'Payoneer';
 
   const { data, error } = await supabase.from('cards').insert([
     {
       user_id,
-      card_number,
       card_holder_name,
       card_expiry,
       provider,
       last_4,
+      iban: card_iban,
     },
   ]);
 
