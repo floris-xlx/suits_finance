@@ -7,6 +7,8 @@ import Image from 'next/image';
 import InputFieldDataWrapperUser from '@/app/components/dataWrappers/inputFieldWrapperUser';
 import convertCurrencyToSymbol from '@/app/client/hooks/formatting/CurrencySymbol';
 import { useUserViewStore, useUserStore } from '@/app/stores/stores';
+import ButtonPrimary from '@/app/components/ui/Buttons/ButtonPrimary';
+import { PayoneerIcon } from '@/app/components/ui/Icon';
 
 const SettingsUserLayout = () => {
     const { view, setCurrentSettingsSection } = useUserViewStore();
@@ -171,10 +173,22 @@ const SettingsUserLayout = () => {
 
     const PayoneerSection = () => (
         <div className="pt-[20px]">
-            <p className="text-base font-medium text-primary select-none">Payoneer</p>
-            <p className="mt-1 text-sm font-normal text-secondary select-none">
-                This displays your Payoneer settings and it's details.
-            </p>
+            <div className="flex flex-row gap-x-1 justify-between items-center">
+                
+                <div className="flex-col flex gap-x-1">
+                    <p className="text-base font-medium text-primary select-none">Payoneer</p>
+                    <p className="mt-1 text-sm font-normal text-secondary select-none">
+                        This displays your Payoneer settings and it's details.
+                    </p>
+                </div>
+
+                <div>
+                    < ButtonPrimary label={'Connect Payoneer'} onClick={() => { }} />
+
+                </div>
+
+
+            </div>
         </div>
     );
 
