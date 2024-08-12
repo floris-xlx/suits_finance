@@ -24,6 +24,10 @@ export function useRequireAuth() {
 
         const user = session.session.user;
         const userId = user.id;
+        // populate user if not already in db
+        const username = user.user_metadata.full_name || stripNameFromEmail(user.email);
+
+        await UpsertUser(userId, user.user_metadata.full_name, user.email, username);
 
         const [profilePic, userObject] = await Promise.all([
           GetProfilePicById(user.id),
@@ -43,10 +47,7 @@ export function useRequireAuth() {
 
 
         setUserObject(userObject);
-        const username = user.user_metadata.full_name || stripNameFromEmail(user.email);
-
-        // populate user if not already in db
-        await UpsertUser(user.id, user.user_metadata.full_name, user.email, username);
+        
 
         setUsername(username);
         setProfilePicture(profilePic);
