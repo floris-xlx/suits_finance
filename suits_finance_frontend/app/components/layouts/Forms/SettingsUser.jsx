@@ -199,7 +199,6 @@ const SettingsUserLayout = () => {
             card_expiry: expiryDate
         });
         console.log(result);
-
         PayoneerCardAddSuccessNotification();
         refreshPage();
     }
@@ -219,12 +218,7 @@ const SettingsUserLayout = () => {
                     < ButtonPrimary label={'Connect Payoneer'} onClick={handleOpenModal_connectPayoneer} />
 
                 </div>
-
-
             </div>
-
-
-
         </div>
     );
 
