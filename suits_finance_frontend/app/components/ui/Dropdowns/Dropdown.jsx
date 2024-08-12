@@ -30,45 +30,24 @@ const animals = [
     { label: "Crocodile", value: "crocodile", description: "A large semiaquatic reptile" },
 ];
 
-export default function App() {
+export default function App({ label = "Favorite Animal", options = animals }) {
     const placements = [
-        "inside",
         "outside",
-        "outside-left",
     ];
 
     return (
         <div className="w-full flex flex-col gap-4">
             <div className="flex flex-col gap-2">
-                <h3 className="text-default-500 text-small">Without placeholder</h3>
                 <div className="flex w-full flex-wrap items-end md:flex-nowrap mb-6 md:mb-0 gap-4">
-                    {placements.map((placement) => (
+                    {placements.map((placement, index) => (
                         <Autocomplete
-                            defaultItems={animals}
+                            key={index}
+                            defaultItems={options}
                             labelPlacement={placement}
-                            label="Favorite Animal"
+                            label={label}
                             className="max-w-xs"
                         >
-                            {(item) => <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>}
-                        </Autocomplete>
-                    ))}
-                </div>
-            </div>
-            <div className="flex flex-col gap-2">
-                <h3 className="text-default-500 text-small">With placeholder</h3>
-                <div className="flex w-full flex-wrap items-end md:flex-nowrap mb-6 md:mb-0 gap-4">
-                    {placements.map((placement) => (
-                        <Autocomplete
-                            labelPlacement={placement}
-                            label="Favorite Animal"
-                            placeholder="Search an animal"
-                            className="max-w-xs"
-                        >
-                            {animals.map((animal) => (
-                                <AutocompleteItem key={animal.value} value={animal.value}>
-                                    {animal.label}
-                                </AutocompleteItem>
-                            ))}
+                            {(item) => <AutocompleteItem key={item.value}>{item.value}</AutocompleteItem>}
                         </Autocomplete>
                     ))}
                 </div>

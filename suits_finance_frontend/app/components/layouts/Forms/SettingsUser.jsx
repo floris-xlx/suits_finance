@@ -16,6 +16,7 @@ import { PayoneerCardAddSuccessNotification } from '@/app/components/ui/Notifica
 import { refreshPage } from '@/app/client/hooks/refreshPage';
 import initTranslations from '@/app/i18n';
 import ProfileSection from '@/app/components/layouts/Settings/ProfileSection';
+import Dropdown from '@/app/components/ui/Dropdowns/Dropdown';
 
 export default function SettingsUserLayout() {
     const { view, setCurrentSettingsSection } = useUserViewStore();
@@ -33,6 +34,14 @@ export default function SettingsUserLayout() {
         '£ GBP',
         '¥ YEN',
         '₽ RUB'
+    ];
+
+    const roleOptions = [
+        { label: "User", value: "user" },
+        { label: "Admin", value: "admin" },
+        { label: "Super Admin", value: "super_admin" },
+        { label: "Developer", value: "developer" },
+        { label: "Support", value: "support" }
     ];
 
     // translations
@@ -306,6 +315,8 @@ export default function SettingsUserLayout() {
                                     type='text'
                                     width='full'
                                 />
+
+                                < Dropdown label='User role' options={roleOptions} />
                             </div>    
                         </div>
                     </div>
