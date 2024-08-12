@@ -29,18 +29,9 @@ const ProfileSection = () => {
         initializeTranslations();
     }, [router]);
 
-    useEffect(() => {
-        const locale = getLocaleFromQuery();
-        if (locale && i18n && i18n.language !== locale) {
-            i18n.changeLanguage(locale);
-        }
-    }, [router, i18n]);
+ 
 
-    const changeLanguage = (newLocale) => {
-        if (typeof window !== 'undefined') {
-            window.location.href = `${window.location.pathname}?locale=${newLocale}`;
-        }
-    };
+
     const isNullOrUndefined = (value) => {
         return value === null || value === undefined;
     };
@@ -54,10 +45,10 @@ const ProfileSection = () => {
     return (
         <div className="pt-[20px]">
             <p className="text-base font-medium text-primary select-none">
-                {t && t('profile.title') ? t('profile.title') : <div className="h-[16px] w-[80px]"><SkeletonLoader /></div>}
+                {t && t('profile.title') ? t('profile.title') : <div className="h-[16px] w-[80px] mt-2"><SkeletonLoader /></div>}
             </p>
             <p className="mt-1 text-sm font-normal text-secondary select-none">
-                {t && t('profile.description') ? t('profile.description') : <div className="h-[16px] w-[280px]"><SkeletonLoader /></div>}
+                {t && t('profile.description') ? t('profile.description') : <div className="h-[16px] w-[280px] mt-1"><SkeletonLoader /></div>}
             </p>
 
             <div

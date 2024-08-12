@@ -18,7 +18,7 @@ import ProfileSection from '@/app/components/layouts/Settings/ProfileSection';
 
 export default function SettingsUserLayout() {
     const { view, setCurrentSettingsSection } = useUserViewStore();
-    const { user, setEmail, setFullName, setRole, setProfilePicture, setCity, setCountry, setAddressLine1, setAddressLine2, setPostalCode, setState, setCurrency } = useUserStore();
+    const { user, setEmail, setFullName, setCity, setCountry, setAddressLine1, setAddressLine2, setPostalCode, setState, setCurrency } = useUserStore();
 
     const [isAdmin, setIsAdmin] = useState(false);
 
@@ -201,7 +201,6 @@ export default function SettingsUserLayout() {
             card_iban: cardIban,
             card_expiry: expiryDate
         });
-        console.log(result);
         PayoneerCardAddSuccessNotification();
         refreshPage();
     }
