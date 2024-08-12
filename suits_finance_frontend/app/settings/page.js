@@ -18,7 +18,7 @@ import {
 } from '@/app/stores/stores';
 
 
-export default function SettingsPage({ locale  }) {
+export default function SettingsPage() {
   // auth
   const { userId } = useRequireAuth();
 
@@ -26,9 +26,9 @@ export default function SettingsPage({ locale  }) {
   const { user } = useUserStore();
   const { loading } = useLoadingStore();
 
-  // if (loading.authLoading) {
-  //   return <LoaderScreen />;
-  // }
+  if (loading.authLoading) {
+    return <LoaderScreen />;
+  }
 
 
   return (
