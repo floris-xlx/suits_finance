@@ -8,6 +8,7 @@ import ButtonIcon from '@/app/components/ui/Buttons/ButtonIcon';
 import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
 import InputField from '@/app/components/ui/InputFields/InputField';
 import { refreshPage } from '@/app/client/hooks/refreshPage';
+import NoDataFound from '@/app/components/ui/EmptyStates/NoDataFound';
 
 const PayoneerCard = () => {
     const { user } = useUserStore();
@@ -58,14 +59,14 @@ const PayoneerCard = () => {
                 <p>Are you sure you want to delete this Payoneer card?</p>
             </Modal>
 
-
+            {!cardsLoading && !cards && <div className="mt-[150px]"><NoDataFound /></div> }
 
             {cardsLoading ? (
                 <div className="h-[84px] w-full">
                     <SkeletonLoader />
                 </div>
             ) : (
-                cards.map((card, index) => (
+                cards && cards.map((card, index) => (
                     <div key={index} className="border-primary border bg-secondary rounded-md w-full p-4 flex flex-row gap-x-1 items-center mt-4">
                         <div className="bg-accent border border-primary p-2 rounded-md">
                             <PayoneerIcon className="w-12 h-12" />

@@ -11,10 +11,10 @@ const NoDataFound = () => {
 
                 <div>
                     <h3 className="mt-2 text-xl font-medium text-primary select-none">
-                        No trades found
+                        No Payoneer cards found
                     </h3>
                     <p className="mt-1 text-sm text-secondary font-normal select-none">
-                        As more trades are added, they will appear here
+                        As soon as you add a Payoneer card, it will appear here.
                     </p>
                 </div>
             </div>
