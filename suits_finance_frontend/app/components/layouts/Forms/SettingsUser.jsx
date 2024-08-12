@@ -246,10 +246,10 @@ const SettingsUserLayout = () => {
                 />
 
                 <InputField
-                    label={"Card Number"}
+                    label={"IBAN"}
                     value={cardNumber}
                     setValue={setCardNumber}
-                    type='number'
+                    type='text'
                     width='full'
                 />
 
