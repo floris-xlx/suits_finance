@@ -10,6 +10,11 @@ import { useUserViewStore, useUserStore } from '@/app/stores/stores';
 import ButtonPrimary from '@/app/components/ui/Buttons/ButtonPrimary';
 import { PayoneerIcon } from '@/app/components/ui/Icon';
 import PayoneerCard from '@/app/components/ui/Cards/PayoneerCard';
+import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
+import InputField from '@/app/components/ui/InputFields/InputField';
+import { getUserCards, addPayoneerCard } from '@/app/client/supabase/SupabaseUserData';
+import { PayoneerCardAddSuccessNotification } from '@/app/components/ui/Notifications/Notifications';
+import refreshPage from '@/app/client/hooks/refreshPage';
 
 const SettingsUserLayout = () => {
     const { view, setCurrentSettingsSection } = useUserViewStore();
@@ -172,10 +177,30 @@ const SettingsUserLayout = () => {
         </div>
     );
 
+    const [cardHolderName, setCardHolderName] = useState('');
+    const [cardNumber, setCardNumber] = useState('');
+    const [expiryDate, setExpiryDate] = useState('');
+    const { modalRef: modalRef_connectPayoneer, handleOpenModal: handleOpenModal_connectPayoneer } = useModal();
+    const handleConnectPayoneer = async () => {
+
+        console.log('connect payoneer');
+
+        const card = {
+            card_holder_name: cardHolderName,
+            card_number: cardNumber,
+            expiry_date: expiryDate
+        };
+
+        const result = await addPayoneerCard(card);
+        console.log('result', result);
+        PayoneerCardAddSuccessNotification();
+        refreshPage();
+    }
+
     const PayoneerSection = () => (
         <div className="pt-[20px]">
             <div className="flex flex-row gap-x-1 justify-between items-center">
-                
+
                 <div className="flex-col flex gap-x-1">
                     <p className="text-base font-medium text-primary select-none">Payoneer</p>
                     <p className="mt-1 text-sm font-normal text-secondary select-none">
@@ -184,7 +209,7 @@ const SettingsUserLayout = () => {
                 </div>
 
                 <div>
-                    < ButtonPrimary label={'Connect Payoneer'} onClick={() => { }} />
+                    < ButtonPrimary label={'Connect Payoneer'} onClick={handleOpenModal_connectPayoneer} />
 
                 </div>
 
@@ -192,7 +217,7 @@ const SettingsUserLayout = () => {
             </div>
 
 
-            <div className="mt-4">
+            <div className="mt-8">
                 <PayoneerCard />
             </div>
         </div>
@@ -200,6 +225,42 @@ const SettingsUserLayout = () => {
 
     return (
         <Fragment>
+
+            <Modal
+                ref={modalRef_connectPayoneer}
+                title="Connect Payoneer Card"
+                buttonText={'Connect'}
+                onButtonPress={handleConnectPayoneer}>
+
+                <InputField
+                    label={"Card Holder Name"}
+                    value={cardHolderName}
+                    setValue={setCardHolderName}
+                    type='text'
+                    width='full'
+                />
+
+                <InputField
+                    label={"Card Number"}
+                    value={cardNumber}
+                    setValue={setCardNumber}
+                    type='number'
+                    width='full'
+                />
+
+                <InputField
+                    label={"Expiry Date"}
+                    value={expiryDate}
+                    setValue={setExpiryDate}
+                    type='text'
+                    width='full'
+                />
+
+
+            </Modal> 
+
+
+
             <div className="w-full h-full transition-height">
                 <h1 className="text-3xl leading-9 text-primary font-bold select-none sm:mt-[20px]">
                     Settings
@@ -222,136 +283,146 @@ const SettingsUserLayout = () => {
                 <div className="mt-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-1 transition-all">
 
-                        <InputFieldDataWrapperUser
-                            title={'Full name'}
-                            label={'Government Name'}
-                            supabaseKey='full_name'
-                            disabled={false}
-                            type='text'
-                            userId={user.id}
-                            auditLogRequest={'update_user_metadata'}
-                            auditLog={true}
-                            show={view.currentSettingsSection === 'profile'}
-                            preSeedValue={user.full_name}
-                            setReadOnlyValue={setFullName}
-                        />
-
-                        <InputFieldDataWrapperUser
-                            title={'Email Address'}
-                            label={'Email linked to your account'}
-                            supabaseKey='email'
-                            disabled={false}
-                            type='text'
-                            userId={user.id}
-                            auditLogRequest={'update_user_metadata'}
-                            auditLog={true}
-                            setReadOnlyValue={setEmail}
-                            preSeedValue={user.email}
-                            show={view.currentSettingsSection === 'profile'}
-                        />
-
-                        <InputFieldDataWrapperUser
-                            title={'Country'}
-                            label={'The country you are tax liable'}
-                            supabaseKey='country'
-                            disabled={false}
-                            type='text'
-                            userId={user.id}
-                            auditLogRequest={'update_user_metadata'}
-                            auditLog={true}
-                            setReadOnlyValue={setCountry}
-                            preSeedValue={user.country}
-                            show={view.currentSettingsSection === 'profile'}
-                        />
-
-                        <TabHorizontal
-                            title={'Currency displayed'}
-                            label={'This is the currency that will be reflected in your account'}
-                            options={currencyOptions}
-                            setValueExternal={setCurrency}
-                            show={view.currentSettingsSection === 'appearance'}
-                        />
+                        {view.currentSettingsSection === 'profile' && (
+                            <InputFieldDataWrapperUser
+                                title={'Full name'}
+                                label={'Government Name'}
+                                supabaseKey='full_name'
+                                disabled={false}
+                                type='text'
+                                userId={user.id}
+                                auditLogRequest={'update_user_metadata'}
+                                auditLog={true}
+                                preSeedValue={user.full_name}
+                                setReadOnlyValue={setFullName}
+                            />
+                        )}
+                        {view.currentSettingsSection === 'profile' && (
+                            <InputFieldDataWrapperUser
+                                title={'Email Address'}
+                                label={'Email linked to your account'}
+                                supabaseKey='email'
+                                disabled={false}
+                                type='text'
+                                userId={user.id}
+                                auditLogRequest={'update_user_metadata'}
+                                auditLog={true}
+                                setReadOnlyValue={setEmail}
+                                preSeedValue={user.email}
+                                show={view.currentSettingsSection === 'profile'}
+                            />
+                        )}
+                        {view.currentSettingsSection === 'profile' && (
+                            <InputFieldDataWrapperUser
+                                title={'Country'}
+                                label={'The country you are tax liable'}
+                                supabaseKey='country'
+                                disabled={false}
+                                type='text'
+                                userId={user.id}
+                                auditLogRequest={'update_user_metadata'}
+                                auditLog={true}
+                                setReadOnlyValue={setCountry}
+                                preSeedValue={user.country}
+                                show={view.currentSettingsSection === 'profile'}
+                            />
+                        )}
+                        {view.currentSettingsSection === 'appearance' && (
+                            <TabHorizontal
+                                title={'Currency displayed'}
+                                label={'This is the currency that will be reflected in your account'}
+                                options={currencyOptions}
+                                setValueExternal={setCurrency}
+                                show={view.currentSettingsSection === 'appearance'}
+                            />
+                        )}
                     </div>
 
                     <div className="flex flex-col w-full sm:max-w-[50%] pb-[100px]">
-                        <InputFieldDataWrapperUser
-                            label={'Address Line 1'}
-                            supabaseKey='address_line_1'
-                            disabled={false}
-                            type='text'
-                            userId={user.id}
-                            auditLogRequest={'update_user_metadata'}
-                            auditLog={true}
-                            setReadOnlyValue={setAddressLine1}
-                            preSeedValue={user.address_line_1}
-                            show={view.currentSettingsSection === 'billing'}
-                        />
-
-                        <InputFieldDataWrapperUser
-                            label={'Address Line 2'}
-                            supabaseKey='address_line_2'
-                            disabled={false}
-                            type='text'
-                            userId={user.id}
-                            auditLogRequest={'update_user_metadata'}
-                            auditLog={true}
-                            setReadOnlyValue={setAddressLine2}
-                            preSeedValue={user.address_line_2}
-                            show={view.currentSettingsSection === 'billing'}
-                        />
-
-                        <InputFieldDataWrapperUser
-                            label={'City'}
-                            supabaseKey='city'
-                            disabled={false}
-                            type='text'
-                            userId={user.id}
-                            auditLogRequest={'update_user_metadata'}
-                            auditLog={true}
-                            setReadOnlyValue={setCity}
-                            preSeedValue={user.city}
-                            show={view.currentSettingsSection === 'billing'}
-                        />
-
-                        <div className="flex flex-row gap-x-2 w-full justify-between">
+                        {view.currentSettingsSection === 'billing' && (
                             <InputFieldDataWrapperUser
-                                label={'State / Province'}
-                                supabaseKey='state'
+                                label={'Address Line 1'}
+                                supabaseKey='address_line_1'
                                 disabled={false}
                                 type='text'
                                 userId={user.id}
                                 auditLogRequest={'update_user_metadata'}
                                 auditLog={true}
-                                setReadOnlyValue={setState}
-                                preSeedValue={user.state}
+                                setReadOnlyValue={setAddressLine1}
+                                preSeedValue={user.address_line_1}
                                 show={view.currentSettingsSection === 'billing'}
                             />
+                        )}
+                        {view.currentSettingsSection === 'billing' && (
                             <InputFieldDataWrapperUser
-                                label={'Postal code'}
-                                supabaseKey='postal_code'
+                                label={'Address Line 2'}
+                                supabaseKey='address_line_2'
                                 disabled={false}
                                 type='text'
                                 userId={user.id}
                                 auditLogRequest={'update_user_metadata'}
                                 auditLog={true}
-                                setReadOnlyValue={setPostalCode}
-                                preSeedValue={user.postal_code}
+                                setReadOnlyValue={setAddressLine2}
+                                preSeedValue={user.address_line_2}
                                 show={view.currentSettingsSection === 'billing'}
                             />
-                        </div>
-
-                        <InputFieldDataWrapperUser
-                            label={'Country'}
-                            supabaseKey='country'
-                            disabled={false}
-                            type='text'
-                            userId={user.id}
-                            auditLogRequest={'update_user_metadata'}
-                            auditLog={true}
-                            setReadOnlyValue={setCountry}
-                            preSeedValue={user.country}
-                            show={view.currentSettingsSection === 'billing'}
-                        />
+                        )}
+                        {view.currentSettingsSection === 'billing' && (
+                            <InputFieldDataWrapperUser
+                                label={'City'}
+                                supabaseKey='city'
+                                disabled={false}
+                                type='text'
+                                userId={user.id}
+                                auditLogRequest={'update_user_metadata'}
+                                auditLog={true}
+                                setReadOnlyValue={setCity}
+                                preSeedValue={user.city}
+                                show={view.currentSettingsSection === 'billing'}
+                            />
+                        )}
+                        {view.currentSettingsSection === 'billing' && (
+                            <div className="flex flex-row gap-x-2 w-full justify-between">
+                                <InputFieldDataWrapperUser
+                                    label={'State / Province'}
+                                    supabaseKey='state'
+                                    disabled={false}
+                                    type='text'
+                                    userId={user.id}
+                                    auditLogRequest={'update_user_metadata'}
+                                    auditLog={true}
+                                    setReadOnlyValue={setState}
+                                    preSeedValue={user.state}
+                                    show={view.currentSettingsSection === 'billing'}
+                                />
+                                <InputFieldDataWrapperUser
+                                    label={'Postal code'}
+                                    supabaseKey='postal_code'
+                                    disabled={false}
+                                    type='text'
+                                    userId={user.id}
+                                    auditLogRequest={'update_user_metadata'}
+                                    auditLog={true}
+                                    setReadOnlyValue={setPostalCode}
+                                    preSeedValue={user.postal_code}
+                                    show={view.currentSettingsSection === 'billing'}
+                                />
+                            </div>
+                        )}
+                        {view.currentSettingsSection === 'billing' && (
+                            <InputFieldDataWrapperUser
+                                label={'Country'}
+                                supabaseKey='country'
+                                disabled={false}
+                                type='text'
+                                userId={user.id}
+                                auditLogRequest={'update_user_metadata'}
+                                auditLog={true}
+                                setReadOnlyValue={setCountry}
+                                preSeedValue={user.country}
+                                show={view.currentSettingsSection === 'billing'}
+                            />
+                        )}
 
                     </div>
                 </div>

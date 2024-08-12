@@ -922,3 +922,43 @@ export async function getUserBalance(id) {
 
   return data[0].balance;
 }
+
+export async function getUserCards(id) {
+  const { data, error } = await supabase
+    .from('cards')
+    .select('user_id, card_holder_name, provider, last_4')
+    .eq('user_id', id);
+
+  if (error) throw error;
+
+  if (data.length === 0) {
+    return null;
+  }
+
+  return data;
+}
+
+export async function addPayoneerCard({
+  user_id,
+  card_holder_name,
+  card_number,
+  card_expiry,
+}) {
+  const last_4 = card_number.slice(-4);
+  const provider = 'Payoneer';
+
+  const { data, error } = await supabase.from('cards').insert([
+    {
+      user_id,
+      card_number,
+      card_holder_name,
+      card_expiry,
+      provider,
+      last_4,
+    },
+  ]);
+
+  if (error) throw error;
+
+  return data;
+}
