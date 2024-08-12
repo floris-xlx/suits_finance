@@ -963,6 +963,7 @@ export async function addPayoneerCard({
   return data;
 }
 
+
 export async function archivePayoneerCard({
   card_id,
 }) {
@@ -988,4 +989,19 @@ export async function archivePayoneerCard({
   if (deleteError) throw deleteError;
 
   return archiveData;
+}
+
+export async function isUserSuperAdmin({ user_id }) {
+  const { data, error } = await supabase
+    .from('users')
+    .select('super_admin')
+    .eq('user_id', user_id);
+
+  if (error) throw error;
+
+  if (data.length === 0) {
+    return null;
+  }
+
+  return data[0].super_admin;
 }

@@ -12,17 +12,19 @@ import { PayoneerIcon } from '@/app/components/ui/Icon';
 import PayoneerCard from '@/app/components/ui/Cards/PayoneerCard';
 import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
 import InputField from '@/app/components/ui/InputFields/InputField';
-import { getUserCards, addPayoneerCard } from '@/app/client/supabase/SupabaseUserData';
+import { getUserCards, addPayoneerCard, isUserSuperAdmin } from '@/app/client/supabase/SupabaseUserData';
 import { PayoneerCardAddSuccessNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
-import {refreshPage} from '@/app/client/hooks/refreshPage';
+import { refreshPage } from '@/app/client/hooks/refreshPage';
 
 const SettingsUserLayout = () => {
     const { view, setCurrentSettingsSection } = useUserViewStore();
     const { user, setEmail, setFullName, setRole, setProfilePicture, setCity, setCountry, setAddressLine1, setAddressLine2, setPostalCode, setState, setCurrency } = useUserStore();
 
-    const settingOptions = [
-        'Profile', 'Appearance', 'Payoneer', 'Billing'
-    ];
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    const settingOptions = isAdmin ?
+        ['Profile', 'Appearance', 'Payoneer', 'Billing', 'Permission'] :
+        ['Profile', 'Appearance', 'Payoneer', 'Billing']; 
 
     const currencyOptions = [
         '$ USD',
@@ -40,6 +42,14 @@ const SettingsUserLayout = () => {
     // add table for billing history
     // only show for super admin and dev
     // show in billing the current rate of 1% fee
+
+    useEffect(() => {
+        const checkAdmin = async () => {
+            const admin = await isUserSuperAdmin({ user_id: user.id });
+            setIsAdmin(admin);
+        };
+        checkAdmin();
+    }, [user]);
 
 
     const isNullOrUndefined = (value) => {
@@ -178,20 +188,17 @@ const SettingsUserLayout = () => {
     );
 
     const [cardHolderName, setCardHolderName] = useState('');
-    const [cardNumber, setCardNumber] = useState('');
     const [expiryDate, setExpiryDate] = useState('');
     const [cardIban, setCardIban] = useState('');
     const { modalRef: modalRef_connectPayoneer, handleOpenModal: handleOpenModal_connectPayoneer } = useModal();
     const handleConnectPayoneer = async () => {
-
-        console.log('connect payoneer');
-
         const result = await addPayoneerCard({
             user_id: user.id,
             card_holder_name: cardHolderName,
             card_iban: cardIban,
             card_expiry: expiryDate
         });
+        console.log(result);
 
         PayoneerCardAddSuccessNotification();
         refreshPage();
@@ -217,7 +224,7 @@ const SettingsUserLayout = () => {
             </div>
 
 
-         
+
         </div>
     );
 
@@ -255,7 +262,7 @@ const SettingsUserLayout = () => {
                 />
 
 
-            </Modal> 
+            </Modal>
 
 
 
@@ -413,6 +420,7 @@ const SettingsUserLayout = () => {
                                 />
                             </div>
                         )}
+
                         {view.currentSettingsSection === 'billing' && (
                             <InputFieldDataWrapperUser
                                 label={'Country'}
