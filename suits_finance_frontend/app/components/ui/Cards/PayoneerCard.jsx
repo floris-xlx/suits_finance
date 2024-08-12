@@ -42,7 +42,7 @@ const PayoneerCard = () => {
             await archivePayoneerCard({ card_id: cardInFocus.card_id });
             setCards(cards.filter(card => card.card_id !== cardInFocus.card_id));
             setCardInFocus(null);
-            handleOpenModal_deletePayoneerConfirm();
+
         }
     };
 
@@ -56,13 +56,7 @@ const PayoneerCard = () => {
                 <p>Are you sure you want to delete this Payoneer card?</p>
             </Modal>
 
-            <Modal
-                ref={modalRef_deletePayoneerConfirm}
-                title="Are you sure?"
-                buttonText={'Delete'}
-                onButtonPress={handleDeletePayoneerConfirm}>
-                <p>Confirm: Are you sure you want to delete this Payoneer card?</p>
-            </Modal>
+
 
             {cardsLoading ? (
                 <div className="h-[84px] w-full">
