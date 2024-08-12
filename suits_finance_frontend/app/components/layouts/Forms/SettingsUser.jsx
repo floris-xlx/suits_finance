@@ -15,7 +15,7 @@ import { PayoneerCardAddSuccessNotification } from '@/app/components/ui/Notifica
 import { refreshPage } from '@/app/client/hooks/refreshPage';
 import initTranslations from '@/app/i18n';
 
-export default function SettingsUserLayout({ locale  }) {
+export default function SettingsUserLayout() {
     const { view, setCurrentSettingsSection } = useUserViewStore();
     const { user, setEmail, setFullName, setRole, setProfilePicture, setCity, setCountry, setAddressLine1, setAddressLine2, setPostalCode, setState, setCurrency } = useUserStore();
 
@@ -34,34 +34,43 @@ export default function SettingsUserLayout({ locale  }) {
     ];
 
     // translations
-    const router = useRouter()
-    const { defaultLocale } = router;
+    const router = useRouter();
+    const [translations, setTranslations] = useState({});
+    const { t, i18n } = translations;
+
+    const getLocaleFromQuery = () => {
+        if (typeof window !== 'undefined') {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('locale') || router.locale;
+        }
+        return router.locale;
+    };
+
     useEffect(() => {
+        const locale = getLocaleFromQuery();
         const initializeTranslations = async () => {
             const { t, i18n } = await initTranslations(locale, ['settings']);
             setTranslations({ t, i18n });
         };
         initializeTranslations();
-    }, [locale]);
-    
-    const [translations, setTranslations] = useState({});
-    const { t, i18n } = translations;
+    }, [router]);
+
     useEffect(() => {
+        const locale = getLocaleFromQuery();
         if (locale && i18n && i18n.language !== locale) {
             i18n.changeLanguage(locale);
         }
-    }, [locale, i18n]);
-    const onToggleLanguageClick = (newLocale) => {
-        const { pathname, asPath, query } = router
-        router.push({ pathname, query }, asPath, { locale: newLocale })
-    }
+    }, [router, i18n]);
 
-    const clientSideLanguageChange = (newLocale) => {
-        i18n.changeLanguage(newLocale)
-    }
+    const changeLanguage = (newLocale) => {
+        if (typeof window !== 'undefined') {
+            window.location.href = `${window.location.pathname}?locale=${newLocale}`;
+        }
+    };
 
-    const changeTo = router.locale === 'en' ? 'nl' : 'en'
 
+
+    
     useEffect(() => {
         const checkAdmin = async () => {
             const admin = await isUserSuperAdmin({ user_id: user.id });
@@ -110,11 +119,17 @@ export default function SettingsUserLayout({ locale  }) {
     const userPostalCode = isNullOrUndefined(user.postal_code) ? (showPostalCode && <div className="h-[16px] w-[80px]"><SkeletonLoader /></div>) : user.postal_code;
     const userState = isNullOrUndefined(user.state) ? (showState && <div className="h-[16px] w-[80px]"><SkeletonLoader /></div>) : user.state;
 
+
+
+ 
+
     const ProfileSection = () => (
         <div className="pt-[20px]">
-            <p className="text-base font-medium text-primary select-none">{t && t('profile.title')}</p>
+            <p className="text-base font-medium text-primary select-none">
+                {t && t('profile.title') ? t('profile.title') : <div className="h-[16px] w-[80px]"><SkeletonLoader /></div>}
+            </p>
             <p className="mt-1 text-sm font-normal text-secondary select-none">
-                {t && t('profile.description')}
+                {t && t('profile.description') ? t('profile.description') : <div className="h-[16px] w-[280px]"><SkeletonLoader /></div>}
             </p>
 
             <div
@@ -275,13 +290,22 @@ export default function SettingsUserLayout({ locale  }) {
 
             </Modal>
 
+
             <div className="w-full h-full transition-height">
                 <h1 className="text-3xl leading-9 text-primary font-bold select-none sm:mt-[20px]">
-                    {t && t('title')}
+                    {t && t('title') ? t('title') : <div className="h-[16px] w-[80px]"><SkeletonLoader /></div>}
                 </h1>
                 <h3 className="text-sm leading-9 text-secondary font-normal select-none">
-                    {t && t('subtitle')}
+                    {t && t('subtitle') ? t('subtitle') : <div className="h-[16px] w-[80px]"><SkeletonLoader /></div>}
                 </h3>
+
+                {/* Language switcher example */}
+                <button style={{ backgroundColor: 'red', padding: '10px' }} onClick={() => changeLanguage('en')}>EN</button>
+                <button style={{ backgroundColor: 'red', padding: '10px' }} onClick={() => changeLanguage('nl')}>NL</button>
+                <button style={{ backgroundColor: 'red', padding: '10px' }} onClick={() => changeLanguage('de')}>DE</button>
+                <button style={{ backgroundColor: 'red', padding: '10px' }} onClick={() => changeLanguage('ru')}>RU</button>
+
+
 
                 <TabHorizontal
                     options={settingOptions}
