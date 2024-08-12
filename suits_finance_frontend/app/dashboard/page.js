@@ -10,7 +10,7 @@ import { getUserBalance } from '@/app/client/supabase/SupabaseUserData';
 import { useRequireAuth } from '@/app/auth/hooks/useRequireAuth';
 import LoaderScreen from '@/app/components/ui/Loading/LoaderScreen';
 import Header from '@/app/components/ui/Headers/Header';
-import {  ArrowUpIcon } from '@heroicons/react/24/outline';
+import { ArrowUpIcon } from '@heroicons/react/24/outline';
 import { GaugeIcon } from '@/app/components/ui/Icon';
 import BalanceCard from '@/app/components/ui/Cards/BalanceCard';
 import CreditCard from '@/app/components/ui/Cards/CreditCard';
@@ -30,8 +30,8 @@ import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
 import CardDetailsLayout from '@/app/components/layouts/Modals/cardDetails';
 import { TransfersBlockedNoBalanceNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
 import TransactionsTableMobile from '@/app/components/ui/Tables/TransactionsTableMobile';
-import TransactionsOverviewLayout  from '@/app/components/layouts/Modals/transactionsOverview';
-import TopUpBalanceLayout  from '@/app/components/layouts/Modals/topUpBalance';
+import TransactionsOverviewLayout from '@/app/components/layouts/Modals/transactionsOverview';
+import TopUpBalanceLayout from '@/app/components/layouts/Modals/topUpBalance';
 import CardLimitsLayout from '@/app/components/layouts/Modals/cardLimits';
 import DeveloperView from '@/app/components/layouts/Developer/DeveloperView';
 
@@ -48,11 +48,11 @@ export default function DashboardPage() {
   const [topUpAmount, setTopUpAmount] = useState(0);
 
   const [currentCard, setCurrentCard] = useState({
-    fullName: 'John Doe',
-    cardNumber: '4642348998677632',
-    expiryDate: '12/24',
-    balance: -6815.34,
-    currency: 'EUR',
+    fullName: null,
+    cardNumber: null,
+    expiryDate: null,
+    balance: null,
+    currency: null,
   });
 
   const DEMO_TRANSACTION = {
@@ -97,7 +97,7 @@ export default function DashboardPage() {
     handleOpenModal_DetailsCard();
   }
 
-  const isBalanceNegative = currentCard.balance < 0;
+  const isBalanceNegative = currentCard.balance !== null && currentCard.balance < 0;
 
   // transfer money
   const handleTransfer = () => {

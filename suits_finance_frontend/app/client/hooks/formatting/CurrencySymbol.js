@@ -1,4 +1,8 @@
 function convertCurrencyToSymbol(currency = 'usd') {
+  if (!currency) {
+    return '€';
+  }
+  
   // force the currency to be lowercase
   currency = currency.toLowerCase();
 
@@ -16,7 +20,7 @@ function convertCurrencyToSymbol(currency = 'usd') {
     case 'inr':
       return '₹';
     default:
-      return '';
+      return '€';
   }
 }
 

@@ -157,7 +157,7 @@ const ToggleBlockUsers = ({
       <div className="h-[80px] w-[220px]">
         <SkeletonLoader />
       </div>
-    
+
     ) : (
       <div
         className="mt-1 sm:mt-2  transition-height overflow-hidden"
@@ -170,7 +170,7 @@ const ToggleBlockUsers = ({
 
             handleToggle();
           }} // Ensure onClick is a function
-       
+
           classNames={{
             base: cn(
               'inline-flex flex-row-reverse w-full bg-primary hover:bg-accent items-center transition',

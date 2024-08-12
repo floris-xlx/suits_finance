@@ -52,7 +52,13 @@ const CreditCard = ({
                                 Name
                             </p>
                             <p className="font-medium tracking-widest select-none">
-                                {fullName.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                                {fullName ? (
+                                    fullName.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+                                ) : (
+                                    <div className="w-[80px] h-[16px] ">
+                                        <SkeletonLoader transparent={true} />
+                                    </div>
+                                )}
                             </p>
                         </div>
                         <img className="w-14 h-14" src="https://i.imgur.com/bbPHJVe.png" />

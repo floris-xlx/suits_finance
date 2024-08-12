@@ -13,7 +13,7 @@ const BalanceCard = ({
 
     const formattedBalance = balance !== null ? balance.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '';
 
-    const balanceElement = loading.balanceLoading ? <div className="h-[36px] w-[152px]"><SkeletonLoader /></div> : `${convertCurrencyToSymbol(currency)} ${formattedBalance}`;
+    const balanceElement = loading.balanceLoading || balance === null ? <div className="h-[36px] w-[182px]"><SkeletonLoader /></div> : `${convertCurrencyToSymbol(currency)} ${formattedBalance}`;
 
     useEffect(() => {
         if (balance < 0 && !loading.balanceLoading) {
@@ -46,6 +46,7 @@ const BalanceCard = ({
 
                 <div className={`text-3xl font-semibold ${isBalanceNegative ? 'text-red' : 'text-primary'} select-none mb-1`}>
                     {balanceElement}
+                    
                 </div>
                 <div className="text-sm text-secondary select-none">
                     {label}
