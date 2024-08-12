@@ -130,7 +130,7 @@ const InputFieldDataWrapperUser = ({
         const mountTime = GetKeyLocalStorage("cachedMountTimeDataWrapper");
         const currentTime = Math.floor(Date.now() / 1000);
 
-        if (value !== lastValue && value !== undefined && (supabaseKey !== 'email' || isValueUnique === true) && (currentTime - mountTime >= 2)) {
+        if (value !== lastValue && value !== undefined && (supabaseKey !== 'email' || isValueUnique === true) && (currentTime - mountTime >= 1)) {
             const debounceSave = setTimeout(() => {
                 setLastValue(value);
                 setLastKeyStrokeTime(Math.floor(Date.now() / 1000));
