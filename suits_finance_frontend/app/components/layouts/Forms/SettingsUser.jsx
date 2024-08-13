@@ -142,7 +142,6 @@ export default function SettingsUserLayout() {
     useEffect(() => {
         const checkEmail = async () => {
             const emailUnique = await IsEmailUniqueRoles({ email: inviteNewEmail });
-            console.log(emailUnique);
             setEmailUnique(emailUnique);
         };
         checkEmail();
@@ -240,6 +239,7 @@ export default function SettingsUserLayout() {
             email: inviteNewEmail,
             role: selectedRole.value
         });
+        console.log(result);
 
         if (result) {
             UserAddedSuccessNotification();

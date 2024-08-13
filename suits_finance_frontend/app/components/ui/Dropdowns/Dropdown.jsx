@@ -30,7 +30,7 @@ export default function App({ label = "Favorite Animal", options = animals, widt
                                 key={index}
                                 defaultItems={options}
                                 color={'success'}
-                                onSelectionChange={setValue}
+                                onSelect={setValue}
                                 defaultInputValue={options[0].label}
 
                                 className=" border border-primary rounded-md shadow-sm bg-primary "
