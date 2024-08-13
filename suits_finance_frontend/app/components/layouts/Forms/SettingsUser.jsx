@@ -27,7 +27,7 @@ export default function SettingsUserLayout() {
     const [isAdmin, setIsAdmin] = useState(false);
     // permission section usernames
     const [inviteNewEmail, setInviteNewEmail] = useState('');
-    
+
     const settingOptions = isAdmin ?
         ['Profile', 'Appearance', 'Payoneer', 'Billing', 'Permission'] :
         ['Profile', 'Appearance', 'Payoneer', 'Billing'];
@@ -235,6 +235,20 @@ export default function SettingsUserLayout() {
     const handleAddMember = async () => {
         // add member
         console.log('add member');
+
+        const result = await addUserRoleObject({
+            email: inviteNewEmail,
+            role: selectedRole.value
+        });
+
+        if (result) {
+            UserAddedSuccessNotification();
+        }
+        else {
+            AddUserFailedNotification();
+        }
+
+        
     }
 
 
