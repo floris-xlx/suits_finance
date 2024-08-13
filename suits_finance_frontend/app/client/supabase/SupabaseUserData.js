@@ -1025,18 +1025,35 @@ export async function isUserSuperAdmin({ user_id }) {
 
 
 export async function addUserRoleObject({ email, role }) {
+  let userId = null;
+
+  // Try to get the user_id from the users table using the email
+  const { data: userData, error: userError } = await supabase
+    .from('users')
+    .select('user_id')
+    .eq('email', email)
+    .single();
+
+  if (userError && userError.code !== 'PGRST116') { // PGRST116: No rows found
+    throw userError;
+  }
+
+  if (userData) {
+    userId = userData.user_id;
+  }
+
   const { data, error, status } = await supabase.from('user_roles').insert([
     {
       email,
       role,
-      status: 'pending'
+      status: 'pending',
+      user_id: userId
     },
   ]);
 
   if (error) throw error;
   console.log(status);
- 
 
   return status;
-
 }
+
