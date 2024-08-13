@@ -319,8 +319,8 @@ export default function SettingsUserLayout() {
                             </h3>
 
                             <div className="flex flex-col gap-y-1 sm:flex-row gap-x-1 pr-3 items-center w-full justify-between">
-                                <div className="flex-col sm:flex-row flex items-center">
-                                    <div className="sm:min-w-[300px] max-w-[455px]">
+                                <div className="flex-col sm:flex-row flex sm:items-center w-full">
+                                    <div className="sm:min-w-[300px] w-full sm:max-w-[455px]">
                                         <InputField
                                             label={t && t('permission.email_address') ? t('permission.email_address') : <div className="h-[16px] w-[60px]"><SkeletonLoader /></div>}
                                             value={inviteNewEmail}
@@ -330,15 +330,18 @@ export default function SettingsUserLayout() {
                                         />
 
                                     </div>
-                                    <div className="max-w-[200px] ">
+                                    <div className=" ml-2  sm:ml-0 sm:max-w-[200px] w-full">
 
-                                        < Dropdown label='User role' options={roleOptions} />
+                                        < Dropdown label='User role' options={roleOptions} width='full'/>
                                     </div>
                                 </div>
 
-                                <button className={`text-white flex-row flex items-center gap-x-2 p-2 rounded-md border mt-6 ${isEmailValid(inviteNewEmail) ? 'bg-brand-primary border-brand-primary' : 'bg-brand-disabled border-brand-disabled'}`} disabled={!isEmailValid(inviteNewEmail)}>
-                                    Add Member
-                                    <PaperAirplaneIcon className="h-6 w-6 text-white" />
+                                <button className={`text-white flex-row flex items-center gap-x-2 p-2 mb-2 sm:mb-0 ml-4 sm:ml-2 rounded-md border mt-6 sm:w-fit w-full ${isEmailValid(inviteNewEmail) ? 'bg-brand-primary border-brand-primary' : 'bg-brand-disabled border-brand-disabled'}`} disabled={!isEmailValid(inviteNewEmail)}>
+                                    <div className="flex flex-row gap-x-2 items-center mx-auto">
+                                        Add Member
+                                        <PaperAirplaneIcon className="h-6 w-6 text-white" />
+                                    </div>
+
                                 </button>
                             </div>
                         </div>

@@ -29,7 +29,7 @@
     "permission": {
         "title": "Permission",
         "description": "This displays admin permission settings.",
-        "invite_new_member_title": "Invite new members by Email",
+        "invite_new_member_title": "Whitelist new members by Email",
         "email_address": "Email Address"
     }
 }

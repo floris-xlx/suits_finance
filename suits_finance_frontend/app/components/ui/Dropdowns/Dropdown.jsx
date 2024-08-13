@@ -44,7 +44,7 @@ export default function App({ label = "Favorite Animal", options = animals, widt
                 {label}
             </label>
 
-            <div className="w-full flex flex-col gap-4">
+            <div className="w-full flex flex-col ">
                 <div className="flex flex-col gap-2">
                     <div className="flex w-full flex-wrap items-end md:flex-nowrap mb-6 md:mb-0 gap-4">
                         {placements.map((placement, index) => (
@@ -54,7 +54,7 @@ export default function App({ label = "Favorite Animal", options = animals, widt
                                 color={'success'}
 
 
-                                className="max-w-xs border border-primary rounded-md shadow-sm bg-primary "
+                                className=" border border-primary rounded-md shadow-sm bg-primary "
                             >
                                 {(item) => <AutocompleteItem className="" key={item.value}>{item.label}</AutocompleteItem>}
                             </Autocomplete>
