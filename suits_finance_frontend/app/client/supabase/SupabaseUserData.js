@@ -1046,7 +1046,7 @@ export async function addUserRoleObject({ email, role }) {
     {
       email,
       role,
-      status: 'pending',
+      status: userId ? 'complete' : 'pending',
       user_id: userId
     },
   ]);
