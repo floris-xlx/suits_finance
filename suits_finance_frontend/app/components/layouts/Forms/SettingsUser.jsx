@@ -248,7 +248,7 @@ export default function SettingsUserLayout() {
             AddUserFailedNotification();
         }
 
-        
+
     }
 
 
@@ -374,7 +374,7 @@ export default function SettingsUserLayout() {
                                     </div>
                                 </div>
 
-                                <button className={` flex-row flex items-center gap-x-2 p-2 mb-2 sm:mb-0 ml-4 sm:ml-2 rounded-md border mt-6 sm:w-fit text-nowrap w-full ${isEnabledAddMemberButton() ? 'text-white bg-brand-primary hover:transition hover:bg-brand-secondary border-brand-primary' : 'text-gray-300 bg-brand-disabled border-brand-disabled'}`} disabled={!isEnabledAddMemberButton()}>
+                                <button onClick={handleAddMember} className={` flex-row flex items-center gap-x-2 p-2 mb-2 sm:mb-0 ml-4 sm:ml-2 rounded-md border mt-6 sm:w-fit text-nowrap w-full ${isEnabledAddMemberButton() ? 'text-white bg-brand-primary hover:transition hover:bg-brand-secondary border-brand-primary' : 'text-gray-300 bg-brand-disabled border-brand-disabled'}`} disabled={!isEnabledAddMemberButton()}>
                                     <div className="flex flex-row gap-x-2 items-center mx-auto">
                                         Add Member
                                         <PaperAirplaneIcon className={`h-6 w-6 ${isEnabledAddMemberButton() ? 'text-white' : 'text-gray-300'}`} />
