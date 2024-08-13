@@ -243,10 +243,14 @@ export default function SettingsUserLayout() {
 
         if (result) {
             UserAddedSuccessNotification();
+            setInviteNewEmail('');
         }
         else {
             AddUserFailedNotification();
+            setInviteNewEmail('');
         }
+
+
 
 
     }
