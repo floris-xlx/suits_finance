@@ -11,23 +11,28 @@ import ButtonPrimary from '@/app/components/ui/Buttons/ButtonPrimary';
 import PayoneerCard from '@/app/components/ui/Cards/PayoneerCard';
 import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
 import InputField from '@/app/components/ui/InputFields/InputField';
-import { getUserCards, addPayoneerCard, isUserSuperAdmin } from '@/app/client/supabase/SupabaseUserData';
-import { PayoneerCardAddSuccessNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
+import { getUserCards, addPayoneerCard, isUserSuperAdmin, addUserRoleObject, IsEmailUniqueRoles } from '@/app/client/supabase/SupabaseUserData';
+import { PayoneerCardAddSuccessNotification, AddUserFailedNotification, UserAddedSuccessNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
 import { refreshPage } from '@/app/client/hooks/refreshPage';
 import initTranslations from '@/app/i18n';
 import ProfileSection from '@/app/components/layouts/Settings/ProfileSection';
 import Dropdown from '@/app/components/ui/Dropdowns/Dropdown';
 import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
 
+
 export default function SettingsUserLayout() {
     const { view, setCurrentSettingsSection } = useUserViewStore();
     const { user, setEmail, setFullName, setCity, setCountry, setAddressLine1, setAddressLine2, setPostalCode, setState, setCurrency } = useUserStore();
 
     const [isAdmin, setIsAdmin] = useState(false);
-
+    // permission section usernames
+    const [inviteNewEmail, setInviteNewEmail] = useState('');
+    
     const settingOptions = isAdmin ?
         ['Profile', 'Appearance', 'Payoneer', 'Billing', 'Permission'] :
         ['Profile', 'Appearance', 'Payoneer', 'Billing'];
+
+    
 
     const currencyOptions = [
         '$ USD',
@@ -44,6 +49,10 @@ export default function SettingsUserLayout() {
         { label: "Developer", value: "developer" },
         { label: "Support", value: "support" }
     ];
+    const [selectedRole, setSelectedRole] = useState(roleOptions[0]);
+    const [emailUnique, setEmailUnique] = useState(false);
+
+
 
     // translations
     const router = useRouter();
@@ -127,6 +136,17 @@ export default function SettingsUserLayout() {
     const userAddressLine2 = isNullOrUndefined(user.address_line_2) ? (showAddressLine2 && <div className="h-[16px] w-[80px]"><SkeletonLoader /></div>) : user.address_line_2;
     const userPostalCode = isNullOrUndefined(user.postal_code) ? (showPostalCode && <div className="h-[16px] w-[80px]"><SkeletonLoader /></div>) : user.postal_code;
     const userState = isNullOrUndefined(user.state) ? (showState && <div className="h-[16px] w-[80px]"><SkeletonLoader /></div>) : user.state;
+
+
+    // useEffect the email to check if it is unique
+    useEffect(() => {
+        const checkEmail = async () => {
+            const emailUnique = await IsEmailUniqueRoles({ email: inviteNewEmail });
+            console.log(emailUnique);
+            setEmailUnique(emailUnique);
+        };
+        checkEmail();
+    }, [inviteNewEmail]);
 
 
 
@@ -218,8 +238,12 @@ export default function SettingsUserLayout() {
     }
 
 
-    // permission section usernames
-    const [inviteNewEmail, setInviteNewEmail] = useState('');
+    const isEnabledAddMemberButton = () => {
+        return inviteNewEmail && selectedRole && isEmailValid(inviteNewEmail);
+    };
+
+
+
 
     const PermissionSection = () => (
         <div className="pt-[20px]">
@@ -312,15 +336,15 @@ export default function SettingsUserLayout() {
                 {view.currentSettingsSection === 'permission' && <PermissionSection />}
 
                 {view.currentSettingsSection === 'permission' &&
-                    <div className="mt-4 bg-secondary p-2 rounded-md border border-primary">
+                    <div className="mt-4 bg-secondary p-2 rounded-md border border-primary  sm:pb-[20px]">
                         <div className="flex flex-col gap-y-1">
                             <h3 className="text-sm leading-9 text-primary font-normal select-none px-2">
                                 {t && t('permission.invite_new_member_title') ? t('permission.invite_new_member_title') : <div className="h-[22px] w-[320px]"><SkeletonLoader /></div>}
                             </h3>
 
                             <div className="flex flex-col gap-y-1 sm:flex-row gap-x-1 pr-3 items-center w-full justify-between">
-                                <div className="flex-col sm:flex-row flex sm:items-center w-full">
-                                    <div className="sm:min-w-[300px] w-full sm:max-w-[455px] ml-2 sm:ml-0">
+                                <div className="flex flex-col  sm:flex-row  items-center w-full sm:gap-x-4">
+                                    <div className="sm:min-w-[300px] w-full sm:max-w-[455px] ml-2 sm:ml-2">
                                         <InputField
                                             label={t && t('permission.email_address') ? t('permission.email_address') : <div className="h-[16px] w-[60px]"><SkeletonLoader /></div>}
                                             value={inviteNewEmail}
@@ -330,20 +354,25 @@ export default function SettingsUserLayout() {
                                         />
 
                                     </div>
-                                    <div className=" ml-2  sm:ml-0 sm:max-w-[200px] w-full mt-4 ">
+                                    <div className=" ml-2  sm:ml-0 sm:max-w-[200px] w-full mt-4 sm:mt-0">
 
-                                        < Dropdown label='User role' options={roleOptions} width='full' />
+                                        < Dropdown label='User role' options={roleOptions} width='full' setValue={setSelectedRole}/>
                                     </div>
                                 </div>
 
-                                <button className={`text-white flex-row flex items-center gap-x-2 p-2 mb-2 sm:mb-0 ml-4 sm:ml-2 rounded-md border mt-6 sm:w-fit w-full ${isEmailValid(inviteNewEmail) ? 'bg-brand-primary border-brand-primary' : 'bg-brand-disabled border-brand-disabled'}`} disabled={!isEmailValid(inviteNewEmail)}>
+                                <button className={` flex-row flex items-center gap-x-2 p-2 mb-2 sm:mb-0 ml-4 sm:ml-2 rounded-md border mt-6 sm:w-fit text-nowrap w-full ${isEnabledAddMemberButton() ? 'text-white bg-brand-primary hover:transition hover:bg-brand-secondary border-brand-primary' : 'text-gray-300 bg-brand-disabled border-brand-disabled'}`} disabled={!isEnabledAddMemberButton()}>
                                     <div className="flex flex-row gap-x-2 items-center mx-auto">
                                         Add Member
-                                        <PaperAirplaneIcon className="h-6 w-6 text-white" />
+                                        <PaperAirplaneIcon className={`h-6 w-6 ${isEnabledAddMemberButton() ? 'text-white' : 'text-gray-300'}`} />
                                     </div>
 
                                 </button>
                             </div>
+                            {!emailUnique && (
+                                <p className="text-lg text-red-500 select-none">
+                                    Email is not unique
+                                </p>
+                            )}
                         </div>
                     </div>
                 }

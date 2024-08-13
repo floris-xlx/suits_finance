@@ -908,6 +908,23 @@ export async function IsEmailUnique(email, userId) {
   return false;
 }
 
+export async function IsEmailUniqueRoles(email) {
+  const { data, error } = await supabase
+    .from('users')
+    .select('email')
+    .eq('email', email)
+
+
+  if (error) throw error;
+
+  if (data.length === 0) {
+    return true;
+  }
+
+  return false;
+}
+
+
 export async function getUserBalance(id) {
   const { data, error } = await supabase
     .from('users')
@@ -1004,4 +1021,18 @@ export async function isUserSuperAdmin({ user_id }) {
   }
 
   return data[0].super_admin;
+}
+
+
+export async function addUserRoleObject({ email, role }) {
+  const { data, error } = await supabase.from('user_roles').insert([
+    {
+      email,
+      role,
+    },
+  ]);
+
+  if (error) throw error;
+
+  return data;
 }
