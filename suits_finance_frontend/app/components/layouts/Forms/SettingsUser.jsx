@@ -18,6 +18,7 @@ import initTranslations from '@/app/i18n';
 import ProfileSection from '@/app/components/layouts/Settings/ProfileSection';
 import Dropdown from '@/app/components/ui/Dropdowns/Dropdown';
 import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
+import MemberTrade from '@/app/components/ui/Tables/orgMemberTable';
 
 
 export default function SettingsUserLayout() {
@@ -257,10 +258,6 @@ export default function SettingsUserLayout() {
 
     const handleAddMember = async () => {
         // add member
-        console.log('add member');
-        console.log(inviteNewEmail);
-        console.log(selectedRole);
-        console.log(selectedRole.value);
 
         const result = await addUserRoleObject({
             email: inviteNewEmail,
@@ -377,50 +374,57 @@ export default function SettingsUserLayout() {
                 {view.currentSettingsSection === 'permission' && <PermissionSection />}
 
                 {view.currentSettingsSection === 'permission' &&
-                    <div className="mt-4 bg-secondary p-2 rounded-md border border-primary  sm:pb-[20px]">
-                        <div className="flex flex-col gap-y-1">
-                            <h3 className="text-sm leading-9 text-primary font-normal select-none px-2">
-                                {t && t('permission.invite_new_member_title') ? t('permission.invite_new_member_title') : <div className="h-[22px] w-[320px]"><SkeletonLoader /></div>}
-                            </h3>
+                    <Fragment>
+                        <div className="mt-4 bg-secondary p-2 rounded-md border border-primary  sm:pb-[20px]">
+                            <div className="flex flex-col gap-y-1">
+                                <h3 className="text-sm leading-9 text-primary font-normal select-none px-2">
+                                    {t && t('permission.invite_new_member_title') ? t('permission.invite_new_member_title') : <div className="h-[22px] w-[320px]"><SkeletonLoader /></div>}
+                                </h3>
 
-                            <div className="flex flex-col gap-y-1 sm:flex-row gap-x-1 pr-3 items-center w-full justify-between">
-                                <div className="flex flex-col  sm:flex-row  items-center w-full sm:gap-x-4">
-                                    <div className="sm:min-w-[300px] w-full sm:max-w-[455px] ml-2 sm:ml-2">
-                                        <InputField
-                                            label={t && t('permission.email_address') ? t('permission.email_address') : <div className="h-[16px] w-[60px]"><SkeletonLoader /></div>}
-                                            value={inviteNewEmail}
-                                            setValue={setInviteNewEmail}
-                                            type='text'
-                                            width='full'
-                                        />
+                                <div className="flex flex-col gap-y-1 sm:flex-row gap-x-1 pr-3 items-center w-full justify-between">
+                                    <div className="flex flex-col  sm:flex-row  items-center w-full sm:gap-x-4">
+                                        <div className="sm:min-w-[300px] w-full sm:max-w-[455px] ml-2 sm:ml-2">
+                                            <InputField
+                                                label={t && t('permission.email_address') ? t('permission.email_address') : <div className="h-[16px] w-[60px]"><SkeletonLoader /></div>}
+                                                value={inviteNewEmail}
+                                                setValue={setInviteNewEmail}
+                                                type='text'
+                                                width='full'
+                                            />
 
+                                        </div>
+                                        <div className=" ml-2  sm:ml-0 sm:max-w-[200px] w-full mt-4 sm:mt-0">
+
+                                            < Dropdown label='User role' options={roleOptions} width='full' setValue={setSelectedRole} />
+                                        </div>
                                     </div>
-                                    <div className=" ml-2  sm:ml-0 sm:max-w-[200px] w-full mt-4 sm:mt-0">
 
-                                        < Dropdown label='User role' options={roleOptions} width='full' setValue={setSelectedRole} />
-                                    </div>
+                                    <button onClick={handleAddMember} className={` flex-row flex items-center gap-x-2 p-2 mb-2 sm:mb-0 ml-4 sm:ml-2 rounded-md border mt-2 sm:mt-6 sm:w-fit text-nowrap w-full ${isEnabledAddMemberButton() ? 'text-white bg-brand-primary hover:transition hover:bg-brand-secondary border-brand-primary' : 'text-gray-300 bg-brand-disabled border-brand-disabled'}`} disabled={!isEnabledAddMemberButton()}>
+                                        <div className="flex flex-row gap-x-2 items-center mx-auto">
+                                            Add Member
+                                            <PaperAirplaneIcon className={`h-6 w-6 ${isEnabledAddMemberButton() ? 'text-white' : 'text-gray-300'}`} />
+                                        </div>
+
+                                    </button>
                                 </div>
+                                {!emailUnique && (
 
-                                <button onClick={handleAddMember} className={` flex-row flex items-center gap-x-2 p-2 mb-2 sm:mb-0 ml-4 sm:ml-2 rounded-md border mt-2 sm:mt-6 sm:w-fit text-nowrap w-full ${isEnabledAddMemberButton() ? 'text-white bg-brand-primary hover:transition hover:bg-brand-secondary border-brand-primary' : 'text-gray-300 bg-brand-disabled border-brand-disabled'}`} disabled={!isEnabledAddMemberButton()}>
-                                    <div className="flex flex-row gap-x-2 items-center mx-auto">
-                                        Add Member
-                                        <PaperAirplaneIcon className={`h-6 w-6 ${isEnabledAddMemberButton() ? 'text-white' : 'text-gray-300'}`} />
+                                    <div className="sm:pb-0 pb-2 pl-2 pr-[4px] ">
+                                        <p className="text-xs bg-red-accent text-red border-2 border-red-500/30 p-2 rounded-md select-none   sm:mt-2  w-full sm:w-fit  ">
+                                            Email is not unique!
+                                        </p>
                                     </div>
 
-                                </button>
+                                )}
                             </div>
-                            {!emailUnique && (
 
-                                <div className="sm:pb-0 pb-2 pl-2 pr-[4px] ">
-                                    <p className="text-xs bg-red-accent text-red border-2 border-red-500/30 p-2 rounded-md select-none   sm:mt-2  w-full sm:w-fit  ">
-                                        Email is not unique!
-                                    </p>
-                                </div>
-
-                            )}
                         </div>
-                    </div>
+                        <div className="mt-4 w-full h-full">
+                            <MemberTrade roleOptions={roleOptions} />
+                        </div>
+                    </Fragment>
                 }
+
 
 
                 {view.currentSettingsSection === 'payoneer' && (

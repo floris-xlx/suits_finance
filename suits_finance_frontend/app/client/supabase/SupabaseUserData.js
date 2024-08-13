@@ -1057,3 +1057,32 @@ export async function addUserRoleObject({ email, role }) {
   return status;
 }
 
+
+
+export async function fetchUserRoles(page = 1, pageSize = 10) {
+  const offset = (page - 1) * pageSize;
+
+  const { data: userRolesData, error: userRolesError } = await supabase
+    .from('user_roles')
+    .select('*')
+    .order('id', { ascending: true })
+    .range(offset, offset + pageSize - 1);
+
+  if (userRolesError) throw userRolesError;
+
+  const userIds = userRolesData.map(role => role.user_id);
+
+  const { data: usersData, error: usersError } = await supabase
+    .from('users')
+    .select('*')
+    .in('user_id', userIds);
+
+  if (usersError) throw usersError;
+
+  const combinedData = userRolesData.map(role => ({
+    ...role,
+    user: usersData.find(user => user.user_id === role.user_id)
+  }));
+
+  return combinedData;
+}
