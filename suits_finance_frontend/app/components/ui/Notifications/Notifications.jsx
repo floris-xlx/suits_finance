@@ -16,6 +16,8 @@ import TransfersBlockedNoBalanceNotification from './transfersBlockedNoBalance.j
 import DuplicateValueFailNotification from './duplicateValueFail.jsx';
 import PasswordTooShortInlineNotification from './passwordTooShort.jsx';
 import PayoneerCardAddSuccessNotification from './payoneerCardAddSuccess.jsx';
+import UserAddedSuccessNotification from './userAddedNotification.jsx';
+import AddUserFailedNotification from './AddUserFail.jsx';
 
 
 export {
@@ -36,5 +38,7 @@ export {
     TransfersBlockedNoBalanceNotification,
     DuplicateValueFailNotification,
     PasswordTooShortInlineNotification,
-    PayoneerCardAddSuccessNotification
+    PayoneerCardAddSuccessNotification,
+    UserAddedSuccessNotification,
+    AddUserFailedNotification
 }

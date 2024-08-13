@@ -17,6 +17,7 @@ import { refreshPage } from '@/app/client/hooks/refreshPage';
 import initTranslations from '@/app/i18n';
 import ProfileSection from '@/app/components/layouts/Settings/ProfileSection';
 import Dropdown from '@/app/components/ui/Dropdowns/Dropdown';
+import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
 
 export default function SettingsUserLayout() {
     const { view, setCurrentSettingsSection } = useUserViewStore();
@@ -98,6 +99,11 @@ export default function SettingsUserLayout() {
     const [showAddressLine2, setShowAddressLine2] = useState(true);
     const [showPostalCode, setShowPostalCode] = useState(true);
     const [showState, setShowState] = useState(true);
+
+    const isEmailValid = (email) => {
+        const re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    };
 
 
     useEffect(() => {
@@ -206,6 +212,11 @@ export default function SettingsUserLayout() {
         refreshPage();
     }
 
+    const handleAddMember = async () => {
+        // add member
+        console.log('add member');
+    }
+
 
     // permission section usernames
     const [inviteNewEmail, setInviteNewEmail] = useState('');
@@ -307,17 +318,29 @@ export default function SettingsUserLayout() {
                                 {t && t('permission.invite_new_member_title') ? t('permission.invite_new_member_title') : <div className="h-[22px] w-[320px]"><SkeletonLoader /></div>}
                             </h3>
 
-                            <div className="flex flex-row gap-x-1 items-center justify-between">
-                                <InputField
-                                    label={t && t('permission.email_address') ? t('permission.email_address') : <div className="h-[16px] w-[60px]"><SkeletonLoader /></div>}
-                                    value={inviteNewEmail}
-                                    setValue={setInviteNewEmail}
-                                    type='text'
-                                    width='full'
-                                />
+                            <div className="flex flex-col gap-y-1 sm:flex-row gap-x-1 pr-3 items-center w-full justify-between">
+                                <div className="flex-col sm:flex-row flex items-center">
+                                    <div className="sm:min-w-[300px] max-w-[455px]">
+                                        <InputField
+                                            label={t && t('permission.email_address') ? t('permission.email_address') : <div className="h-[16px] w-[60px]"><SkeletonLoader /></div>}
+                                            value={inviteNewEmail}
+                                            setValue={setInviteNewEmail}
+                                            type='text'
+                                            width='full'
+                                        />
 
-                                < Dropdown label='User role' options={roleOptions} />
-                            </div>    
+                                    </div>
+                                    <div className="max-w-[200px] ">
+
+                                        < Dropdown label='User role' options={roleOptions} />
+                                    </div>
+                                </div>
+
+                                <button className={`text-white flex-row flex items-center gap-x-2 p-2 rounded-md border mt-6 ${isEmailValid(inviteNewEmail) ? 'bg-brand-primary border-brand-primary' : 'bg-brand-disabled border-brand-disabled'}`} disabled={!isEmailValid(inviteNewEmail)}>
+                                    Add Member
+                                    <PaperAirplaneIcon className="h-6 w-6 text-white" />
+                                </button>
+                            </div>
                         </div>
                     </div>
                 }

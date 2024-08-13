@@ -1080,3 +1080,32 @@ span {
   --tw-bg-opacity: 1;
   background-color: var(--color-accent) !important;
 }
+
+
+/* this is for the for the autocomplete nextui */
+.bg-success-50 {
+  --tw-bg-opacity: 1;
+  background-color: var(--color-input-primary) !important;
+  
+}
+
+.text-success-600 {
+  --tw-text-opacity: 1;
+  color: var(--color-text-primary) !important;
+}
+
+.text-success {
+  --tw-text-opacity: 1;
+  color: var(--color-text-primary) !important;
+}
+
+.data-\[hover\=true\]\:bg-success\/100[data-hover="true"] {
+  --tw-bg-opacity: 1;
+  background-color: var(--color-accent) !important;
+}
+
+.data-\[hover\=true\]\:bg-success\/20[data-hover="true"] {
+  --tw-bg-opacity: 1;
+  background-color: var(--color-accent) !important;
+}
+
