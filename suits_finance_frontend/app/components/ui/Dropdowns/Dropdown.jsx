@@ -13,6 +13,15 @@ export default function App({ label = "Favorite Animal", options = animals, widt
         "outside",
     ];
 
+    const handleForat = (valueLocal) => {
+        // make a label with first letter caps and rest lower case of each word and remove all  space by _ insteaf ftac
+        const label = valueLocal.replace(/\s+/g, '_').toLowerCase();
+        const value = valueLocal.toLowerCase();
+        const objectValue = { label, value };
+        setValue(objectValue);
+        return objectValue;
+    }
+
     return (
         <div className={`w-${width}`}>
 
@@ -30,7 +39,7 @@ export default function App({ label = "Favorite Animal", options = animals, widt
                                 key={index}
                                 defaultItems={options}
                                 color={'success'}
-                                onSelect={setValue}
+                                onSelectionChange={(e) => handleForat(e)}
                                 defaultInputValue={options[0].label}
 
                                 className=" border border-primary rounded-md shadow-sm bg-primary "
