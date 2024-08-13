@@ -173,9 +173,9 @@ export async function UpdateOrganizationById(organization, id) {
   // Update the organization and username
   const { data, error } = await supabase
     .from('users')
-    .update({ 
-      organization: organization, 
-      username: username 
+    .update({
+      organization: organization,
+      username: username
     })
     .eq('user_id', id);
 
@@ -781,10 +781,10 @@ export async function GetEconEvents(time) {
     .select('datetime, unixtime, event_impact_title, currency, forecast, previous, event_title')
     .gt('unixtime', time);
 
-    
+
 
   if (error) throw error;
-  
+
   if (data.length === 0) {
     return null;
   }
@@ -798,10 +798,10 @@ export async function GetStrategyById(strategy_id) {
     .select('*')
     .eq('strategy_id', strategy_id);
 
-    
+
 
   if (error) throw error;
-  
+
   if (data.length === 0) {
     return null;
   }
@@ -859,7 +859,7 @@ export async function UpsertUser(
   if (data.length === 0) {
     const { error: insertError } = await supabase
       .from('users')
-      .insert({ 
+      .insert({
         "user_id": user_id,
         "last_sign_in": Math.floor(Date.now() / 1000),
         "full_name": full_name,
@@ -908,9 +908,9 @@ export async function IsEmailUnique(email, userId) {
   return false;
 }
 
-export async function IsEmailUniqueRoles(email) {
+export async function IsEmailUniqueRoles({ email }) {
   const { data, error } = await supabase
-    .from('users')
+    .from('user_roles')
     .select('email')
     .eq('email', email)
 
@@ -1025,14 +1025,18 @@ export async function isUserSuperAdmin({ user_id }) {
 
 
 export async function addUserRoleObject({ email, role }) {
-  const { data, error } = await supabase.from('user_roles').insert([
+  const { data, error, status } = await supabase.from('user_roles').insert([
     {
       email,
       role,
+      status: 'pending'
     },
   ]);
 
   if (error) throw error;
+  console.log(status);
+ 
 
-  return data;
+  return status;
+
 }

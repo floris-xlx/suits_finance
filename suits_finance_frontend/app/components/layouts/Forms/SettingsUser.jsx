@@ -32,7 +32,7 @@ export default function SettingsUserLayout() {
         ['Profile', 'Appearance', 'Payoneer', 'Billing', 'Permission'] :
         ['Profile', 'Appearance', 'Payoneer', 'Billing'];
 
-    
+
 
     const currencyOptions = [
         '$ USD',
@@ -86,6 +86,8 @@ export default function SettingsUserLayout() {
 
     useEffect(() => {
         const checkAdmin = async () => {
+            if (!user) return;
+
             const admin = await isUserSuperAdmin({ user_id: user.id });
             setIsAdmin(admin);
         };
@@ -140,11 +142,33 @@ export default function SettingsUserLayout() {
 
     // useEffect the email to check if it is unique
     useEffect(() => {
+        const debounceTimeout = 500; // 500ms debounce time
+        let timer;
+
         const checkEmail = async () => {
+            if (!inviteNewEmail) {
+                setEmailUnique(true);
+                return;
+            }
+
+            if (!isEmailValid(inviteNewEmail)) {
+                setEmailUnique(true);
+                return;
+            }
+
             const emailUnique = await IsEmailUniqueRoles({ email: inviteNewEmail });
             setEmailUnique(emailUnique);
         };
-        checkEmail();
+
+        if (timer) {
+            clearTimeout(timer);
+        }
+
+        timer = setTimeout(() => {
+            checkEmail();
+        }, debounceTimeout);
+
+        return () => clearTimeout(timer);
     }, [inviteNewEmail]);
 
 
@@ -234,6 +258,9 @@ export default function SettingsUserLayout() {
     const handleAddMember = async () => {
         // add member
         console.log('add member');
+        console.log(inviteNewEmail);
+        console.log(selectedRole);
+        console.log(selectedRole.value);
 
         const result = await addUserRoleObject({
             email: inviteNewEmail,
@@ -241,7 +268,7 @@ export default function SettingsUserLayout() {
         });
         console.log(result);
 
-        if (result) {
+        if (result === 201) {
             UserAddedSuccessNotification();
             setInviteNewEmail('');
         }
@@ -249,15 +276,11 @@ export default function SettingsUserLayout() {
             AddUserFailedNotification();
             setInviteNewEmail('');
         }
-
-
-
-
     }
 
 
     const isEnabledAddMemberButton = () => {
-        return inviteNewEmail && selectedRole && isEmailValid(inviteNewEmail);
+        return inviteNewEmail && selectedRole && isEmailValid(inviteNewEmail) && emailUnique;
     };
 
 
@@ -374,11 +397,11 @@ export default function SettingsUserLayout() {
                                     </div>
                                     <div className=" ml-2  sm:ml-0 sm:max-w-[200px] w-full mt-4 sm:mt-0">
 
-                                        < Dropdown label='User role' options={roleOptions} width='full' setValue={setSelectedRole}/>
+                                        < Dropdown label='User role' options={roleOptions} width='full' setValue={setSelectedRole} />
                                     </div>
                                 </div>
 
-                                <button onClick={handleAddMember} className={` flex-row flex items-center gap-x-2 p-2 mb-2 sm:mb-0 ml-4 sm:ml-2 rounded-md border mt-6 sm:w-fit text-nowrap w-full ${isEnabledAddMemberButton() ? 'text-white bg-brand-primary hover:transition hover:bg-brand-secondary border-brand-primary' : 'text-gray-300 bg-brand-disabled border-brand-disabled'}`} disabled={!isEnabledAddMemberButton()}>
+                                <button onClick={handleAddMember} className={` flex-row flex items-center gap-x-2 p-2 mb-2 sm:mb-0 ml-4 sm:ml-2 rounded-md border mt-2 sm:mt-6 sm:w-fit text-nowrap w-full ${isEnabledAddMemberButton() ? 'text-white bg-brand-primary hover:transition hover:bg-brand-secondary border-brand-primary' : 'text-gray-300 bg-brand-disabled border-brand-disabled'}`} disabled={!isEnabledAddMemberButton()}>
                                     <div className="flex flex-row gap-x-2 items-center mx-auto">
                                         Add Member
                                         <PaperAirplaneIcon className={`h-6 w-6 ${isEnabledAddMemberButton() ? 'text-white' : 'text-gray-300'}`} />
@@ -387,9 +410,13 @@ export default function SettingsUserLayout() {
                                 </button>
                             </div>
                             {!emailUnique && (
-                                <p className="text-lg text-red-500 select-none">
-                                    Email is not unique
-                                </p>
+
+                                <div className="sm:pb-0 pb-2 pl-2 pr-[4px] ">
+                                    <p className="text-xs bg-red-accent text-red border-2 border-red-500/30 p-2 rounded-md select-none   sm:mt-2  w-full sm:w-fit  ">
+                                        Email is not unique!
+                                    </p>
+                                </div>
+
                             )}
                         </div>
                     </div>
