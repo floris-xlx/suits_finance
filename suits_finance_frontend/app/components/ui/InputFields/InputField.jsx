@@ -61,7 +61,7 @@ const InputField = ({
                             step={10}
 
                             value={value}
-                            className={` w-full appearance-none  py-2 shadow-sm ${type === 'text' ? 'focus:ring-2' : 'focus:ring-1'} sm:text-sm focus:ring-purple-600 font-medium bg-input-primary rounded-md !border border-primary h-[40px] text-secondary select-none`}
+                            className={` w-full appearance-none  py-3 shadow-sm ${type === 'text' ? 'focus:ring-2' : 'focus:ring-1'} sm:text-sm focus:ring-purple-600 font-medium bg-input-primary rounded-md !border border-primary h-[40px] text-secondary select-none`}
                         />
 
                     ) : (
