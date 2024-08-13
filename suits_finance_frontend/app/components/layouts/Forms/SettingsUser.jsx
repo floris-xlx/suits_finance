@@ -320,7 +320,7 @@ export default function SettingsUserLayout() {
 
                             <div className="flex flex-col gap-y-1 sm:flex-row gap-x-1 pr-3 items-center w-full justify-between">
                                 <div className="flex-col sm:flex-row flex sm:items-center w-full">
-                                    <div className="sm:min-w-[300px] w-full sm:max-w-[455px]">
+                                    <div className="sm:min-w-[300px] w-full sm:max-w-[455px] ml-2 sm:ml-0">
                                         <InputField
                                             label={t && t('permission.email_address') ? t('permission.email_address') : <div className="h-[16px] w-[60px]"><SkeletonLoader /></div>}
                                             value={inviteNewEmail}
@@ -330,9 +330,9 @@ export default function SettingsUserLayout() {
                                         />
 
                                     </div>
-                                    <div className=" ml-2  sm:ml-0 sm:max-w-[200px] w-full">
+                                    <div className=" ml-2  sm:ml-0 sm:max-w-[200px] w-full mt-4 ">
 
-                                        < Dropdown label='User role' options={roleOptions} width='full'/>
+                                        < Droeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeepdown label='User role' options={roleOptions} width='full' />
                                     </div>
                                 </div>
 

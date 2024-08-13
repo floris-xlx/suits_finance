@@ -11,7 +11,7 @@ const InputField = ({
     tooltip = false,
     tooltipContent = "This is an input field. It allows you to input data.",
     width = 200,
-    padding = 4,
+    padding = 0,
     marginTop = 0
 }) => {
     const formattedWidth = width !== "full" ? `w-[${width}px]` : "w-full";
@@ -46,7 +46,7 @@ const InputField = ({
 
                 )}
 
-                <div className="mt-[6px]">
+                <div className="mt-[2px] sm:mt-[6px] w-full">
 
                     {disabled === false ? (
 
@@ -61,7 +61,7 @@ const InputField = ({
                             step={10}
 
                             value={value}
-                            className={`block w-full appearance-none px-3 py-2 shadow-sm ${type === 'text' ? 'focus:ring-2' : 'focus:ring-1'} sm:text-sm focus:ring-purple-600 font-medium bg-input-primary rounded-md !border border-primary h-[40px] text-secondary select-none`}
+                            className={` w-full appearance-none  py-2 shadow-sm ${type === 'text' ? 'focus:ring-2' : 'focus:ring-1'} sm:text-sm focus:ring-purple-600 font-medium bg-input-primary rounded-md !border border-primary h-[40px] text-secondary select-none`}
                         />
 
                     ) : (
@@ -74,7 +74,7 @@ const InputField = ({
                             placeholder={placeholder}
                             disabled
                             value={value}
-                            className="block w-full appearance-none input-field px-3 py-2 shadow-sm sm:text-sm font-medium cursor-default text-accent bg-hover-primary rounded-md border border-primary"
+                            className="block w-full appearance-none input-field  py-2 shadow-sm sm:text-sm font-medium cursor-default text-accent bg-hover-primary rounded-md border border-primary"
                         />
 
                     )}

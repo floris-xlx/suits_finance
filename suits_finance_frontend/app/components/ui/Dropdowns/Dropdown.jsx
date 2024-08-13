@@ -30,7 +30,7 @@ const animals = [
     { label: "Crocodile", value: "crocodile", description: "A large semiaquatic reptile" },
 ];
 
-export default function App({ label = "Favorite Animal", options = animals, width = "full" }) {
+export default function App({ label = "Favorite Animal", options = animals, width = "full", onSelectionChange = () => { } }) {
     const placements = [
         "outside",
     ];
@@ -52,7 +52,7 @@ export default function App({ label = "Favorite Animal", options = animals, widt
                                 key={index}
                                 defaultItems={options}
                                 color={'success'}
-
+                                onSelectionChange={onSelectionChange}
 
                                 className=" border border-primary rounded-md shadow-sm bg-primary "
                             >
