@@ -50,6 +50,7 @@ const MemberTrade = ({ roleOptions = [] }) => {
         [selectedKeys]
     );
 
+
     const renderTableHeader = (key, label) => (
         <th
             data-sortable="true"
@@ -80,9 +81,9 @@ const MemberTrade = ({ roleOptions = [] }) => {
         </th>
     );
 
+
     const renderTableRow = (user, index) => (
         <tr
-            key={user.id}
             data-first={index === 0}
             data-last={index === users.length - 1}
             role="row"
@@ -107,6 +108,7 @@ const MemberTrade = ({ roleOptions = [] }) => {
                     <Checkbox radius="sm" />
                 </label>
             </td>
+
             <td
                 tabIndex="-1"
                 data-key={`${user.id}name`}
@@ -122,16 +124,22 @@ const MemberTrade = ({ roleOptions = [] }) => {
                         tabIndex="-1"
                         className="flex relative justify-center items-center box-border overflow-hidden align-middle z-0 outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 w-10 h-10 text-tiny bg-default text-default-foreground rounded-large"
                     >
-                        <img
-                            src={user.user.profile_pic}
-                            className="flex object-cover w-full h-full transition-opacity !duration-500 opacity-0 data-[loaded=true]:opacity-100"
-                            alt={user.user.full_name}
-                            data-loaded="true"
-                        />
+                        {user.user.profile_pic ? (
+                            <img
+                                src={user.user.profile_pic}
+                                className="flex object-cover w-full h-full transition-opacity !duration-500 opacity-0 data-[loaded=true]:opacity-100"
+                                alt={user.user.full_name}
+                                data-loaded="true"
+                            />
+                        ) : (
+                            <div className="flex items-center justify-center w-full h-full bg-brand-primary rounded-md">
+                                <span className="text-white/50 text-xl">?</span>
+                            </div>
+                        )}
                     </span>
                     <div className="inline-flex flex-col items-start">
                         <span className="text-small text-brand-primary">{user.user.full_name}</span>
-                        <span className="text-tiny text-foreground-400">{user.email}</span>
+                        <span className="text-tiny text-foreground-400">{user.email || user.user.email}</span>
                     </div>
                 </div>
             </td>
@@ -169,7 +177,7 @@ const MemberTrade = ({ roleOptions = [] }) => {
                                 <DropdownItem
                                     key={item.key}
                                     color={item.key === "delete" ? "danger" : "default"}
-                                    className={item.key === "delete" ? "text-danger" : ""}
+                                    className={`${item.key === "delete" ? "text-danger hover:text-white" : "hover:text-white"}`}
                                 >
                                     {item.label}
                                 </DropdownItem>
@@ -183,7 +191,7 @@ const MemberTrade = ({ roleOptions = [] }) => {
 
     return (
         <div
-            className="flex flex-col relative overflow-hidden h-auto text-foreground box-border outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 shadow-none rounded-large transition-transform-background motion-reduce:transition-none border border-default-200 bg-secondary"
+            className="flex flex-col relative overflow-hidden h-auto text-foreground box-border outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 shadow-none rounded-md transition-transform-background motion-reduce:transition-none border border-primary bg-secondary"
             tabIndex="-1"
         >
             <div className="relative flex w-full p-3 flex-auto flex-col place-content-inherit align-items-inherit h-auto break-words text-left overflow-y-auto subpixel-antialiased">

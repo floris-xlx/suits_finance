@@ -61,6 +61,7 @@
 
   /*  nextui bindings */
   --tw-backdrop-saturate: 1.5;
+  --nextui-danger: 0 80.36% 80%;
 
   --color-logo: #000000;
   --xlx-glass-primary: #e4e2e202;
@@ -112,6 +113,9 @@
   --color-button-primary: #14171a;
 
   --color-logo: #ffffff;
+
+  /* nextui binding */
+  --nextui-danger: 0 60.36% 60%;
 
   --xlx-glass-primary: #05050538;
 }
@@ -1119,4 +1123,14 @@ span {
 .text-primary-foreground {
   --tw-text-opacity: 1;
   color: var(--color-brand-primary) !important;
+}
+
+.bg-danger {
+  --tw-bg-opacity: 1;
+  background-color: var(--color-red-primary) !important;
+}
+
+.data-[hover=true]:bg-danger { 
+  --tw-bg-opacity: 1;
+  background-color: var(--color-red-primary) !important;
 }
