@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { fetchUserRoles } from '@/app/client/supabase/SupabaseUserData.js';
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Spinner } from "@nextui-org/react";
 import { Checkbox } from "@nextui-org/react";
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
@@ -335,9 +335,15 @@ const MemberTrade = ({ roleOptions = [] }) => {
                                     </tr>
                                 </thead>
                                 <tbody role="rowgroup">
-                                    {users.map((user, index) => (
-                                        renderTableRow(user, index)
-                                    ))}
+                                    {users.length === 0 ? (
+                                        <div className=" w-full flex flex-col mx-auto py-16">
+                                            <Spinner label="Loading users..." color="warning" size="xs" />
+                                        </div>
+                                    ) : (
+                                        users.map((user, index) => (
+                                            renderTableRow(user, index)
+                                        ))
+                                    )}
                                 </tbody>
                             </table>
                         </div>
