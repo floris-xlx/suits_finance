@@ -363,3 +363,17 @@ export async function fetchUserRoles(
 
   return combinedData;
 }
+
+
+export async function deleteUserRole(
+  userId
+) {
+  const { data, error } = await supabase
+    .from('user_roles')
+    .delete()
+    .eq('user_id', userId);
+
+  if (error) throw error;
+
+  return data;
+}

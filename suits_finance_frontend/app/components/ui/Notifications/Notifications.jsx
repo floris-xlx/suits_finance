@@ -18,6 +18,7 @@ import PasswordTooShortInlineNotification from './passwordTooShort.jsx';
 import PayoneerCardAddSuccessNotification from './payoneerCardAddSuccess.jsx';
 import UserAddedSuccessNotification from './userAddedNotification.jsx';
 import AddUserFailedNotification from './AddUserFail.jsx';
+import UserDeleteRoleSuccessNotification from './userRoleDeleteSuccess.jsx';
 
 
 export {
@@ -40,5 +41,6 @@ export {
     PasswordTooShortInlineNotification,
     PayoneerCardAddSuccessNotification,
     UserAddedSuccessNotification,
-    AddUserFailedNotification
+    AddUserFailedNotification,
+    UserDeleteRoleSuccessNotification
 }

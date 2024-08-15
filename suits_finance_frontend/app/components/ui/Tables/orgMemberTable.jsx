@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { fetchUserRoles } from '@/app/client/supabase/SupabaseUserData.js';
+import { fetchUserRoles, deleteUserRole } from '@/app/client/supabase/SupabaseUserData.js';
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Spinner } from "@nextui-org/react";
 import { Checkbox } from "@nextui-org/react";
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
@@ -10,6 +10,7 @@ import InputFieldDataWrapperUser from '@/app/components/dataWrappers/inputFieldW
 import InputField from '@/app/components/ui/InputFields/InputField';
 import TabHorizontal from '@/app/components/ui/Tabs/TabHorizontalWithValue';
 import CapitalizeFirstLetter from '@/app/client/hooks/formatting/CapitalizeLetter';
+import { UserDeleteRoleSuccessNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
 import DrawerViewTradeLayout from "@/app/components/layouts/Drawers/DrawerViewTrade";
 
 
@@ -18,6 +19,7 @@ const MemberTrade = ({ roleOptions = [] }) => {
     const { modalRef: modalRef_flagUser, handleOpenModal: handleOpenModal_flagUser } = useModal();
     const { modalRef: modalRef_editUser, handleOpenModal: handleOpenModal_editUser } = useModal();
     const { modalRef: modalRef_freezeUser, handleOpenModal: handleOpenModal_freezeUser } = useModal();
+    const { modalRef: modalRef_deleteUser, handleOpenModal: handleOpenModal_deleteUser } = useModal();
 
 
     const [users, setUsers] = useState([]);
@@ -31,6 +33,7 @@ const MemberTrade = ({ roleOptions = [] }) => {
         { key: "edit", label: "Edit user", onClick: handleOpenModal_editUser },
         { key: "flag", label: "Flag user", onClick: handleOpenModal_flagUser },
         { key: "freeze", label: "Freeze user", onClick: handleOpenModal_freezeUser },
+        { key: "delete", label: "Delete user", onClick: () => console.log("Deleting user") },
     ];
 
     const StatusColors = {
@@ -75,6 +78,13 @@ const MemberTrade = ({ roleOptions = [] }) => {
 
     const handleUserView = (userId) => {
         console.log("Viewing user with id: ", userId);
+    };
+
+    const handleUserDelete = async (userId) => {
+        console.log("Deleting user with id: ", userId);
+
+        await deleteUser(userId);
+        UserDeleteRoleSuccessNotification();
     };
 
 
@@ -207,9 +217,9 @@ const MemberTrade = ({ roleOptions = [] }) => {
                             {(item) => (
                                 <DropdownItem
                                     key={item.key}
-                                    color={item.key === "freeze" ? "danger" : "default"}
+                                    color={item.key === "delete" ? "danger" : "default"}
                                     onClick={() => item.onClick()}
-                                    className={`${item.key === "freeze" ? "text-danger hover:text-white" : "hover:text-white"}`}
+                                    className={`${item.key === "delete" ? "text-danger hover:text-white" : "hover:text-white"}`}
                                 >
                                     {item.label}
                                 </DropdownItem>
@@ -260,6 +270,17 @@ const MemberTrade = ({ roleOptions = [] }) => {
             >
                 <p className="text-primary">
                     Freeze user
+                </p>
+            </Modal>
+
+            <Modal
+                ref={modalRef_deleteUser}
+                buttonText={'Delete user roles'}
+                title={'Delete'}
+                onButtonPress={handleUserDelete}
+            >
+                <p className="text-primary">
+                    Are you sure you want to delete the roles for this user? This action cannot be undone.
                 </p>
             </Modal>
 
