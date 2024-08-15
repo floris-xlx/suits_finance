@@ -27,6 +27,8 @@ const MemberTrade = ({ roleOptions = [] }) => {
     const [selectedTab, setSelectedTab] = useState("members");
     const [selectedKeys, setSelectedKeys] = useState(new Set(["All user roles"]));
 
+    const [scopedUserId, setScopedUserId] = useState(null);
+
     const memberStates = ["Members", "Pending"];
     const dropdownItems = [
         { key: "view", label: "View profile", onClick: handleOpenDrawer_viewUser },
@@ -64,23 +66,28 @@ const MemberTrade = ({ roleOptions = [] }) => {
     );
 
 
-    const handleUserFreeze = (userId) => {
+    const handleUserFreeze = () => {
+        const userId = scopedUserId;
         console.log("Freezing user with id: ", userId);
     };
 
-    const handleUserFlag = (userId) => {
+    const handleUserFlag = () => {
+        const userId = scopedUserId;
         console.log("Flagging user with id: ", userId);
     };
 
-    const handleUserEdit = (userId) => {
+    const handleUserEdit = () => {
+        const userId = scopedUserId;
         console.log("Editing user with id: ", userId);
     };
 
-    const handleUserView = (userId) => {
+    const handleUserView = () => {
+        const userId = scopedUserId;
         console.log("Viewing user with id: ", userId);
     };
 
-    const handleUserDelete = async (userId) => {
+    const handleUserDelete = async () => {
+        const userId = scopedUserId;
         console.log("Deleting user with id: ", userId);
 
         await deleteUser(userId);
@@ -218,7 +225,10 @@ const MemberTrade = ({ roleOptions = [] }) => {
                                 <DropdownItem
                                     key={item.key}
                                     color={item.key === "delete" ? "danger" : "default"}
-                                    onClick={() => item.onClick()}
+                                    onClick={() => {
+                                        setScopedUserId(user.id);
+                                        item.onClick();
+                                    }}
                                     className={`${item.key === "delete" ? "text-danger hover:text-white" : "hover:text-white"}`}
                                 >
                                     {item.label}
