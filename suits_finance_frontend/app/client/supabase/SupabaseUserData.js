@@ -327,7 +327,10 @@ export async function addUserRoleObject({ email, role }) {
 
 
 
-export async function fetchUserRoles(page = 1, pageSize = 10) {
+export async function fetchUserRoles(
+  page = 1, 
+  pageSize = 10
+) {
   const offset = (page - 1) * pageSize;
 
   const { data: userRolesData, error: userRolesError } = await supabase
@@ -347,10 +350,16 @@ export async function fetchUserRoles(page = 1, pageSize = 10) {
 
   if (usersError) throw usersError;
 
-  const combinedData = userRolesData.map(role => ({
-    ...role,
-    user: usersData.find(user => user.user_id === role.user_id)
-  }));
+  const combinedData = userRolesData.map(role => {
+    const user = usersData.find(user => user.user_id === role.user_id);
+    if (user && role.status === 'pending') {
+      role.status = 'complete';
+    }
+    return {
+      ...role,
+      user
+    };
+  });
 
   return combinedData;
 }

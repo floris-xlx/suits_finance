@@ -34,8 +34,6 @@ export default function SettingsUserLayout() {
         ['Profile', 'Appearance', 'Payoneer', 'Billing', 'Permission'] :
         ['Profile', 'Appearance', 'Payoneer', 'Billing'];
 
-
-
     const currencyOptions = [
         '$ USD',
         '€ EUR',
