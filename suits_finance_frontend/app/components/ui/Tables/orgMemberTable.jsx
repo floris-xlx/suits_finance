@@ -33,7 +33,7 @@ const MemberTrade = ({ roleOptions = [] }) => {
         { key: "edit", label: "Edit user", onClick: handleOpenModal_editUser },
         { key: "flag", label: "Flag user", onClick: handleOpenModal_flagUser },
         { key: "freeze", label: "Freeze user", onClick: handleOpenModal_freezeUser },
-        { key: "delete", label: "Delete user", onClick: () => console.log("Deleting user") },
+        { key: "delete", label: "Delete user", onClick: handleOpenModal_deleteUser },
     ];
 
     const StatusColors = {
