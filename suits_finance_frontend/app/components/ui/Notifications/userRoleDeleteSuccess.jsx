@@ -1,5 +1,5 @@
 import React from 'react';
-import { BugAntIcon } from '@heroicons/react/24/outline';
+import { CheckIcon } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 
 
