@@ -130,7 +130,7 @@ const MemberTrade = ({ roleOptions = [] }) => {
                         />
                     </span>
                     <div className="inline-flex flex-col items-start">
-                        <span className="text-small text-inherit">{user.user.full_name}</span>
+                        <span className="text-small text-brand-primary">{user.user.full_name}</span>
                         <span className="text-tiny text-foreground-400">{user.email}</span>
                     </div>
                 </div>
