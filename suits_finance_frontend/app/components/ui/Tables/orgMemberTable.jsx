@@ -90,7 +90,8 @@ const MemberTrade = ({ roleOptions = [] }) => {
         const userId = scopedUserId;
         console.log("Deleting user with id: ", userId);
 
-        await deleteUser(userId);
+        const result = await deleteUserRole(userId);
+        console.log("Result: ", result);
         UserDeleteRoleSuccessNotification();
     };
 
@@ -226,7 +227,7 @@ const MemberTrade = ({ roleOptions = [] }) => {
                                     key={item.key}
                                     color={item.key === "delete" ? "danger" : "default"}
                                     onClick={() => {
-                                        setScopedUserId(user.id);
+                                        setScopedUserId(user.user_id);
                                         item.onClick();
                                     }}
                                     className={`${item.key === "delete" ? "text-danger hover:text-white" : "hover:text-white"}`}
@@ -368,7 +369,7 @@ const MemberTrade = ({ roleOptions = [] }) => {
                                 <tbody role="rowgroup">
                                     {users.length === 0 ? (
                                         <div className=" w-full flex flex-col mx-auto py-16">
-                                            <Spinner label="Loading users..." color="warning" size="xs" />
+                                            <Spinner label="Loading users..." color="warning" size="lg" />
                                         </div>
                                     ) : (
                                         users.map((user, index) => (
