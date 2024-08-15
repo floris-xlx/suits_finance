@@ -52,7 +52,9 @@ export default function SettingsUserLayout() {
 
     const [selectedRole, setSelectedRole] = useState(roleOptions[0]);
     const [emailUnique, setEmailUnique] = useState(false);
- 
+
+    const [shouldUpdateUsers, setShouldUpdateUsers] = useState(false);
+
     // translations
     const router = useRouter();
     const [translations, setTranslations] = useState({});
@@ -265,6 +267,7 @@ export default function SettingsUserLayout() {
 
         if (result === 201) {
             UserAddedSuccessNotification();
+            setShouldUpdateUsers(!shouldUpdateUsers);
             setInviteNewEmail('');
         }
         else {
@@ -417,7 +420,7 @@ export default function SettingsUserLayout() {
 
                         </div>
                         <div className="mt-4 w-full h-full">
-                            <MemberTrade roleOptions={roleOptions} />
+                            <MemberTrade  shouldUpdateUsers={shouldUpdateUsers} setShouldUpdateUsers={setShouldUpdateUsers}/>
                         </div>
                     </Fragment>
                 }

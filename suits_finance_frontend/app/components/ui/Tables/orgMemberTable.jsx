@@ -12,9 +12,9 @@ import TabHorizontal from '@/app/components/ui/Tabs/TabHorizontalWithValue';
 import CapitalizeFirstLetter from '@/app/client/hooks/formatting/CapitalizeLetter';
 import { UserDeleteRoleSuccessNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
 import DrawerViewTradeLayout from "@/app/components/layouts/Drawers/DrawerViewTrade";
+import { ValueCopyChipInlineLabel } from '@/app/components/ui/Chips/ValueCopyChip';
 
-
-const MemberTrade = ({ roleOptions = [] }) => {
+const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
     const { drawerRef: drawerRef_viewUser, handleOpenDrawer: handleOpenDrawer_viewUser } = useDrawer();
     const { modalRef: modalRef_flagUser, handleOpenModal: handleOpenModal_flagUser } = useModal();
     const { modalRef: modalRef_editUser, handleOpenModal: handleOpenModal_editUser } = useModal();
@@ -56,9 +56,14 @@ const MemberTrade = ({ roleOptions = [] }) => {
         );
     };
 
+    const fetchAndSetUserRoles = async () => {
+        const userRoles = await fetchUserRoles();
+        setUsers(userRoles);
+    };
+
     useEffect(() => {
-        fetchUserRoles().then(setUsers);
-    }, []);
+        fetchAndSetUserRoles();
+    }, [shouldUpdateUsers]);
 
     const selectedValue = React.useMemo(
         () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
@@ -93,6 +98,7 @@ const MemberTrade = ({ roleOptions = [] }) => {
         const result = await deleteUserRole(userId);
         console.log("Result: ", result);
         UserDeleteRoleSuccessNotification();
+        fetchAndSetUserRoles();
     };
 
 
@@ -245,9 +251,15 @@ const MemberTrade = ({ roleOptions = [] }) => {
     return (
         <Fragment>
             <DrawerHero ref={drawerRef_viewUser} label="View user">
-                <p className="text-primary text-lg">
-                    miauw
-                </p>
+                <ValueCopyChipInlineLabel 
+                    label="User ID" 
+                    value={scopedUserId} 
+                    copy={true}
+                    hover={true}
+                    isText={true}
+                    notificationType='User Id'
+                    width='full'
+                    />
             </DrawerHero>
 
 
