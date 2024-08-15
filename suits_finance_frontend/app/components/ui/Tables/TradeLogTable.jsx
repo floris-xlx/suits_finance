@@ -42,7 +42,6 @@ const INITIAL_VISIBLE_COLUMNS = ["pairname", "created_at", "trade_status", "acti
 
 
 
-
 import PropTypes from "prop-types";
 
 export default function App({

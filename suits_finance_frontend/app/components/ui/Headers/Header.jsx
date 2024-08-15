@@ -51,7 +51,7 @@ const Header = ({
   return (
     <header
       id="page-header"
-      className="z-50 flex flex-none items-center border-b border-primary bg-secondary backdrop-blur-sm lg:fixed lg:end-0 lg:start-0 lg:top-0 lg:h-20 "
+      className="z-20 flex flex-none items-center border-b border-primary bg-secondary backdrop-blur-sm lg:fixed lg:end-0 lg:start-0 lg:top-0 lg:h-20 "
     >
       < SyncingCard />
 

@@ -3,13 +3,23 @@ import { fetchUserRoles } from '@/app/client/supabase/SupabaseUserData.js';
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
 import { Checkbox } from "@nextui-org/react";
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
-
+import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
+import { DrawerHero, useDrawer } from "@/app/components/ui/Drawers/DrawerViewTrade";
+import { refreshPage } from '@/app/client/hooks/refreshPage';
 import InputFieldDataWrapperUser from '@/app/components/dataWrappers/inputFieldWrapperUser';
 import InputField from '@/app/components/ui/InputFields/InputField';
 import TabHorizontal from '@/app/components/ui/Tabs/TabHorizontalWithValue';
 import CapitalizeFirstLetter from '@/app/client/hooks/formatting/CapitalizeLetter';
+import DrawerViewTradeLayout from "@/app/components/layouts/Drawers/DrawerViewTrade";
+
 
 const MemberTrade = ({ roleOptions = [] }) => {
+    const { drawerRef: drawerRef_viewUser, handleOpenDrawer: handleOpenDrawer_viewUser } = useDrawer();
+    const { modalRef: modalRef_flagUser, handleOpenModal: handleOpenModal_flagUser } = useModal();
+    const { modalRef: modalRef_editUser, handleOpenModal: handleOpenModal_editUser } = useModal();
+    const { modalRef: modalRef_freezeUser, handleOpenModal: handleOpenModal_freezeUser } = useModal();
+
+
     const [users, setUsers] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedTab, setSelectedTab] = useState("members");
@@ -17,10 +27,10 @@ const MemberTrade = ({ roleOptions = [] }) => {
 
     const memberStates = ["Members", "Pending"];
     const dropdownItems = [
-        { key: "new", label: "View profile" },
-        { key: "copy", label: "Edit user" },
-        { key: "edit", label: "Flag user" },
-        { key: "delete", label: "Freeze user" }
+        { key: "view", label: "View profile", onClick: handleOpenDrawer_viewUser },
+        { key: "edit", label: "Edit user", onClick: handleOpenModal_editUser },
+        { key: "flag", label: "Flag user", onClick: handleOpenModal_flagUser },
+        { key: "freeze", label: "Freeze user", onClick: handleOpenModal_freezeUser },
     ];
 
     const StatusColors = {
@@ -50,6 +60,27 @@ const MemberTrade = ({ roleOptions = [] }) => {
         [selectedKeys]
     );
 
+
+    const handleUserFreeze = (userId) => {
+        console.log("Freezing user with id: ", userId);
+    };
+
+    const handleUserFlag = (userId) => {
+        console.log("Flagging user with id: ", userId);
+    };
+
+    const handleUserEdit = (userId) => {
+        console.log("Editing user with id: ", userId);
+    };
+
+    const handleUserView = (userId) => {
+        console.log("Viewing user with id: ", userId);
+    };
+
+
+    const tableTd = `
+    py-2 px-3 relative align-middle whitespace-normal text-small font-normal [&amp;>*]:z-1 [&amp;>*]:relative outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 before:content-[''] before:absolute before:z-0 before:inset-0 before:opacity-0 data-[selected=true]:before:opacity-100 group-data-[disabled=true]:text-foreground-300 group-data-[disabled=true]:cursor-not-allowed before:bg-default/40 data-[selected=true]:text-default-foreground group-aria-[selected=false]:group-data-[hover=true]:before:bg-default-100 group-aria-[selected=false]:group-data-[hover=true]:before:opacity-70 group-data-[first=true]:first:before:rounded-tl-lg group-data-[first=true]:rtl:first:before:rounded-tr-lg group-data-[first=true]:rtl:first:before:rounded-tl-[unset] group-data-[first=true]:last:before:rounded-tr-lg group-data-[first=true]:rtl:last:before:rounded-tl-lg group-data-[first=true]:rtl:last:before:rounded-tr-[unset] group-data-[middle=true]:before:rounded-none group-data-[last=true]:first:before:rounded-bl-lg group-data-[last=true]:rtl:first:before:rounded-br-lg group-data-[last=true]:rtl:first:before:rounded-bl-[unset] group-data-[last=true]:last:before:rounded-br-lg group-data-[last=true]:rtl:last:before:rounded-bl-lg group-data-[last=true]:rtl:last:before:rounded-br-[unset] text-start
+    `
 
     const renderTableHeader = (key, label) => (
         <th
@@ -97,7 +128,7 @@ const MemberTrade = ({ roleOptions = [] }) => {
                 tabIndex="-1"
                 data-key={`${user.id}header`}
                 role="gridcell"
-                className="py-2 px-3 relative align-middle whitespace-normal text-small font-normal [&amp;>*]:z-1 [&amp;>*]:relative outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 before:content-[''] before:absolute before:z-0 before:inset-0 before:opacity-0 data-[selected=true]:before:opacity-100 group-data-[disabled=true]:text-foreground-300 group-data-[disabled=true]:cursor-not-allowed before:bg-default/40 data-[selected=true]:text-default-foreground group-aria-[selected=false]:group-data-[hover=true]:before:bg-default-100 group-aria-[selected=false]:group-data-[hover=true]:before:opacity-70 group-data-[first=true]:first:before:rounded-tl-lg group-data-[first=true]:rtl:first:before:rounded-tr-lg group-data-[first=true]:rtl:first:before:rounded-tl-[unset] group-data-[first=true]:last:before:rounded-tr-lg group-data-[first=true]:rtl:last:before:rounded-tl-lg group-data-[first=true]:rtl:last:before:rounded-tr-[unset] group-data-[middle=true]:before:rounded-none group-data-[last=true]:first:before:rounded-bl-lg group-data-[last=true]:rtl:first:before:rounded-br-lg group-data-[last=true]:rtl:first:before:rounded-bl-[unset] group-data-[last=true]:last:before:rounded-br-lg group-data-[last=true]:rtl:last:before:rounded-bl-lg group-data-[last=true]:rtl:last:before:rounded-br-[unset] text-start"
+                className={tableTd}
             >
                 <label
                     className="group relative max-w-fit inline-flex items-center justify-start cursor-pointer tap-highlight-transparent p-2 -m-2"
@@ -114,7 +145,7 @@ const MemberTrade = ({ roleOptions = [] }) => {
                 data-key={`${user.id}name`}
                 role="rowheader"
                 id={`react-aria5550266582-:r94:-${user.id}-name`}
-                className="py-2 px-3 relative align-middle whitespace-normal text-small font-normal [&amp;>*]:z-1 [&amp;>*]:relative outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 before:content-[''] before:absolute before:z-0 before:inset-0 before:opacity-0 data-[selected=true]:before:opacity-100 group-data-[disabled=true]:text-foreground-300 group-data-[disabled=true]:cursor-not-allowed before:bg-default/40 data-[selected=true]:text-default-foreground group-aria-[selected=false]:group-data-[hover=true]:before:bg-default-100 group-aria-[selected=false]:group-data-[hover=true]:before:opacity-70 group-data-[first=true]:first:before:rounded-tl-lg group-data-[first=true]:rtl:first:before:rounded-tr-lg group-data-[first=true]:rtl:first:before:rounded-tl-[unset] group-data-[first=true]:last:before:rounded-tr-lg group-data-[first=true]:rtl:last:before:rounded-tl-lg group-data-[first=true]:rtl:last:before:rounded-tr-[unset] group-data-[middle=true]:before:rounded-none group-data-[last=true]:first:before:rounded-bl-lg group-data-[last=true]:rtl:first:before:rounded-br-lg group-data-[last=true]:rtl:first:before:rounded-bl-[unset] group-data-[last=true]:last:before:rounded-br-lg group-data-[last=true]:rtl:last:before:rounded-bl-lg group-data-[last=true]:rtl:last:before:rounded-br-[unset] text-start"
+                className={tableTd}
             >
                 <div
                     tabIndex="-1"
@@ -147,7 +178,7 @@ const MemberTrade = ({ roleOptions = [] }) => {
                 tabIndex="-1"
                 data-key={`${user.id}role`}
                 role="gridcell"
-                className="py-2 px-3 relative align-middle whitespace-normal text-small font-normal [&amp;>*]:z-1 [&amp;>*]:relative outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 before:content-[''] before:absolute before:z-0 before:inset-0 before:opacity-0 data-[selected=true]:before:opacity-100 group-data-[disabled=true]:text-foreground-300 group-data-[disabled=true]:cursor-not-allowed before:bg-default/40 data-[selected=true]:text-default-foreground group-aria-[selected=false]:group-data-[hover=true]:before:bg-default-100 group-aria-[selected=false]:group-data-[hover=true]:before:opacity-70 group-data-[first=true]:first:before:rounded-tl-lg group-data-[first=true]:rtl:first:before:rounded-tr-lg group-data-[first=true]:rtl:first:before:rounded-tl-[unset] group-data-[first=true]:last:before:rounded-tr-lg group-data-[first=true]:rtl:last:before:rounded-tl-lg group-data-[first=true]:rtl:last:before:rounded-tr-[unset] group-data-[middle=true]:before:rounded-none group-data-[last=true]:first:before:rounded-bl-lg group-data-[last=true]:rtl:first:before:rounded-br-lg group-data-[last=true]:rtl:first:before:rounded-bl-[unset] group-data-[last=true]:last:before:rounded-br-lg group-data-[last=true]:rtl:last:before:rounded-bl-lg group-data-[last=true]:rtl:last:before:rounded-br-[unset] text-start"
+                className={tableTd}
             >
                 <div className="flex flex-col">
                     <p className="text-bold text-small capitalize text-default-500">{user.user.role}</p>
@@ -157,7 +188,7 @@ const MemberTrade = ({ roleOptions = [] }) => {
                 tabIndex="-1"
                 data-key={`${user.id}status`}
                 role="gridcell"
-                className="py-2 px-3 relative align-middle whitespace-normal text-small font-normal [&amp;>*]:z-1 [&amp;>*]:relative outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 before:content-[''] before:absolute before:z-0 before:inset-0 before:opacity-0 data-[selected=true]:before:opacity-100 group-data-[disabled=true]:text-foreground-300 group-data-[disabled=true]:cursor-not-allowed before:bg-default/40 data-[selected=true]:text-default-foreground group-aria-[selected=false]:group-data-[hover=true]:before:bg-default-100 group-aria-[selected=false]:group-data-[hover=true]:before:opacity-70 group-data-[first=true]:first:before:rounded-tl-lg group-data-[first=true]:rtl:first:before:rounded-tr-lg group-data-[first=true]:rtl:first:before:rounded-tl-[unset] group-data-[first=true]:last:before:rounded-tr-lg group-data-[first=true]:rtl:last:before:rounded-tl-lg group-data-[first=true]:rtl:last:before:rounded-tr-[unset] group-data-[middle=true]:before:rounded-none group-data-[last=true]:first:before:rounded-bl-lg group-data-[last=true]:rtl:first:before:rounded-br-lg group-data-[last=true]:rtl:first:before:rounded-bl-[unset] group-data-[last=true]:last:before:rounded-br-lg group-data-[last=true]:rtl:last:before:rounded-bl-lg group-data-[last=true]:rtl:last:before:rounded-br-[unset] text-start"
+                className={tableTd}
             >
                 {renderChip(user.user.status)}
             </td>
@@ -165,7 +196,7 @@ const MemberTrade = ({ roleOptions = [] }) => {
                 tabIndex="-1"
                 data-key={`${user.id}actions`}
                 role="gridcell"
-                className="py-2 px-3 relative align-middle whitespace-normal text-small font-normal [&amp;>*]:z-1 [&amp;>*]:relative outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 before:content-[''] before:absolute before:z-0 before:inset-0 before:opacity-0 data-[selected=true]:before:opacity-100 group-data-[disabled=true]:text-foreground-300 group-data-[disabled=true]:cursor-not-allowed before:bg-default/40 data-[selected=true]:text-default-foreground group-aria-[selected=false]:group-data-[hover=true]:before:bg-default-100 group-aria-[selected=false]:group-data-[hover=true]:before:opacity-70 group-data-[first=true]:first:before:rounded-tl-lg group-data-[first=true]:rtl:first:before:rounded-tr-lg group-data-[first=true]:rtl:first:before:rounded-tl-[unset] group-data-[first=true]:last:before:rounded-tr-lg group-data-[first=true]:rtl:last:before:rounded-tl-lg group-data-[first=true]:rtl:last:before:rounded-tr-[unset] group-data-[middle=true]:before:rounded-none group-data-[last=true]:first:before:rounded-bl-lg group-data-[last=true]:rtl:first:before:rounded-br-lg group-data-[last=true]:rtl:first:before:rounded-bl-[unset] group-data-[last=true]:last:before:rounded-br-lg group-data-[last=true]:rtl:last:before:rounded-bl-lg group-data-[last=true]:rtl:last:before:rounded-br-[unset] text-center"
+                className={tableTd}
             >
                 <div className="relative flex items-center justify-end gap-2 cursor-pointer">
                     <Dropdown>
@@ -176,8 +207,9 @@ const MemberTrade = ({ roleOptions = [] }) => {
                             {(item) => (
                                 <DropdownItem
                                     key={item.key}
-                                    color={item.key === "delete" ? "danger" : "default"}
-                                    className={`${item.key === "delete" ? "text-danger hover:text-white" : "hover:text-white"}`}
+                                    color={item.key === "freeze" ? "danger" : "default"}
+                                    onClick={() => item.onClick()}
+                                    className={`${item.key === "freeze" ? "text-danger hover:text-white" : "hover:text-white"}`}
                                 >
                                     {item.label}
                                 </DropdownItem>
@@ -190,86 +222,130 @@ const MemberTrade = ({ roleOptions = [] }) => {
     );
 
     return (
-        <div
-            className="flex flex-col relative overflow-hidden h-auto text-foreground box-border outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 shadow-none rounded-md transition-transform-background motion-reduce:transition-none border border-primary bg-secondary"
-            tabIndex="-1"
-        >
-            <div className="relative flex w-full p-3 flex-auto flex-col place-content-inherit align-items-inherit h-auto break-words text-left overflow-y-auto subpixel-antialiased">
-                <div className="flex flex-col relative gap-4 w-full">
-                    <div>
-                        <div className="flex items-center justify-between gap-3 pl-1">
-                            <InputField
-                                value={searchQuery}
-                                setValue={setSearchQuery}
-                                type='text'
-                                width='full'
-                            />
-                            <div className="flex gap-3 -mt-[-7px]">
-                                <Dropdown>
-                                    <DropdownTrigger>
-                                        <Button
-                                            variant="bordered"
-                                            className="capitalize"
+        <Fragment>
+            <DrawerHero ref={drawerRef_viewUser} label="View user">
+                <p className="text-primary text-lg">
+                    miauw
+                </p>
+            </DrawerHero>
+
+
+            <Modal
+                ref={modalRef_flagUser}
+                buttonText={'Flag user'}
+                title={'Flag'}
+                onButtonPress={refreshPage}
+            >
+                <p className="text-primary">
+                    flag user
+                </p>
+            </Modal>
+
+            <Modal
+                ref={modalRef_editUser}
+                buttonText={'Edit user'}
+                title={'Edit'}
+                onButtonPress={refreshPage}
+            >
+                <p className="text-primary">
+                    edit user
+                </p>
+            </Modal>
+
+            <Modal
+                ref={modalRef_freezeUser}
+                buttonText={'Freeze user'}
+                title={'Freeze'}
+                onButtonPress={refreshPage}
+            >
+                <p className="text-primary">
+                    Freeze user
+                </p>
+            </Modal>
+
+
+
+            <div
+                className="flex flex-col relative overflow-hidden h-auto text-foreground box-border outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 shadow-none rounded-md transition-transform-background motion-reduce:transition-none border border-primary bg-secondary"
+                tabIndex="-1"
+            >
+                <div className="relative flex w-full p-3 flex-auto flex-col place-content-inherit align-items-inherit h-auto break-words text-left overflow-y-auto subpixel-antialiased">
+                    <div className="flex flex-col relative gap-4 w-full">
+                        <div>
+                            <div className="flex items-center justify-between gap-3 pl-1">
+                                <InputField
+                                    value={searchQuery}
+                                    setValue={setSearchQuery}
+                                    type='text'
+                                    width='full'
+                                />
+                                <div className="flex gap-3 -mt-[-7px]">
+                                    <Dropdown>
+                                        <DropdownTrigger>
+                                            <Button
+                                                variant="bordered"
+                                                className="capitalize"
+                                            >
+                                                {selectedValue}
+                                            </Button>
+                                        </DropdownTrigger>
+                                        <DropdownMenu
+                                            aria-label="select user access role"
+                                            variant="flat"
+                                            closeOnSelect={false}
+                                            disallowEmptySelection
+                                            selectionMode="multiple"
+                                            selectedKeys={selectedKeys}
+                                            onSelectionChange={setSelectedKeys}
                                         >
-                                            {selectedValue}
-                                        </Button>
-                                    </DropdownTrigger>
-                                    <DropdownMenu
-                                        aria-label="select user access role"
-                                        variant="flat"
-                                        closeOnSelect={false}
-                                        disallowEmptySelection
-                                        selectionMode="multiple"
-                                        selectedKeys={selectedKeys}
-                                        onSelectionChange={setSelectedKeys}
-                                    >
-                                        <DropdownItem key="user">User</DropdownItem>
-                                        <DropdownItem key="admin">Admin</DropdownItem>
-                                        <DropdownItem key="super_admin">Super Admin</DropdownItem>
-                                        <DropdownItem key="developer">Developer</DropdownItem>
-                                    </DropdownMenu>
-                                </Dropdown>
+                                            <DropdownItem key="user">User</DropdownItem>
+                                            <DropdownItem key="admin">Admin</DropdownItem>
+                                            <DropdownItem key="super_admin">Super Admin</DropdownItem>
+                                            <DropdownItem key="developer">Developer</DropdownItem>
+                                        </DropdownMenu>
+                                    </Dropdown>
+                                </div>
+                            </div>
+                            <div data-slot="base" className="inline-flex mt-3 ml-1" aria-label="roles">
+                                <TabHorizontal
+                                    options={memberStates}
+                                    setValueExternal={setSelectedTab}
+                                    variant="underlined"
+                                />
                             </div>
                         </div>
-                        <div data-slot="base" className="inline-flex mt-3 ml-1" aria-label="roles">
-                            <TabHorizontal
-                                options={memberStates}
-                                setValueExternal={setSelectedTab}
-                                variant="underlined"
-                            />
-                        </div>
-                    </div>
-                    <div className="z-0 flex flex-col relative justify-between gap-4 overflow-auto rounded-large w-full max-h-[382px] bg-transparent p-0 border-none shadow-none">
-                        <table
-                            aria-label="Team Manage Table"
-                            id="react-aria5550266582-:r94:"
-                            role="grid"
-                            aria-multiselectable="true"
-                            tabIndex="0"
-                            aria-describedby=""
-                            className="min-w-full h-auto table-auto w-full"
-                        >
-                            <thead
-                                className="[&>tr]:first:rounded-lg hidden sticky top-0 z-20 [&>tr]:first:shadow-small"
-                                role="rowgroup"
+                        <div className="z-0 flex flex-col relative justify-between gap-4 overflow-auto rounded-large w-full max-h-[382px] bg-transparent p-0 border-none shadow-none">
+                            <table
+                                aria-label="Team Manage Table"
+                                id="react-aria5550266582-:r94:"
+                                role="grid"
+                                aria-multiselectable="true"
+                                tabIndex="0"
+                                aria-describedby=""
+                                className="min-w-full h-auto table-auto w-full"
                             >
-                                <tr role="row">
-                                    {["Name", "Role", "Status"].map((header, index) => (
-                                        renderTableHeader(header.toLowerCase(), header)
+                                <thead
+                                    className="[&>tr]:first:rounded-lg hidden sticky top-0 z-20 [&>tr]:first:shadow-small"
+                                    role="rowgroup"
+                                >
+                                    <tr role="row">
+                                        {["Name", "Role", "Status"].map((header, index) => (
+                                            renderTableHeader(header.toLowerCase(), header)
+                                        ))}
+                                    </tr>
+                                </thead>
+                                <tbody role="rowgroup">
+                                    {users.map((user, index) => (
+                                        renderTableRow(user, index)
                                     ))}
-                                </tr>
-                            </thead>
-                            <tbody role="rowgroup">
-                                {users.map((user, index) => (
-                                    renderTableRow(user, index)
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                </tbody>
+                            </table>
+                        </div>
 
+                    </div>
                 </div>
             </div>
-        </div>
+        </Fragment>
     );
 };
 

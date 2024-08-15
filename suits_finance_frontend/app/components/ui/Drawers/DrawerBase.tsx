@@ -42,13 +42,14 @@ const DrawerOverlay = React.forwardRef<
     React.ComponentPropsWithoutRef<typeof DrawerPrimitives.Overlay>
 >(({ className, ...props }, forwardedRef) => {
     return (
+
         <DrawerPrimitives.Overlay
             ref={forwardedRef}
             className={cx(
                 // base
                 "fixed inset-0 z-50 overflow-y-auto",
                 // background color
-                "bg-black/30",
+                "bg-black/50",
                 // transition
                 "data-[state=closed]:animate-hide data-[state=open]:animate-dialogOverlayShow",
                 className,
@@ -69,25 +70,31 @@ const DrawerContent = React.forwardRef<
     React.ComponentPropsWithoutRef<typeof DrawerPrimitives.Content>
 >(({ className, ...props }, forwardedRef) => {
     return (
-        <DrawerPortal>
-            <DrawerOverlay>
-                <DrawerPrimitives.Content
-                    ref={forwardedRef}
-                    className={cx(
-                        // base
-                        "fixed inset-y-2 mx-auto flex w-[95vw] flex-1 flex-col overflow-y-auto rounded-md border p-4 shadow-lg focus:outline-none max-sm:inset-x-2 sm:inset-y-2 sm:right-2 sm:max-w-lg sm:p-6",
-                        // border color
-                        "border-primary",
-                        // background color
-                        "bg-primary",
-                        // transition
-                        "data-[state=closed]:animate-drawerSlideRightAndFade data-[state=open]:animate-drawerSlideLeftAndFade",
-                        focusRing,
-                        className,
-                    )}
-                    {...props}
-                />
-            </DrawerOverlay>
+        <DrawerPortal >
+            <div className="fixed inset-0 overflow-y-auto z-50">
+                <DrawerOverlay>
+
+                    <DrawerPrimitives.Content
+                        ref={forwardedRef}
+                        className={cx(
+                            // base
+                        
+                            "fixed inset-y-2 mx-auto flex w-[95vw] flex-1 flex-col overflow-y-auto rounded-md border p-4 shadow-lg focus:outline-none max-sm:inset-x-2 sm:inset-y-2 sm:right-2 sm:max-w-lg sm:p-6  ",
+                            // border color
+                            "border-primary",
+                            // background color
+                            "bg-primary",
+                            // transition
+                            "data-[state=closed]:animate-drawerSlideRightAndFade data-[state=open]:animate-drawerSlideLeftAndFade",
+                            focusRing,
+                            className,
+                        )}
+                        {...props}
+                    />
+
+
+                </DrawerOverlay>
+            </div>
         </DrawerPortal>
     )
 })

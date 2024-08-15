@@ -39,31 +39,42 @@ const DrawerHero = forwardRef(({ children = null }, ref) => {
     }));
 
     useEffect(() => {
-        // Logic to handle side effects when drawer state changes
-        // For example, starting animations or updating document title
+        console.log('DrawerHero useEffect, is open:', isDrawerOpen);
     }, [isDrawerOpen]);
 
 
     return (
-        <div className="flex">
+        <div className="flex transition-all duration-500">
+        
+
             <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
                 <DrawerContent className="sm:max-w-lg">
+
                     <DrawerHeader>
+
                         <DrawerTitle className="select-none">
                             View trade
                         </DrawerTitle>
+
                         <DrawerDescription className="mt-2 text-sm w-full ">
                             {children}
                         </DrawerDescription>
+
                     </DrawerHeader>
+
                     <DrawerFooter className="mt-6">
-                      
+
                         <DrawerClose asChild>
                             <Button className="w-full sm:w-fit bg-brand-primary text-white" onClick={handleCloseDrawer}>Close</Button>
                         </DrawerClose>
+
                     </DrawerFooter>
                 </DrawerContent>
             </Drawer>
+
+            {isDrawerOpen && (
+                <div className="z-50 backdrop-blur-md backdrop-saturate-150 bg-overlay/30 w-screen h-screen fixed inset-0" style={{ opacity: 1 }} aria-hidden="true"></div>
+            )}
         </div>
     );
 });
