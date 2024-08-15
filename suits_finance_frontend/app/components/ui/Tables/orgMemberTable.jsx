@@ -3,6 +3,8 @@ import { fetchUserRoles } from '@/app/client/supabase/SupabaseUserData.js';
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
 
 
+import InputFieldDataWrapperUser from '@/app/components/dataWrappers/inputFieldWrapperUser';
+import InputField from '@/app/components/ui/InputFields/InputField';
 
 
 
@@ -10,18 +12,18 @@ const MemberTrade = ({
     roleOptions = []
 }) => {
     const [users, setUsers] = useState([]);
+    const [searchQuery, setSearchQuery] = useState("");
 
 
     useEffect(() => {
         fetchUserRoles().then((data) => {
             setUsers(data);
 
-            console.log(data);
         });
     }, []);
 
-    const [selectedKeys, setSelectedKeys] = React.useState(new Set(["All user roles"]));
 
+    const [selectedKeys, setSelectedKeys] = React.useState(new Set(["All user roles"]));
     const selectedValue = React.useMemo(
         () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
         [selectedKeys]
@@ -36,81 +38,13 @@ const MemberTrade = ({
                 <div className="flex flex-col relative gap-4 w-full">
                     <div>
                         <div className="flex items-center justify-between gap-3">
-                            <div
-                                className="group flex flex-col data-[hidden=true]:hidden group relative justify-end data-[has-label=true]:mt-[calc(theme(fontSize.small)_+_10px)] w-full"
-                                data-slot="base"
-                                data-filled="true"
-                                data-filled-within="true"
-                            >
-                                <div data-slot="main-wrapper" className="h-full flex flex-col">
-                                    <div
-                                        data-slot="input-wrapper"
-                                        className="relative w-full inline-flex tap-highlight-transparent flex-row items-center shadow-sm px-3 gap-3 bg-default-100 data-[hover=true]:bg-default-200 group-data-[focus=true]:bg-default-100 h-10 min-h-10 rounded-medium transition-background motion-reduce:transition-none !duration-150 outline-none group-data-[focus-visible=true]:z-10 group-data-[focus-visible=true]:ring-2 group-data-[focus-visible=true]:ring-focus group-data-[focus-visible=true]:ring-offset-2 group-data-[focus-visible=true]:ring-offset-background"
-                                        style={{ cursor: 'text' }}
-                                    >
-                                        <div
-                                            data-slot="inner-wrapper"
-                                            className="inline-flex w-full items-center h-full box-border"
-                                        >
-                                            <svg
-                                                aria-hidden="true"
-                                                fill="none"
-                                                focusable="false"
-                                                height="1em"
-                                                role="presentation"
-                                                viewBox="0 0 24 24"
-                                                width="1em"
-                                            >
-                                                <path
-                                                    d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
-                                                    stroke="currentColor"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth="2"
-                                                ></path>
-                                                <path
-                                                    d="M22 22L20 20"
-                                                    stroke="currentColor"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth="2"
-                                                ></path>
-                                            </svg>
-                                            <input
-                                                data-slot="input"
-                                                data-has-start-content="true"
-                                                className="w-full font-normal bg-transparent !outline-none placeholder:text-foreground-500 focus-visible:outline-none data-[has-start-content=true]:ps-1.5 data-[has-end-content=true]:pe-1.5 text-small peer pr-6 rtl:pr-0 rtl:pl-6 group-data-[has-value=true]:text-default-foreground h-full"
-                                                aria-label="Search by name..."
-                                                placeholder="Search by name..."
-                                                id="react-aria5550266582-:r96:"
-                                                type="text"
-                                                value=""
-                                            ></input>
-                                            <span
-                                                role="button"
-                                                tabindex="0"
-                                                data-slot="clear-button"
-                                                className="p-2 -m-2 z-10 hidden absolute right-3 rtl:right-auto rtl:left-3 appearance-none select-none opacity-0 hover:!opacity-100 cursor-pointer active:!opacity-70 rounded-full outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 text-large peer-data-[filled=true]:opacity-70 peer-data-[filled=true]:block transition-opacity motion-reduce:transition-none"
-                                            >
-                                                <svg
-                                                    aria-hidden="true"
-                                                    focusable="false"
-                                                    height="1em"
-                                                    role="presentation"
-                                                    viewBox="0 0 24 24"
-                                                    width="1em"
-                                                >
-                                                    <path
-                                                        d="M12 2a10 10 0 1010 10A10.016 10.016 0 0012 2zm3.36 12.3a.754.754 0 010 1.06.748.748 0 01-1.06 0l-2.3-2.3-2.3 2.3a.748.748 0 01-1.06 0 .754.754 0 010-1.06l2.3-2.3-2.3-2.3A.75.75 0 019.7 8.64l2.3 2.3 2.3-2.3a.75.75 0 011.06 1.06l-2.3 2.3z"
-                                                        fill="currentColor"
-                                                    ></path>
-                                                </svg>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flex gap-3">
+                            <InputField
+                                value={searchQuery}
+                                setValue={setSearchQuery}
+                                type='text'
+                                width='full'
+                            />
+                            <div className="flex gap-3 -mt-[-7px]">
                                 <Dropdown>
                                     <DropdownTrigger>
                                         <Button
@@ -129,7 +63,7 @@ const MemberTrade = ({
                                         selectedKeys={selectedKeys}
                                         onSelectionChange={setSelectedKeys}
                                     >
-                                        
+
                                         <DropdownItem key="user">User</DropdownItem>
                                         <DropdownItem key="admin">Admin</DropdownItem>
                                         <DropdownItem key="super_admin">Super Admin</DropdownItem>

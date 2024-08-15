@@ -11,7 +11,7 @@ import ButtonPrimary from '@/app/components/ui/Buttons/ButtonPrimary';
 import PayoneerCard from '@/app/components/ui/Cards/PayoneerCard';
 import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
 import InputField from '@/app/components/ui/InputFields/InputField';
-import { getUserCards, addPayoneerCard, isUserSuperAdmin, addUserRoleObject, IsEmailUniqueRoles } from '@/app/client/supabase/SupabaseUserData';
+import { addPayoneerCard, isUserSuperAdmin, addUserRoleObject, IsEmailUniqueRoles } from '@/app/client/supabase/SupabaseUserData';
 import { PayoneerCardAddSuccessNotification, AddUserFailedNotification, UserAddedSuccessNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
 import { refreshPage } from '@/app/client/hooks/refreshPage';
 import initTranslations from '@/app/i18n';
@@ -28,6 +28,7 @@ export default function SettingsUserLayout() {
     const [isAdmin, setIsAdmin] = useState(false);
     // permission section usernames
     const [inviteNewEmail, setInviteNewEmail] = useState('');
+    const [searchQueryTable, setSearchQueryTable] = useState('');
 
     const settingOptions = isAdmin ?
         ['Profile', 'Appearance', 'Payoneer', 'Billing', 'Permission'] :
@@ -50,11 +51,10 @@ export default function SettingsUserLayout() {
         { label: "Developer", value: "developer" },
         { label: "Support", value: "support" }
     ];
+
     const [selectedRole, setSelectedRole] = useState(roleOptions[0]);
     const [emailUnique, setEmailUnique] = useState(false);
-
-
-
+ 
     // translations
     const router = useRouter();
     const [translations, setTranslations] = useState({});
@@ -245,6 +245,7 @@ export default function SettingsUserLayout() {
     const [expiryDate, setExpiryDate] = useState('');
     const [cardIban, setCardIban] = useState('');
     const { modalRef: modalRef_connectPayoneer, handleOpenModal: handleOpenModal_connectPayoneer } = useModal();
+
     const handleConnectPayoneer = async () => {
         const result = await addPayoneerCard({
             user_id: user.id,
@@ -263,7 +264,6 @@ export default function SettingsUserLayout() {
             email: inviteNewEmail,
             role: selectedRole.value
         });
-        console.log(result);
 
         if (result === 201) {
             UserAddedSuccessNotification();
@@ -279,9 +279,6 @@ export default function SettingsUserLayout() {
     const isEnabledAddMemberButton = () => {
         return inviteNewEmail && selectedRole && isEmailValid(inviteNewEmail) && emailUnique;
     };
-
-
-
 
     const PermissionSection = () => (
         <div className="pt-[20px]">
@@ -396,13 +393,15 @@ export default function SettingsUserLayout() {
                                         <div className=" ml-2  sm:ml-0 sm:max-w-[200px] w-full mt-4 sm:mt-0">
 
                                             < Dropdown label='User role' options={roleOptions} width='full' setValue={setSelectedRole} />
+
                                         </div>
                                     </div>
 
                                     <button onClick={handleAddMember} className={` flex-row flex items-center gap-x-2 p-2 mb-2 sm:mb-0 ml-4 sm:ml-2 rounded-md border mt-2 sm:mt-6 sm:w-fit text-nowrap w-full ${isEnabledAddMemberButton() ? 'text-white bg-brand-primary hover:transition hover:bg-brand-secondary border-brand-primary' : 'text-gray-300 bg-brand-disabled border-brand-disabled'}`} disabled={!isEnabledAddMemberButton()}>
-                                        <div className="flex flex-row gap-x-2 items-center mx-auto">
+
+                                        <div className="flex flex-row gap-x-2 items-center mx-auto text-xs">
                                             Add Member
-                                            <PaperAirplaneIcon className={`h-6 w-6 ${isEnabledAddMemberButton() ? 'text-white' : 'text-gray-300'}`} />
+                                            <PaperAirplaneIcon className={`h-4 w-4 ${isEnabledAddMemberButton() ? 'text-white' : 'text-gray-300'}`} />
                                         </div>
 
                                     </button>

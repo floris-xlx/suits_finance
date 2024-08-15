@@ -23,17 +23,6 @@ export async function IsUserIdGlobalAdmin(userId) {
 }
 
 
-export async function GetUserSettings(userId) {
-  const { data, error } = await supabase
-    .from('users')
-    .select('*')
-    .eq('user_id', userId);
-
-  if (error) throw error;
-
-  return data[0];
-}
-
 export async function UpdateUserPreferences(
   userId,
   preferenceKey,
@@ -133,49 +122,6 @@ export async function GetTradePreferences(tradeHash, preferenceKey) {
 }
 
 
-
-export async function ChangeOrganizationByUserId(userId, organization) {
-  const { data, error } = await supabase
-    .from('users')
-    .update({ organization: organization })
-    .eq('user_id', userId);
-
-  if (error) throw error;
-
-  return data;
-}
-
-
-export async function ChangeAutoApprovalByUserId(organization, autoApproval) {
-  const { data, error } = await supabase
-    .from('organizations')
-    .update({
-      auto_approval: autoApproval
-    })
-    .eq('organization_name', organization);
-
-  if (error) throw error;
-
-  return data;
-}
-
-
-export async function GetAutoApprovalState(organization) {
-  const { data, error } = await supabase
-    .from('organizations')
-    .select('auto_approval')
-    .eq('organization_name', organization);
-
-  if (error) throw error;
-
-  if (data.length === 0) {
-    return false;
-  }
-
-  return data[0].auto_approval;
-}
-
-
 export async function AddAuditLogEntry(username, userId, route, action) {
   const current_unixtime = Math.floor(Date.now() / 1000);
 
@@ -196,30 +142,6 @@ export async function AddAuditLogEntry(username, userId, route, action) {
   return data;
 }
 
-export async function AddAuditLogTradesEntry({
-  tradeHash,
-  action,
-  route
-}) {
-  const current_unixtime = Math.floor(Date.now() / 1000);
-
-  const { data, error } = await supabase
-    .from('audit_log_trades')
-    .insert([
-      {
-        trade_hash: tradeHash,
-        action: action,
-        unix_time: current_unixtime,
-        route: route
-      }
-    ]);
-
-  if (error) throw error;
-
-  return data;
-}
-
-
 
 export async function GetAlgorithmsByOrganization(organization) {
   const { data, error } = await supabase
@@ -235,19 +157,3 @@ export async function GetAlgorithmsByOrganization(organization) {
 
   return data;
 }
-
-export async function GetAlgorithmSettingsByOrganization(organization, algorithm_id) {
-  const { data, error } = await supabase
-    .from('algorithms')
-    .select('*')
-    .eq('algorithm_id', algorithm_id)
-    .eq('organization', organization);
-
-  if (error) throw error;
-
-  if (data.length === 0) {
-    return null;
-  }
-
-  return data;
-} 

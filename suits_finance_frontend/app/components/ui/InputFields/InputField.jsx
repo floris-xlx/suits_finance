@@ -12,11 +12,12 @@ const InputField = ({
     tooltipContent = "This is an input field. It allows you to input data.",
     width = 200,
     padding = 0,
-    marginTop = 0
+    marginTop = 4
 }) => {
     const formattedWidth = width !== "full" ? `w-[${width}px]` : "w-full";
     const formattedPadding = `p-${padding}`;
-    const formattedMarginTop = `mt-${marginTop}`;
+    const formattedMarginTop = `mt-[${marginTop}px]`;
+    const formattedTopMobile = `mt-[${marginTop + 4}px]`;
 
     return (
         <div className={`${formattedWidth} ${formattedPadding} ${formattedMarginTop}`}>
@@ -42,11 +43,10 @@ const InputField = ({
                     >
                         {label}
                     </label>
-
-
                 )}
 
-                <div className="mt-[2px] sm:mt-[6px] w-full">
+
+                <div className={`${formattedTopMobile} w-full ${formattedMarginTop}`}>
 
                     {disabled === false ? (
 
