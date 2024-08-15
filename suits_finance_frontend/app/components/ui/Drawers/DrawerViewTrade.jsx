@@ -45,29 +45,20 @@ const DrawerHero = forwardRef(({ children = null }, ref) => {
 
     return (
         <div className="flex transition-all duration-500">
-        
-
             <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-                <DrawerContent className="sm:max-w-lg">
-
+                <DrawerContent className={`sm:max-w-lg transition-transform duration-500 ${isDrawerOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                     <DrawerHeader>
-
                         <DrawerTitle className="select-none">
                             View trade
                         </DrawerTitle>
-
                         <DrawerDescription className="mt-2 text-sm w-full ">
                             {children}
                         </DrawerDescription>
-
                     </DrawerHeader>
-
                     <DrawerFooter className="mt-6">
-
                         <DrawerClose asChild>
                             <Button className="w-full sm:w-fit bg-brand-primary text-white" onClick={handleCloseDrawer}>Close</Button>
                         </DrawerClose>
-
                     </DrawerFooter>
                 </DrawerContent>
             </Drawer>
