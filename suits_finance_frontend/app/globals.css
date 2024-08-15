@@ -1115,3 +1115,8 @@ span {
   --tw-bg-opacity: 1;
   background-color: var(--color-brand-primary) !important;
 }
+
+.text-primary-foreground {
+  --tw-text-opacity: 1;
+  color: var(--color-brand-primary) !important;
+}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { fetchUserRoles } from '@/app/client/supabase/SupabaseUserData.js';
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
-
+import { Checkbox } from "@nextui-org/react";
 
 import InputFieldDataWrapperUser from '@/app/components/dataWrappers/inputFieldWrapperUser';
 import InputField from '@/app/components/ui/InputFields/InputField';
@@ -84,7 +84,7 @@ const MemberTrade = ({
                             < TabHorizontal
                                 options={memberStates}
                                 setValueExternal={setSelectedTab}
-                                variant="underlined"	
+                                variant="underlined"
                             />
                         </div>
                     </div>
@@ -283,47 +283,7 @@ const MemberTrade = ({
                                             aria-label="Select"
                                             aria-labelledby="react-aria5550266582-:ran: react-aria5550266582-:r94:-1-name"
                                         >
-                                            <span style={{
-                                                border: '0px',
-                                                clip: 'rect(0px, 0px, 0px, 0px)',
-                                                clipPath: 'inset(50%)',
-                                                height: '1px',
-                                                margin: '-1px',
-                                                overflow: 'hidden',
-                                                padding: '0px',
-                                                position: 'absolute',
-                                                width: '1px',
-                                                whiteSpace: 'nowrap'
-                                            }}>
-                                                <input
-                                                    aria-label="Select"
-                                                    aria-labelledby="react-aria5550266582-:ran: react-aria5550266582-:r94:-1-name"
-                                                    type="checkbox"
-                                                    value=""
-                                                ></input>
-                                            </span>
-                                            <span
-                                                aria-hidden="true"
-                                                className="relative inline-flex items-center justify-center flex-shrink-0 overflow-hidden before:content-[''] before:absolute before:inset-0 before:border-solid before:border-2 before:box-border before:border-default after:content-[''] after:absolute after:inset-0 after:scale-50 after:opacity-0 after:origin-center group-data-[selected=true]:after:scale-100 group-data-[selected=true]:after:opacity-100 group-data-[hover=true]:before:bg-default-100 outline-none group-data-[focus-visible=true]:z-10 group-data-[focus-visible=true]:ring-2 group-data-[focus-visible=true]:ring-focus group-data-[focus-visible=true]:ring-offset-2 group-data-[focus-visible=true]:ring-offset-background w-5 h-5 mr-2 rtl:ml-2 rtl:mr-[unset] rounded-[calc(theme(borderRadius.medium)*0.6)] before:rounded-[calc(theme(borderRadius.medium)*0.6)] after:rounded-[calc(theme(borderRadius.medium)*0.6)] before:transition-colors group-data-[pressed=true]:scale-95 transition-transform after:transition-transform-opacity after:!ease-linear after:!duration-200 motion-reduce:transition-none after:bg-foreground after:text-background text-background"
-                                            >
-                                                <svg
-                                                    aria-hidden="true"
-                                                    role="presentation"
-                                                    viewBox="0 0 17 18"
-                                                    className="z-10 opacity-0 group-data-[selected=true]:opacity-100 w-4 h-3 transition-opacity motion-reduce:transition-none"
-                                                >
-                                                    <polyline
-                                                        fill="none"
-                                                        points="1 9 7 14 15 4"
-                                                        stroke="currentColor"
-                                                        stroke-dasharray="22"
-                                                        stroke-dashoffset="66"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        strokeWidth="2"
-                                                    ></polyline>
-                                                </svg>
-                                            </span>
+                                            <Checkbox radius="sm" />
                                         </label>
                                     </td>
                                     <td
@@ -438,47 +398,8 @@ const MemberTrade = ({
                                             aria-label="Select"
                                             aria-labelledby="react-aria5550266582-:r9p: react-aria5550266582-:r94:-2-name"
                                         >
-                                            <span style={{
-                                                border: '0px',
-                                                clip: 'rect(0px, 0px, 0px, 0px)',
-                                                clipPath: 'inset(50%)',
-                                                height: '1px',
-                                                margin: '-1px',
-                                                overflow: 'hidden',
-                                                padding: '0px',
-                                                position: 'absolute',
-                                                width: '1px',
-                                                whiteSpace: 'nowrap'
-                                            }}>
-                                                <input
-                                                    aria-label="Select"
-                                                    aria-labelledby="react-aria5550266582-:r9p: react-aria5550266582-:r94:-2-name"
-                                                    type="checkbox"
-                                                    value=""
-                                                ></input>
-                                            </span>
-                                            <span
-                                                aria-hidden="true"
-                                                className="relative inline-flex items-center justify-center flex-shrink-0 overflow-hidden before:content-[''] before:absolute before:inset-0 before:border-solid before:border-2 before:box-border before:border-default after:content-[''] after:absolute after:inset-0 after:scale-50 after:opacity-0 after:origin-center group-data-[selected=true]:after:scale-100 group-data-[selected=true]:after:opacity-100 group-data-[hover=true]:before:bg-default-100 outline-none group-data-[focus-visible=true]:z-10 group-data-[focus-visible=true]:ring-2 group-data-[focus-visible=true]:ring-focus group-data-[focus-visible=true]:ring-offset-2 group-data-[focus-visible=true]:ring-offset-background w-5 h-5 mr-2 rtl:ml-2 rtl:mr-[unset] rounded-[calc(theme(borderRadius.medium)*0.6)] before:rounded-[calc(theme(borderRadius.medium)*0.6)] after:rounded-[calc(theme(borderRadius.medium)*0.6)] before:transition-colors group-data-[pressed=true]:scale-95 transition-transform after:transition-transform-opacity after:!ease-linear after:!duration-200 motion-reduce:transition-none after:bg-foreground after:text-background text-background"
-                                            >
-                                                <svg
-                                                    aria-hidden="true"
-                                                    role="presentation"
-                                                    viewBox="0 0 17 18"
-                                                    className="z-10 opacity-0 group-data-[selected=true]:opacity-100 w-4 h-3 transition-opacity motion-reduce:transition-none"
-                                                >
-                                                    <polyline
-                                                        fill="none"
-                                                        points="1 9 7 14 15 4"
-                                                        stroke="currentColor"
-                                                        stroke-dasharray="22"
-                                                        stroke-dashoffset="66"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        strokeWidth="2"
-                                                    ></polyline>
-                                                </svg>
-                                            </span>
+                                            <Checkbox radius="sm" />
+                                            
                                         </label>
                                     </td>
                                     <td
