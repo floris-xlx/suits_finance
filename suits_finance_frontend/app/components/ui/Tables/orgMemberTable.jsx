@@ -5,6 +5,7 @@ import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@
 
 import InputFieldDataWrapperUser from '@/app/components/dataWrappers/inputFieldWrapperUser';
 import InputField from '@/app/components/ui/InputFields/InputField';
+import TabHorizontal from '@/app/components/ui/Tabs/TabHorizontalWithValue';
 
 
 
@@ -13,6 +14,12 @@ const MemberTrade = ({
 }) => {
     const [users, setUsers] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
+    const [selectedTab, setSelectedTab] = useState("members");
+
+    const memberStates = [
+        "Members",
+        "Pending",
+    ]
 
 
     useEffect(() => {
@@ -31,13 +38,13 @@ const MemberTrade = ({
 
     return (
         <div
-            className="flex flex-col relative overflow-hidden h-auto text-foreground box-border outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 shadow-none rounded-large transition-transform-background motion-reduce:transition-none border border-default-200 bg-transparent"
+            className="flex flex-col relative overflow-hidden h-auto text-foreground box-border outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 shadow-none rounded-large transition-transform-background motion-reduce:transition-none border border-default-200 bg-secondary"
             tabindex="-1"
         >
             <div className="relative flex w-full p-3 flex-auto flex-col place-content-inherit align-items-inherit h-auto break-words text-left overflow-y-auto subpixel-antialiased">
                 <div className="flex flex-col relative gap-4 w-full">
                     <div>
-                        <div className="flex items-center justify-between gap-3">
+                        <div className="flex items-center justify-between gap-3 pl-1">
                             <InputField
                                 value={searchQuery}
                                 setValue={setSearchQuery}
@@ -73,56 +80,12 @@ const MemberTrade = ({
                                 </Dropdown>
                             </div>
                         </div>
-                        <div data-slot="base" className="inline-flex mt-3" aria-label="roles">
-                            <div
-                                data-slot="tabList"
-                                className="flex p-1 h-fit gap-2 items-center flex-nowrap overflow-x-scroll scrollbar-hide bg-transparent dark:bg-transparent rounded-none"
-                                id="react-aria5550266582-:r9e:"
-                                aria-label="roles"
-                                role="tablist"
-                                aria-orientation="horizontal"
-                            >
-                                <button
-                                    data-slot="tab"
-                                    tabindex="0"
-                                    data-key="members"
-                                    id="react-aria5550266582-:r9e:-tab-members"
-                                    aria-selected="true"
-                                    role="tab"
-                                    className="z-0 w-full px-3 py-1 flex group relative justify-center items-center cursor-pointer transition-opacity tap-highlight-transparent data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-30 data-[hover-unselected=true]:opacity-disabled outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 h-8 text-small rounded-none"
-                                    type="button"
-                                    data-selected="true"
-                                >
-                                    <span
-                                        className="absolute z-0 h-[2px] w-[80%] bottom-0 shadow-[0_1px_0px_0_rgba(0,0,0,0.05)] bg-foreground rounded-none"
-                                        data-slot="cursor"
-                                        style={{ transform: 'none', transformOrigin: '50% 50% 0px' }}
-                                    ></span>
-                                    <div
-                                        className="relative z-10 whitespace-nowrap transition-colors text-default-500 group-data-[selected=true]:text-foreground"
-                                        data-slot="tabContent"
-                                    >
-                                        Members
-                                    </div>
-                                </button>
-                                <button
-                                    data-slot="tab"
-                                    tabindex="-1"
-                                    data-key="pending-invitations"
-                                    id="react-aria5550266582-:r9e:-tab-pending-invitations"
-                                    aria-selected="false"
-                                    role="tab"
-                                    className="z-0 w-full px-3 py-1 flex group relative justify-center items-center cursor-pointer transition-opacity tap-highlight-transparent data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-30 data-[hover-unselected=true]:opacity-disabled outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 h-8 text-small rounded-none"
-                                    type="button"
-                                >
-                                    <div
-                                        className="relative z-10 whitespace-nowrap transition-colors text-default-500 group-data-[selected=true]:text-foreground"
-                                        data-slot="tabContent"
-                                    >
-                                        Pending Invitations
-                                    </div>
-                                </button>
-                            </div>
+                        <div data-slot="base" className="inline-flex mt-3 ml-1" aria-label="roles">
+                            < TabHorizontal
+                                options={memberStates}
+                                setValueExternal={setSelectedTab}
+                                variant="underlined"	
+                            />
                         </div>
                     </div>
                     <div className="z-0 flex flex-col relative justify-between gap-4 overflow-auto rounded-large w-full max-h-[382px] bg-transparent p-0 border-none shadow-none">

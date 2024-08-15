@@ -10,7 +10,8 @@ const TabHorizontal = ({
     label = null,
     options = ["Option 1", "Option 2", "Option 3"],
     cacheValueKey,
-    setCacheValue = null
+    setCacheValue = null,
+    variant = "solid"
 }) => {
   const [value, setValue] = useState(options[0]);
 
@@ -35,6 +36,7 @@ const TabHorizontal = ({
         radius="sm" 
         aria-label="Options" 
         fullWidth 
+        variant={variant}
         size="lg"
         className="border border-primary rounded-md shadow-sm select-none"
         selectedKey={value}

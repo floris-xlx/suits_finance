@@ -1109,3 +1109,9 @@ span {
   background-color: var(--color-accent) !important;
 }
 
+
+/* the little cursor under the tabs */ 
+.bg-foreground {
+  --tw-bg-opacity: 1;
+  background-color: var(--color-brand-primary) !important;
+}

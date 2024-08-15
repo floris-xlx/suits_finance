@@ -15,6 +15,7 @@ const TabHorizontal = ({
     show = true,
     title = null,
     preSetValue = null,
+    variant = "solid",
 }) => {
   const [value, setValue] = useState(preSetValue || options[0]);
 
@@ -47,16 +48,18 @@ const TabHorizontal = ({
         radius="sm" 
         aria-label="Options" 
         fullWidth 
+        variant={variant}
+        key={variant}
         size="lg"
-        className="border border-primary rounded-md shadow-sm"
+        className={variant === "underlined" ? "" : "border border-primary rounded-md shadow-sm"}
         selectedKey={value}
         onSelectionChange={setValue}
     >
 
-        {options.map((name) => (
+        {options.map((option, index) => (
           <Tab 
-            key={name.toLowerCase().replace(/ /g, "_")} 
-            title={name} 
+            key={typeof option === 'string' ? option.toLowerCase().replace(/ /g, "_") : `option_${index}`} 
+            title={typeof option === 'string' ? option : option.label} 
             className="focus:outline-none text-xs font-semibold md:text-base md:font-normal"
           >
           </Tab>
