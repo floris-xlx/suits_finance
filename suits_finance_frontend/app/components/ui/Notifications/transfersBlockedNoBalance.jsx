@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import toast, { Toaster, useToasterStore } from "react-hot-toast";
+
 const TOAST_LIMIT = 1;
 
 const TransfersBlockedNoBalanceInlineNotification = () => {

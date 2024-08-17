@@ -2,6 +2,7 @@ import React from 'react';
 import { ChartBarSquareIcon  } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 
+const TOAST_LIMIT = 1;
 
 const ChartGeneratedSuccessInlineNotification = () => {
     return (

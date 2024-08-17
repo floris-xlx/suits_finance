@@ -16,6 +16,7 @@ import PayoneerIcon from './Icons/PayoneerIcon.jsx';
 import PayPalIcon from './Icons/PayPalIcon.jsx';
 import StripeIcon from './Icons/StripeIcon.jsx';
 import CreditCardIcon from './Icons/CreditCardIcon.jsx';
+import SnowStarIcon from './Icons/SnowStarIcon.jsx';
 
 
 export { 
@@ -35,6 +36,7 @@ export {
     PayoneerIcon,
     PayPalIcon,
     StripeIcon,
-    CreditCardIcon
+    CreditCardIcon,
+    SnowStarIcon
 
 };

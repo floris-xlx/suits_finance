@@ -1,9 +1,13 @@
 import React, { useEffect } from 'react';
-import { BugAntIcon } from '@heroicons/react/24/outline';
+import { CrossCircledIcon } from '@heroicons/react/24/outline';
 import toast, { Toaster, useToasterStore } from "react-hot-toast";
+
+
 const TOAST_LIMIT = 1;
 
-const BugReportSuccessInlineNotification = () => {
+const UserUnfrozenFailInlineNotification = ({
+    username = ''
+}) => {
     const { toasts } = useToasterStore();
 
     // Enforce Limit
@@ -13,23 +17,24 @@ const BugReportSuccessInlineNotification = () => {
             .filter((_, i) => i >= TOAST_LIMIT) // Is toast index over limit
             .forEach((t) => toast.dismiss(t.id)); // Dismiss – Use toast.remove(t.id) removal without animation
     }, [toasts]);
+
     return (
         <span className="flex flex-row items-center bg-secondary">
-            <BugAntIcon className="size-8 text-brand-primary" />
+            <CrossCircledIcon className="h-12 w-12  sm:w-8 sm:h-8 mr-2 text-brand-primary" />
             <div className="flex flex-col gap-y-1">
 
-                <span className="pl-3 text-primary sm:text-[14px] text-[13px]">
-                    Bug report submitted successfully
-
+                <span className="pl-3 text-primary sm:text-[14px] text-[14px] font-semibold">
+                    Failed {username} to unfreeze. Please contact support.
                 </span>
+
             </div>
         </span>
     );
 };
 
 
-const BugReportSuccessNotification = () => toast((t) => (
-    < BugReportSuccessInlineNotification />
+const UserUnfrozenFailNotification = ({ username }) => toast((t) => (
+    < UserUnfrozenFailInlineNotification username={username} />
 ), {
 
     style: {
@@ -46,4 +51,4 @@ const BugReportSuccessNotification = () => toast((t) => (
 }
 );
 
-export default BugReportSuccessNotification;
+export default UserUnfrozenFailNotification;

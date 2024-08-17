@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CheckIcon } from '@heroicons/react/24/outline';
-import toast from 'react-hot-toast';
+import toast, { Toaster, useToasterStore } from "react-hot-toast";
 
+const TOAST_LIMIT = 1;
 
 const SignalApprovedSuccessInlineNotification = ({
     algorithm_id,
     trade_hash
 }) => {
+    const { toasts } = useToasterStore();
+
+    // Enforce Limit
+    useEffect(() => {
+        toasts
+            .filter((t) => t.visible) // Only consider visible toasts
+            .filter((_, i) => i >= TOAST_LIMIT) // Is toast index over limit
+            .forEach((t) => toast.dismiss(t.id)); // Dismiss – Use toast.remove(t.id) removal without animation
+    }, [toasts]);
+    
     return (
         <span className="flex flex-row items-center bg-secondary">
             <CheckIcon className="size-8 text-brand-primary" />

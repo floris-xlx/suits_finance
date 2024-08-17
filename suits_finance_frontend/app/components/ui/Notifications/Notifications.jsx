@@ -19,6 +19,10 @@ import PayoneerCardAddSuccessNotification from './payoneerCardAddSuccess.jsx';
 import UserAddedSuccessNotification from './userAddedNotification.jsx';
 import AddUserFailedNotification from './AddUserFail.jsx';
 import UserDeleteRoleSuccessNotification from './userRoleDeleteSuccess.jsx';
+import UserFrozenSuccessNotification from './userFrozenSuccess.jsx';
+import UserFrozenFailNotification from './userFrozenFail.jsx';
+import UserUnfrozenSuccessNotification from './userUnfrozenSuccess.jsx';
+import UserUnfrozenFailInlineNotification from './userUnfrozenFail.jsx';
 
 
 export {
@@ -42,5 +46,9 @@ export {
     PayoneerCardAddSuccessNotification,
     UserAddedSuccessNotification,
     AddUserFailedNotification,
-    UserDeleteRoleSuccessNotification
+    UserDeleteRoleSuccessNotification,
+    UserFrozenSuccessNotification,
+    UserFrozenFailNotification,
+    UserUnfrozenSuccessNotification,
+    UserUnfrozenFailInlineNotification
 }
