@@ -22,7 +22,14 @@ import UserDeleteRoleSuccessNotification from './userRoleDeleteSuccess.jsx';
 import UserFrozenSuccessNotification from './userFrozenSuccess.jsx';
 import UserFrozenFailNotification from './userFrozenFail.jsx';
 import UserUnfrozenSuccessNotification from './userUnfrozenSuccess.jsx';
-import UserUnfrozenFailInlineNotification from './userUnfrozenFail.jsx';
+import UserUnfrozenFailNotification from './userUnfrozenFail.jsx';
+import InvoiceSubmittedForApprovalNotification from './invoiceSubmittedForApproval.jsx';
+import InvoiceCreatedSuccessNotification from './invoiceCreatedSuccess.jsx';
+import InvoiceApprovedSuccessNotification from './invoiceApprovedSuccess.jsx';
+import InvoiceErrorNotification from './invoiceError.jsx';
+import TransfersBlockedAccountFrozenNotification from './transfersBlockedAccountFrozen.jsx';
+import BalanceTopUpSuccessNotification from './balanceTopUpSuccess.jsx';
+import TransfersBlockedAccountReviewalNotification from './transfersBlockedAccountReviewal.jsx';
 
 
 export {
@@ -50,5 +57,12 @@ export {
     UserFrozenSuccessNotification,
     UserFrozenFailNotification,
     UserUnfrozenSuccessNotification,
-    UserUnfrozenFailInlineNotification
+    UserUnfrozenFailNotification,
+    InvoiceSubmittedForApprovalNotification,
+    InvoiceCreatedSuccessNotification,
+    InvoiceApprovedSuccessNotification,
+    InvoiceErrorNotification,
+    TransfersBlockedAccountFrozenNotification,
+    BalanceTopUpSuccessNotification,
+    TransfersBlockedAccountReviewalNotification
 }

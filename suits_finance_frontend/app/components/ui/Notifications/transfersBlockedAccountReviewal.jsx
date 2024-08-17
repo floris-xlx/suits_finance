@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import toast, { Toaster, useToasterStore } from "react-hot-toast";
 
 // ui
@@ -6,10 +7,7 @@ import { SnowStarIcon } from '@/app/components/ui/Icon.jsx';
 
 const TOAST_LIMIT = 1;
 
-const UserFrozenFailInlineNotification = ({
-    username = ''
-}) => {
-
+const TransfersBlockedAccountReviewalInlineNotification = () => {
     const { toasts } = useToasterStore();
 
     // Enforce Limit
@@ -20,23 +18,26 @@ const UserFrozenFailInlineNotification = ({
             .forEach((t) => toast.dismiss(t.id)); // Dismiss – Use toast.remove(t.id) removal without animation
     }, [toasts]);
 
+
     return (
         <span className="flex flex-row items-center bg-secondary">
-            <SnowStarIcon className="h-12 w-12  sm:w-8 sm:h-8 mr-2 text-red-primary" />
+            <MagnifyingGlassIcon className="h-12 w-12  sm:w-8 sm:h-8 mr-2 text-brand-primary" />
             <div className="flex flex-col gap-y-1">
 
                 <span className="pl-3 text-primary sm:text-[14px] text-[14px] font-semibold">
-                    Failed to freeze {username}. Please contact support.
+                    Your account is under review.
                 </span>
-
+                <span className="pl-3 text-secondary sm:text-[12px] text-[12px]">
+                    Any transactions or actions will be blocked until the account is reviewed,  please contact support.
+                </span>
             </div>
         </span>
-    );
+    ); s
 };
 
 
-const UserFrozenFailNotification = ({ username }) => toast((t) => (
-    < UserFrozenFailInlineNotification username={username} />
+const TransfersBlockedAccountReviewalNotification = () => toast((t) => (
+    < TransfersBlockedAccountReviewalInlineNotification />
 ), {
 
     style: {
@@ -53,4 +54,4 @@ const UserFrozenFailNotification = ({ username }) => toast((t) => (
 }
 );
 
-export default UserFrozenFailNotification;
+export default TransfersBlockedAccountReviewalNotification;

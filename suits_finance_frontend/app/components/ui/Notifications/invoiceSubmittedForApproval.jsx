@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
+import { InvoiceIcon } from '@/app/components/ui/Icon.jsx';
 import toast, { Toaster, useToasterStore } from "react-hot-toast";
-
-// ui
-import { SnowStarIcon } from '@/app/components/ui/Icon.jsx';
 
 const TOAST_LIMIT = 1;
 
-const UserFrozenFailInlineNotification = ({
-    username = ''
+const InvoiceSubmittedForApprovalInlineNotification = ({
+    invoice_id = ''
 }) => {
 
     const { toasts } = useToasterStore();
@@ -22,21 +20,24 @@ const UserFrozenFailInlineNotification = ({
 
     return (
         <span className="flex flex-row items-center bg-secondary">
-            <SnowStarIcon className="h-12 w-12  sm:w-8 sm:h-8 mr-2 text-red-primary" />
+            <InvoiceIcon className="h-12 w-12  sm:w-8 sm:h-8 mr-2 text-brand-primary" />
             <div className="flex flex-col gap-y-1">
 
                 <span className="pl-3 text-primary sm:text-[14px] text-[14px] font-semibold">
-                    Failed to freeze {username}. Please contact support.
+                    Invoice was successfully submitted for approval
                 </span>
 
+                <span className="pl-3 text-secondary sm:text-[12px] text-[12px]">
+                    Invoice ID: {invoice_id}
+                </span>
             </div>
         </span>
     );
 };
 
 
-const UserFrozenFailNotification = ({ username }) => toast((t) => (
-    < UserFrozenFailInlineNotification username={username} />
+const InvoiceSubmittedForApprovalNotification = ({ invoice_id }) => toast((t) => (
+    < InvoiceSubmittedForApprovalInlineNotification invoice_id={invoice_id} />
 ), {
 
     style: {
@@ -53,4 +54,4 @@ const UserFrozenFailNotification = ({ username }) => toast((t) => (
 }
 );
 
-export default UserFrozenFailNotification;
+export default InvoiceSubmittedForApprovalNotification;

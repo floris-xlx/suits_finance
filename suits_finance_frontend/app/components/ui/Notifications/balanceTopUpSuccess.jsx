@@ -1,14 +1,10 @@
 import React, { useEffect } from 'react';
+import { CheckIcon } from '@heroicons/react/24/outline';
 import toast, { Toaster, useToasterStore } from "react-hot-toast";
-
-// ui
-import { SnowStarIcon } from '@/app/components/ui/Icon.jsx';
 
 const TOAST_LIMIT = 1;
 
-const UserFrozenFailInlineNotification = ({
-    username = ''
-}) => {
+const BalanceTopUpSuccessInlineNotification = () => {
 
     const { toasts } = useToasterStore();
 
@@ -20,23 +16,25 @@ const UserFrozenFailInlineNotification = ({
             .forEach((t) => toast.dismiss(t.id)); // Dismiss – Use toast.remove(t.id) removal without animation
     }, [toasts]);
 
+
     return (
         <span className="flex flex-row items-center bg-secondary">
-            <SnowStarIcon className="h-12 w-12  sm:w-8 sm:h-8 mr-2 text-red-primary" />
+            <CheckIcon className="h-12 w-12  sm:w-8 sm:h-8 mr-2 text-brand-primary" />
             <div className="flex flex-col gap-y-1">
 
                 <span className="pl-3 text-primary sm:text-[14px] text-[14px] font-semibold">
-                    Failed to freeze {username}. Please contact support.
+                    Your balance has been successfully topped up.
                 </span>
-
+                <span className="pl-3 text-secondary sm:text-[12px] text-[12px]">
+                    The amount should reflect in your account shortly.
+                </span>
             </div>
         </span>
     );
 };
 
-
-const UserFrozenFailNotification = ({ username }) => toast((t) => (
-    < UserFrozenFailInlineNotification username={username} />
+const BalanceTopUpSuccessNotification = () => toast((t) => (
+    < BalanceTopUpSuccessInlineNotification />
 ), {
 
     style: {
@@ -47,10 +45,10 @@ const UserFrozenFailNotification = ({ username }) => toast((t) => (
         borderWidth: '1px',
         userSelect: 'none',
         width: 'full',
-        maxWidth: '430px',
+        maxWidth: '355px',
     },
     duration: 3500
 }
 );
 
-export default UserFrozenFailNotification;
+export default BalanceTopUpSuccessNotification;

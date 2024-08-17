@@ -175,7 +175,7 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
                         tabIndex="-1"
                         className="flex relative justify-center items-center box-border overflow-hidden align-middle z-0 outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 w-10 h-10 text-tiny bg-default text-default-foreground rounded-large"
                     >
-                        {user.user.profile_pic ? (
+                        {user.user && user.user.profile_pic ? (
                             <img
                                 src={user.user.profile_pic}
                                 className="flex object-cover w-full h-full transition-opacity !duration-500 opacity-0 data-[loaded=true]:opacity-100"
@@ -189,8 +189,12 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
                         )}
                     </span>
                     <div className="inline-flex flex-col items-start">
-                        <span className="text-small text-brand-primary">{user.user.full_name}</span>
-                        <span className="text-tiny text-foreground-400">{user.email || user.user.email}</span>
+                        {user.user && user.user.full_name && (
+                            <span className="text-small text-brand-primary">{user.user.full_name}</span>
+                        )}
+                        {user.email || user.user.email && (
+                            <span className="text-tiny text-foreground-400">{user.email || user.user.email}</span>
+                        )}
                     </div>
                 </div>
             </td>
@@ -201,7 +205,7 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
                 className={tableTd}
             >
                 <div className="flex flex-col">
-                    <p className="text-bold text-small capitalize text-default-500">{user.user.role}</p>
+                    <p className="text-bold text-small capitalize text-default-500">{user.user ? user.user.role : user.role}</p>
                 </div>
             </td>
             <td
@@ -210,7 +214,7 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
                 role="gridcell"
                 className={tableTd}
             >
-                {renderChip(user.user.status)}
+                {renderChip(user.user ? user.user.status : 'pending')}
             </td>
             <td
                 tabIndex="-1"
@@ -247,15 +251,17 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
     return (
         <Fragment>
             <DrawerHero ref={drawerRef_viewUser} label="View user">
-                <ValueCopyChipInlineLabel 
-                    label="User ID" 
-                    value={scopedUserId} 
-                    copy={true}
-                    hover={true}
-                    isText={true}
-                    notificationType='User Id'
-                    width='full'
+                {scopedUserId && (
+                    <ValueCopyChipInlineLabel
+                        label="User ID"
+                        value={scopedUserId}
+                        copy={true}
+                        hover={true}
+                        isText={true}
+                        notificationType='User Id'
+                        width='full'
                     />
+                )}
             </DrawerHero>
 
 
@@ -380,9 +386,19 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
                                             <Spinner label="Loading users..." color="warning" size="lg" />
                                         </div>
                                     ) : (
-                                        users.map((user, index) => (
-                                            renderTableRow(user, index)
-                                        ))
+                                        users
+                                            .filter(user => {
+                                                if (user.status === null) {
+                                                    user.status = "pending";
+                                                }
+                                                if (selectedTab.toLowerCase() === "members") {
+                                                    return user.status.toLowerCase() !== "pending";
+                                                }
+                                                return user.status.toLowerCase() === selectedTab.toLowerCase();
+                                            })
+                                            .map((user, index) => (
+                                                renderTableRow(user, index)
+                                            ))
                                     )}
                                 </tbody>
                             </table>
