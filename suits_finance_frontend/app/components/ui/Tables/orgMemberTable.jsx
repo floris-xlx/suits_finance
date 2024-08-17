@@ -27,6 +27,7 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
     const [selectedKeys, setSelectedKeys] = useState(new Set(["All user roles"]));
 
     const [scopedUserId, setScopedUserId] = useState(null);
+    const [scopedUserObject, setScopedUserObject] = useState(null);
 
     const memberStates = ["Members", "Pending"];
     const dropdownItems = [
@@ -36,6 +37,8 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
         { key: "freeze", label: "Freeze user", onClick: handleOpenModal_freezeUser },
         { key: "delete", label: "Delete user", onClick: handleOpenModal_deleteUser },
     ];
+
+    const userPendingWarning = "This user is pending approval. You can view their profile but you cannot edit, flag, freeze or delete their roles until they are approved.";
 
     const StatusColors = {
         active: "bg-green-accent text-green border border-green-500/30",
@@ -59,6 +62,13 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
         const userRoles = await fetchUserRoles();
         setUsers(userRoles);
     };
+
+    useEffect(() => {
+        if (scopedUserId != null) {
+            const user = users.find(user => (user.user_id || user.id) === scopedUserId);
+            setScopedUserObject(user);
+        }
+    }, [scopedUserId, users]);
 
     useEffect(() => {
         fetchAndSetUserRoles();
@@ -233,7 +243,7 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
                                     key={item.key}
                                     color={item.key === "delete" ? "danger" : "default"}
                                     onClick={() => {
-                                        setScopedUserId(user.user_id);
+                                        setScopedUserId(user.user_id || user.id);
                                         item.onClick();
                                     }}
                                     className={`${item.key === "delete" ? "text-danger hover:text-white" : "hover:text-white"}`}
@@ -251,17 +261,31 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
     return (
         <Fragment>
             <DrawerHero ref={drawerRef_viewUser} label="View user">
-                {scopedUserId && (
-                    <ValueCopyChipInlineLabel
-                        label="User ID"
-                        value={scopedUserId}
-                        copy={true}
-                        hover={true}
-                        isText={true}
-                        notificationType='User Id'
-                        width='full'
-                    />
-                )}
+                <div className="gap-y-2 flex flex-col">
+                    {scopedUserId && (
+                        <ValueCopyChipInlineLabel
+                            label="User ID"
+                            value={scopedUserId}
+                            copy={true}
+                            hover={true}
+                            isText={true}
+                            notificationType='User Id'
+                            width='full'
+                        />
+                    )}
+
+                    {scopedUserObject && (
+                        <ValueCopyChipInlineLabel
+                            label="Email Address"
+                            value={scopedUserObject.email || scopedUserObject.user.email}
+                            copy={true}
+                            hover={true}
+                            isText={true}
+                            notificationType='Email Address'
+                            width='full'
+                        />
+                    )}
+                </div>
             </DrawerHero>
 
 
