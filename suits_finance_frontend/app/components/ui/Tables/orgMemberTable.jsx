@@ -239,17 +239,19 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Dynamic Actions" items={dropdownItems}>
                             {(item) => (
-                                <DropdownItem
-                                    key={item.key}
-                                    color={item.key === "delete" ? "danger" : "default"}
-                                    onClick={() => {
-                                        setScopedUserId(user.user_id || user.id);
-                                        item.onClick();
-                                    }}
-                                    className={`${item.key === "delete" ? "text-danger hover:text-white" : "hover:text-white"}`}
-                                >
-                                    {item.label}
-                                </DropdownItem>
+                                (selectedTab !== "pending" || (item.key === "delete" || item.key === "view")) && (
+                                    <DropdownItem
+                                        key={item.key}
+                                        color={item.key === "delete" ? "danger" : "default"}
+                                        onClick={() => {
+                                            setScopedUserId(user.user_id || user.id);
+                                            item.onClick();
+                                        }}
+                                        className={`${item.key === "delete" ? "text-danger hover:text-white" : "hover:text-white"}`}
+                                    >
+                                        {item.label}
+                                    </DropdownItem>
+                                )
                             )}
                         </DropdownMenu>
                     </Dropdown>
