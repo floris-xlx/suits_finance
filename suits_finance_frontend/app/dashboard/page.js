@@ -190,7 +190,7 @@ export default function DashboardPage() {
             />
           </div>
 
-  
+
 
         </div>
         {userFrozen && <FrozenBanner />}
@@ -224,7 +224,7 @@ export default function DashboardPage() {
 
       <div className="hidden lg:block">
         <Header setIsPaletteSearchOpen={setIsPaletteSearchOpen} logoHref={'/journal'} />
-       
+
 
       </div>
 
