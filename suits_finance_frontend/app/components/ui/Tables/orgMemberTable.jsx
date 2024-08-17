@@ -6,13 +6,12 @@ import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
 import { DrawerHero, useDrawer } from "@/app/components/ui/Drawers/DrawerViewTrade";
 import { refreshPage } from '@/app/client/hooks/refreshPage';
-import InputFieldDataWrapperUser from '@/app/components/dataWrappers/inputFieldWrapperUser';
 import InputField from '@/app/components/ui/InputFields/InputField';
 import TabHorizontal from '@/app/components/ui/Tabs/TabHorizontalWithValue';
 import CapitalizeFirstLetter from '@/app/client/hooks/formatting/CapitalizeLetter';
 import { UserDeleteRoleSuccessNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
-import DrawerViewTradeLayout from "@/app/components/layouts/Drawers/DrawerViewTrade";
 import { ValueCopyChipInlineLabel } from '@/app/components/ui/Chips/ValueCopyChip';
+
 
 const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
     const { drawerRef: drawerRef_viewUser, handleOpenDrawer: handleOpenDrawer_viewUser } = useDrawer();
@@ -93,10 +92,7 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
 
     const handleUserDelete = async () => {
         const userId = scopedUserId;
-        console.log("Deleting user with id: ", userId);
-
         const result = await deleteUserRole(userId);
-        console.log("Result: ", result);
         UserDeleteRoleSuccessNotification();
         fetchAndSetUserRoles();
     };
