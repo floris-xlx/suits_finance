@@ -46,6 +46,7 @@
     "react-i18next": "^15.0.1",
     "react-infinite-scroll-hook": "^4.1.1",
     "react-scroll": "^1.9.0",
+    "react-snowfall": "^2.1.0",
     "reactflow": "^11.11.3",
     "recharts": "^2.12.7",
     "rippleui": "^1.12.1",

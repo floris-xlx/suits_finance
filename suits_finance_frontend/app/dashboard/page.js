@@ -36,6 +36,7 @@ import CardLimitsLayout from '@/app/components/layouts/Modals/cardLimits';
 import DeveloperView from '@/app/components/layouts/Developer/DeveloperView';
 
 import FrozenBanner from '@/app/components/ui/Banners/FrozenBanner';
+import SnowingParticles from '@/app/components/ui/Effects/SnowParticles';
 
 export default function DashboardPage() {
   // auth
@@ -193,6 +194,8 @@ export default function DashboardPage() {
 
         </div>
         {userFrozen && <FrozenBanner />}
+
+
         {/* This is where the body layout goes */}
         <div className="flex flex-col gap-y-2 pt-8">
           < BalanceCard
@@ -232,6 +235,7 @@ export default function DashboardPage() {
           <DeveloperView />
         </div>
       </div>
+      {userFrozen && <SnowingParticles />}
     </div>
   );
 }
