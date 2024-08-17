@@ -1,0 +1,35 @@
+{
+    "title": "Einstellungen",
+    "subtitle": "Ändern Sie Einstellungen, Präferenzen und persönliche Details.",
+    "profile": {
+        "title": "Profil",
+        "description": "Dies zeigt Ihr öffentliches Profil auf der Website an."
+    },
+    "billing": {
+        "title": "Abrechnung",
+        "description": "Dies zeigt Ihre Abrechnungsinformationen an.",
+        "billing_address_title": "Rechnungsadresse",
+        "billing_address_description": "Diese Rechnungsadresse wird für Ihre Rechnungen verwendet.",
+        "personal_info": "Persönliche Informationen",
+        "address_info": "Adressinformationen"
+    },
+    "appearance": {
+        "title": "Erscheinungsbild",
+        "description": "Dies zeigt Ihre Erscheinungseinstellungen an."
+    },
+    "payoneer": {
+        "title": "Payoneer",
+        "description": "Dies zeigt Ihre Payoneer-Einstellungen und -Details an.",
+        "connect_button": "Payoneer verbinden",
+        "modal_title": "Payoneer-Karte verbinden",
+        "card_holder_name": "Name des Karteninhabers",
+        "iban": "IBAN",
+        "expiry_date": "Ablaufdatum"
+    },
+    "permission": {
+        "title": "Berechtigung",
+        "description": "Dies zeigt die Einstellungen für Administratorrechte an.",
+        "invite_new_member_title": "Neue Administratoren per E-Mail einladen",
+        "email_address": "E-Mail-Adresse"
+    }
+}

@@ -368,10 +368,12 @@ export async function fetchUserRoles(
 export async function deleteUserRole(
   userId
 ) {
+  const column = typeof userId === 'number' ? 'id' : 'user_id';
+  
   const { data, error } = await supabase
     .from('user_roles')
     .delete()
-    .eq('user_id', userId);
+    .eq(column, userId);
 
   if (error) throw error;
 
