@@ -34,12 +34,14 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
 
     const memberStates = ["Members", "Pending", "Frozen"];
     const dropdownItems = [
-        { key: "view", label: "View profile", onClick: handleOpenDrawer_viewUser },
-        { key: "edit", label: "Edit user", onClick: handleOpenModal_editUser },
-        { key: "flag", label: "Flag user", onClick: handleOpenModal_flagUser },
-        { key: "freeze", label: "Freeze user", onClick: handleOpenModal_freezeUser },
-        { key: "delete", label: "Delete user", onClick: handleOpenModal_deleteUser },
+        { key: "view", label: "View profile", onClick: handleOpenDrawer_viewUser, tab: ["members", "pending", "frozen"] },
+        { key: "edit", label: "Edit user", onClick: handleOpenModal_editUser, tab: ["members"] },
+        { key: "flag", label: "Flag user", onClick: handleOpenModal_flagUser, tab: ["members"] },
+        { key: "freeze", label: "Freeze user", onClick: handleOpenModal_freezeUser, tab: ["members", "frozen"] },
+        { key: "delete", label: "Delete user", onClick: handleOpenModal_deleteUser, tab: ["members", "pending", "frozen"] },
     ];
+
+    
 
     const userPendingWarning = "This user is pending approval. You can view their profile but you cannot edit, flag, freeze or delete their roles until they are approved.";
 
@@ -47,6 +49,7 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
         active: "bg-green-accent text-green border border-green-500/30",
         inactive: "bg-yellow-accent text-yellow border border-yellow-500/30",
         pending: "bg-blue-primary text-blue border border-blue-500/30",
+        frozen: "bg-blue-primary text-blue border border-blue-500/30",
     };
 
     const renderChip = (tradeStatus) => {
@@ -96,6 +99,10 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
 
             if (newFreezeStatus) {
                 UserFrozenSuccessNotification({
+                    username: scopedUserObject.user.full_name
+                });
+            } else {
+                UserUnfrozenSuccessNotification({
                     username: scopedUserObject.user.full_name
                 });
             }
@@ -237,7 +244,7 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
                 role="gridcell"
                 className={tableTd}
             >
-                {renderChip(user.user ? user.user.status : 'pending')}
+                {renderChip(user.user ? (user.user.status === 'frozen' ? 'frozen' : user.user.status) : 'pending')}
             </td>
             <td
                 tabIndex="-1"
@@ -252,9 +259,9 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Dynamic Actions" items={dropdownItems}>
                             {(item) => (
-                                (selectedTab !== "pending" || (item.key === "delete" || item.key === "view")) && (
+                                item.tab.includes(selectedTab.toLowerCase()) && (
                                     <DropdownItem
-                                        key={item.key}
+                                        key={item.key === "freeze" && selectedTab.toLowerCase() === "frozen" ? "unfreeze" : item.key}
                                         color={item.key === "delete" ? "danger" : "default"}
                                         onClick={() => {
                                             setScopedUserId(user.user_id || user.id);
@@ -262,7 +269,7 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
                                         }}
                                         className={`${item.key === "delete" ? "text-danger hover:text-white" : "hover:text-white"}`}
                                     >
-                                        {item.key === "freeze" && scopedUserObject && scopedUserObject.user.is_frozen ? "Unfreeze user" : item.label}
+                                        {item.key === "freeze" && selectedTab.toLowerCase() === "frozen" ? "Unfreeze user" : item.label}
                                     </DropdownItem>
                                 )
                             )}
@@ -395,12 +402,14 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
 
             <Modal
                 ref={modalRef_freezeUser}
-                buttonText={'Freeze user'}
-                title={'Freeze'}
+                buttonText={scopedUserObject?.user?.is_frozen ? 'Unfreeze user' : 'Freeze user'}
+                title={scopedUserObject?.user?.is_frozen ? 'Unfreeze' : 'Freeze'}
                 onButtonPress={handleUserFreeze}
             >
                 <p className="text-primary">
-                    Are you sure you want to freeze this user? They will not be able to use their account until you unfreeze them.
+                    {scopedUserObject?.user?.is_frozen 
+                        ? 'Are you sure you want to unfreeze this user? They will be able to use their account again.' 
+                        : 'Are you sure you want to freeze this user? They will not be able to use their account until you unfreeze them.'}
                 </p>
             </Modal>
 
@@ -498,7 +507,10 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
                                                     user.status = "pending";
                                                 }
                                                 if (selectedTab.toLowerCase() === "members") {
-                                                    return user.status.toLowerCase() !== "pending";
+                                                    return user.status.toLowerCase() !== "pending" && user.status.toLowerCase() !== "frozen";
+                                                }
+                                                if (selectedTab.toLowerCase() === "frozen") {
+                                                    return user.status.toLowerCase() === "frozen";
                                                 }
                                                 return user.status.toLowerCase() === selectedTab.toLowerCase();
                                             })
