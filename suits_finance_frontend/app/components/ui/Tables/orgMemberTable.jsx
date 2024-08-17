@@ -32,7 +32,7 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
     const [scopedUserObject, setScopedUserObject] = useState(null);
     console.log(scopedUserObject)
 
-    const memberStates = ["Members", "Pending"];
+    const memberStates = ["Members", "Pending", "Frozen"];
     const dropdownItems = [
         { key: "view", label: "View profile", onClick: handleOpenDrawer_viewUser },
         { key: "edit", label: "Edit user", onClick: handleOpenModal_editUser },

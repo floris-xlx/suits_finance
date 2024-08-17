@@ -385,16 +385,27 @@ export async function freezeUserAccount(
   userId,
   freeze
 ) {
-  const { data, error } = await supabase
+  const { data: userData, error: userError } = await supabase
     .from('users')
     .update({
       is_frozen: freeze
     })
     .eq('user_id', userId);
 
-  if (error) throw error;
+  if (userError) throw userError;
 
-  return data;
+  const status = freeze ? 'Frozen' : 'active';
+
+  const { data: roleData, error: roleError } = await supabase
+    .from('user_roles')
+    .update({
+      status: status
+    })
+    .eq('user_id', userId);
+
+  if (roleError) throw roleError;
+
+  return { userData, roleData };
 }
 
 
