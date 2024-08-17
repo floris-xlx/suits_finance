@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './styles.module.css';
 import ThemeButton from '@/app/components/ui/Theme/ThemeButton';
 import LoggedInUserCard from '@/app/components/ui/Cards/LoggedInUserCard';
-import { getUserBalance } from '@/app/client/supabase/SupabaseUserData';
+import { getUserBalance, isFrozenUserId } from '@/app/client/supabase/SupabaseUserData';
 
 import { useRequireAuth } from '@/app/auth/hooks/useRequireAuth';
 import LoaderScreen from '@/app/components/ui/Loading/LoaderScreen';
@@ -35,6 +35,8 @@ import TopUpBalanceLayout from '@/app/components/layouts/Modals/topUpBalance';
 import CardLimitsLayout from '@/app/components/layouts/Modals/cardLimits';
 import DeveloperView from '@/app/components/layouts/Developer/DeveloperView';
 
+import FrozenBanner from '@/app/components/ui/Banners/FrozenBanner';
+
 export default function DashboardPage() {
   // auth
   const { userId } = useRequireAuth();
@@ -44,6 +46,19 @@ export default function DashboardPage() {
 
   const [isPaletteSearchOpen, setIsPaletteSearchOpen] = useState(false);
   const [pendingTradesUpdate, setPendingTradesUpdate] = useState(false);
+
+  const [userFrozen, setUserFrozen] = useState(false);
+  console.log(userFrozen);
+
+  useEffect(() => {
+    const checkIfUserFrozen = async () => {
+      const frozen = await isFrozenUserId(user.id);
+      setUserFrozen(frozen);
+    }
+
+    checkIfUserFrozen();
+  }, [user.id]);
+
 
   const [topUpAmount, setTopUpAmount] = useState(0);
 
@@ -173,8 +188,11 @@ export default function DashboardPage() {
               setIsPaletteSearchOpen={setIsPaletteSearchOpen}
             />
           </div>
-        </div>
 
+  
+
+        </div>
+        {userFrozen && <FrozenBanner />}
         {/* This is where the body layout goes */}
         <div className="flex flex-col gap-y-2 pt-8">
           < BalanceCard
@@ -203,6 +221,8 @@ export default function DashboardPage() {
 
       <div className="hidden lg:block">
         <Header setIsPaletteSearchOpen={setIsPaletteSearchOpen} logoHref={'/journal'} />
+       
+
       </div>
 
 
