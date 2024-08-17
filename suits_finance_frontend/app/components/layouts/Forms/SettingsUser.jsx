@@ -28,6 +28,7 @@ export default function SettingsUserLayout() {
     const { user, setEmail, setFullName, setCity, setCountry, setAddressLine1, setAddressLine2, setPostalCode, setState, setCurrency } = useUserStore();
 
     const [isAdmin, setIsAdmin] = useState(false);
+
     // permission section usernames
     const [inviteNewEmail, setInviteNewEmail] = useState('');
     const [searchQueryTable, setSearchQueryTable] = useState('');
