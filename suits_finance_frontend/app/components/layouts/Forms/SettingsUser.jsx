@@ -20,6 +20,8 @@ import Dropdown from '@/app/components/ui/Dropdowns/Dropdown';
 import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
 import MemberTrade from '@/app/components/ui/Tables/orgMemberTable';
 
+import AddAuditLogEntry from '@/app/client/supabase/auditLog';
+
 
 export default function SettingsUserLayout() {
     const { view, setCurrentSettingsSection } = useUserViewStore();
@@ -577,17 +579,8 @@ export default function SettingsUserLayout() {
                                 show={view.currentSettingsSection === 'billing'}
                             />
                         )}
-
                     </div>
-
-
-
                 </div>
-
-
-
-
-
             </div>
         </Fragment>
     );

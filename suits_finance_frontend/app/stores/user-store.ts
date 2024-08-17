@@ -93,7 +93,6 @@ export const useUserStore = create<UserStore>()(
                     postal_code: state.user.postal_code,
                     state: state.user.state,
                     currency: state.user.currency
-
                 }
             })),
 

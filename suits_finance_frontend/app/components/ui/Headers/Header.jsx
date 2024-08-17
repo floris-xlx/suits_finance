@@ -20,7 +20,7 @@ const Header = ({
   const { loading } = useLoadingStore();
 
   useEffect(() => {
-    if (loading.authLoading){
+    if (loading.authLoading) {
       return;
     }
 

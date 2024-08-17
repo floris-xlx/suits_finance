@@ -14,6 +14,9 @@ import { ValueCopyChipInlineLabel } from '@/app/components/ui/Chips/ValueCopyChi
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { UserUnfrozenSuccessNotification, UserFrozenFailNotification, UserFrozenSuccessNotification, UserUnfrozenFailNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
 
+import { useUserStore } from '@/app/stores/stores';
+
+import AddAuditLogEntry from '@/app/client/supabase/auditLog.ts';
 
 const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
     const { drawerRef: drawerRef_viewUser, handleOpenDrawer: handleOpenDrawer_viewUser } = useDrawer();
@@ -21,6 +24,9 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
     const { modalRef: modalRef_editUser, handleOpenModal: handleOpenModal_editUser } = useModal();
     const { modalRef: modalRef_freezeUser, handleOpenModal: handleOpenModal_freezeUser } = useModal();
     const { modalRef: modalRef_deleteUser, handleOpenModal: handleOpenModal_deleteUser } = useModal();
+
+    //zustand
+    const { user } = useUserStore();
 
 
     const [users, setUsers] = useState([]);
@@ -41,7 +47,7 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
         { key: "delete", label: "Delete user", onClick: handleOpenModal_deleteUser, tab: ["members", "pending", "frozen"] },
     ];
 
-    
+
 
     const userPendingWarning = "This user is pending approval. You can view their profile but you cannot edit, flag, freeze or delete their roles until they are approved.";
 
@@ -51,6 +57,28 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
         pending: "bg-blue-primary text-blue border border-blue-500/30",
         frozen: "bg-blue-primary text-blue border border-blue-500/30",
     };
+
+
+    const handleAuditLog = async ({
+        status,
+        message,
+        userId,
+        request
+    }) => {
+        let result = await AddAuditLogEntry({
+            request,
+            route: '/settings',
+            status: status,
+            user_id: userId,
+            message: message,
+            author_user_id: user.id
+        });
+
+        console.log(result);
+    }
+
+
+
 
     const renderChip = (tradeStatus) => {
         const Text = StatusColors[tradeStatus] ? CapitalizeFirstLetter(tradeStatus) : "???";
@@ -93,29 +121,58 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
 
         try {
             const result = await freezeUserAccount(userId, newFreezeStatus);
-            console.log(result)
-            console.log(`User with id: ${userId} is now ${newFreezeStatus ? 'frozen' : 'unfrozen'}.`);
+
             fetchAndSetUserRoles(); // Refresh the user roles to reflect the change
 
             if (newFreezeStatus) {
                 UserFrozenSuccessNotification({
                     username: scopedUserObject.user.full_name
                 });
+                let result = await handleAuditLog({
+                    request: 'freeze_user',
+                    status: 'success',
+                    message:  `User account has been frozen`,
+                    userId: userId
+                });
+                console.log(result);
+
             } else {
                 UserUnfrozenSuccessNotification({
                     username: scopedUserObject.user.full_name
                 });
+                let result = await handleAuditLog({
+                    request: 'unfreeze_user',
+                    status: 'success',
+                    message:  `User account has been unfrozen`,
+                    userId: userId
+                });
+                console.log(result);
             }
+
         } catch (error) {
             console.error(`Failed to update freeze status for user with id: ${userId}`, error);
             if (newFreezeStatus) {
                 UserFrozenFailNotification({
                     username: scopedUserObject.user.full_name
                 });
+                let result = await handleAuditLog({
+                    request: 'freeze_user',
+                    status: 'fail',
+                    message: `User account failed to freeze`,
+                    userId: userId
+                });
+                console.log(result);
             } else {
                 UserUnfrozenFailNotification({
                     username: scopedUserObject.user.full_name
                 });
+                let result = await handleAuditLog({
+                    request: 'unfreeze_user',
+                    status: 'fail',
+                    message: `User account failed to unfreeze`,
+                    userId: userId
+                });
+                console.log(result);
             }
         }
     };
@@ -407,8 +464,8 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
                 onButtonPress={handleUserFreeze}
             >
                 <p className="text-primary">
-                    {scopedUserObject?.user?.is_frozen 
-                        ? 'Are you sure you want to unfreeze this user? They will be able to use their account again.' 
+                    {scopedUserObject?.user?.is_frozen
+                        ? 'Are you sure you want to unfreeze this user? They will be able to use their account again.'
                         : 'Are you sure you want to freeze this user? They will not be able to use their account until you unfreeze them.'}
                 </p>
             </Modal>

@@ -5,6 +5,7 @@ import CreateTradeHash from '@/app/client/api/TradeApi';
 import { SetKeyLocalStorage } from '@/app/client/caching/LocalStorageRouter';
 import { user } from '@nextui-org/react';
 import stripNameFromEmail from '../hooks/formatting/StripNameFromEmail';
+import AddAuditLogEntry from '@/app/client/supabase/auditLog';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;

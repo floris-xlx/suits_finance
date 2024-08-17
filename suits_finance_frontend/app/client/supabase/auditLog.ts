@@ -10,14 +10,18 @@ interface AddAuditLogEntryParams {
   status: string;
   user_id: string;
   message?: string;
+  author_user_id?: string;
 }
 
-export async function AddAuditLogEntry({
+
+
+export default async function AddAuditLogEntry({
   request,
   route,
   status,
   user_id,
   message = '',
+  author_user_id = '',
 }: AddAuditLogEntryParams): 
 Promise<any> {
   const current_unixtime = Math.floor(Date.now() / 1000);
@@ -32,10 +36,10 @@ Promise<any> {
         user_id,
         message,
         unix_time: current_unixtime,
+        author_user_id,
       }
     ]);
-    
-  console.log(data, error);
+
   if (error) throw error;
 
   return data;

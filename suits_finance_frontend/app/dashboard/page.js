@@ -34,9 +34,9 @@ import TransactionsOverviewLayout from '@/app/components/layouts/Modals/transact
 import TopUpBalanceLayout from '@/app/components/layouts/Modals/topUpBalance';
 import CardLimitsLayout from '@/app/components/layouts/Modals/cardLimits';
 import DeveloperView from '@/app/components/layouts/Developer/DeveloperView';
-
 import FrozenBanner from '@/app/components/ui/Banners/FrozenBanner';
 import SnowingParticles from '@/app/components/ui/Effects/SnowParticles';
+
 
 export default function DashboardPage() {
   // auth
@@ -47,9 +47,8 @@ export default function DashboardPage() {
 
   const [isPaletteSearchOpen, setIsPaletteSearchOpen] = useState(false);
   const [pendingTradesUpdate, setPendingTradesUpdate] = useState(false);
-
+  const [topUpAmount, setTopUpAmount] = useState(0);
   const [userFrozen, setUserFrozen] = useState(false);
-  console.log(userFrozen);
 
   useEffect(() => {
     const checkIfUserFrozen = async () => {
@@ -60,9 +59,6 @@ export default function DashboardPage() {
     checkIfUserFrozen();
   }, [user.id]);
 
-
-  const [topUpAmount, setTopUpAmount] = useState(0);
-
   const [currentCard, setCurrentCard] = useState({
     fullName: null,
     cardNumber: null,
@@ -70,6 +66,7 @@ export default function DashboardPage() {
     balance: null,
     currency: null,
   });
+
 
   const DEMO_TRANSACTION = {
     id: '1',
@@ -97,11 +94,13 @@ export default function DashboardPage() {
     fetchBalance();
   }, [user.id]);
 
+
   // drawer stuff
   const { modalRef: modalRef_viewDetailsCard, handleOpenModal: handleOpenModal_DetailsCard } = useModal();
   const { modalRef: modalRef_viewTransactions, handleOpenModal: handleOpenModal_ViewTransactions } = useModal();
   const { modalRef: modalRef_topUpBalance, handleOpenModal: handleOpenModal_TopUpBalance } = useModal();
   const { modalRef: modalRef_cardLimits, handleOpenModal: handleOpenModal_CardLimits } = useModal();
+
 
   // auth stuff
   if (loading.authLoading) {
@@ -150,11 +149,11 @@ export default function DashboardPage() {
       >
         <CardDetailsLayout card={currentCard} />
       </Modal>
+
       <Modal
         title={'Transactions'}
         buttonText={'Close'}
         ref={modalRef_viewTransactions}
-
       >
         <TransactionsOverviewLayout transactions={[DEMO_TRANSACTION]} />
       </Modal>
@@ -163,10 +162,10 @@ export default function DashboardPage() {
         title={'Top Up Balance'}
         buttonText={'Continue'}
         ref={modalRef_topUpBalance}
-
       >
         <TopUpBalanceLayout setPaymentAmount={setTopUpAmount} balance={topUpAmount} />
       </Modal>
+
       <Modal
         title={'Card Limits'}
         buttonText={'Close'}
@@ -176,11 +175,10 @@ export default function DashboardPage() {
         <CardLimitsLayout />
       </Modal>
 
-
-
       <div className="bg-primary  mt-0 lg:mt-[80px] h-[99%] min-h-[90.75vh] pb-[100px]">
         <div className="flex flex-col items-center gap-3 max-w-[1400px] w-full lg:hidden pb-0 ">
           <div className="w-[96%]">
+
             <LoggedInUserCard
               username={user.username}
               profilePicture={user.profile_picture}
@@ -188,10 +186,8 @@ export default function DashboardPage() {
               setPendingTradesUpdate={setPendingTradesUpdate}
               setIsPaletteSearchOpen={setIsPaletteSearchOpen}
             />
+
           </div>
-
-
-
         </div>
         {userFrozen && <FrozenBanner />}
 
@@ -217,25 +213,22 @@ export default function DashboardPage() {
         <div className="flex flex-row mx-auto max-w-[400px] mt-[45px]">
           < TransactionsTableMobile transactions={[DEMO_TRANSACTION]} handleViewTransactions={handleViewTransactions} />
         </div>
-
-
-
       </div>
 
       <div className="hidden lg:block">
         <Header setIsPaletteSearchOpen={setIsPaletteSearchOpen} logoHref={'/journal'} />
-
-
       </div>
 
 
       <div className="fixed bottom-0 left-0 p-4 ml-[1px]  ">
         <div className="flex flex-col gap-y-3 items-center">
-          <ThemeButton />
-          <DeveloperView />
+          < ThemeButton />
+          < DeveloperView />
         </div>
       </div>
+
       {userFrozen && <SnowingParticles />}
+
     </div>
   );
 }
