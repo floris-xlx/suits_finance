@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { fetchUserRoles, deleteUserRole } from '@/app/client/supabase/SupabaseUserData.js';
+import { fetchUserRoles, deleteUserRole, freezeUserAccount, isFrozenUserId, flagUserAccount, isFlaggedUserId } from '@/app/client/supabase/SupabaseUserData.js';
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Spinner } from "@nextui-org/react";
 import { Checkbox } from "@nextui-org/react";
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
@@ -11,6 +11,8 @@ import TabHorizontal from '@/app/components/ui/Tabs/TabHorizontalWithValue';
 import CapitalizeFirstLetter from '@/app/client/hooks/formatting/CapitalizeLetter';
 import { UserDeleteRoleSuccessNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
 import { ValueCopyChipInlineLabel } from '@/app/components/ui/Chips/ValueCopyChip';
+import { ChevronDownIcon } from '@radix-ui/react-icons';
+import { UserUnfrozenSuccessNotification, UserFrozenFailNotification, UserFrozenSuccessNotification, UserUnfrozenFailNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
 
 
 const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
@@ -28,6 +30,7 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
 
     const [scopedUserId, setScopedUserId] = useState(null);
     const [scopedUserObject, setScopedUserObject] = useState(null);
+    console.log(scopedUserObject)
 
     const memberStates = ["Members", "Pending"];
     const dropdownItems = [
@@ -59,7 +62,7 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
     };
 
     const fetchAndSetUserRoles = async () => {
-        const userRoles = await fetchUserRoles();
+        const userRoles = await fetchUserRoles(1, 10);
         setUsers(userRoles);
     };
 
@@ -80,9 +83,34 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
     );
 
 
-    const handleUserFreeze = () => {
+    const handleUserFreeze = async () => {
         const userId = scopedUserId;
-        console.log("Freezing user with id: ", userId);
+        const isCurrentlyFrozen = scopedUserObject.user.is_frozen;
+        const newFreezeStatus = !isCurrentlyFrozen;
+
+        try {
+            const result = await freezeUserAccount(userId, newFreezeStatus);
+            console.log(result)
+            console.log(`User with id: ${userId} is now ${newFreezeStatus ? 'frozen' : 'unfrozen'}.`);
+            fetchAndSetUserRoles(); // Refresh the user roles to reflect the change
+
+            if (newFreezeStatus) {
+                UserFrozenSuccessNotification({
+                    username: scopedUserObject.user.full_name
+                });
+            }
+        } catch (error) {
+            console.error(`Failed to update freeze status for user with id: ${userId}`, error);
+            if (newFreezeStatus) {
+                UserFrozenFailNotification({
+                    username: scopedUserObject.user.full_name
+                });
+            } else {
+                UserUnfrozenFailNotification({
+                    username: scopedUserObject.user.full_name
+                });
+            }
+        }
     };
 
     const handleUserFlag = () => {
@@ -123,22 +151,7 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
             aria-describedby="react-aria-description-2"
         >
             {label}
-            <svg
-                aria-hidden="true"
-                fill="none"
-                focusable="false"
-                height="1em"
-                role="presentation"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="3"
-                viewBox="0 0 24 24"
-                width="1em"
-                className="ml-2 mb-px opacity-0 text-inherit inline-block transition-transform-opacity data-[visible=true]:opacity-100 group-data-[hover=true]:opacity-100 data-[direction=ascending]:rotate-180"
-            >
-                <path d="m6 9 6 6 6-6"></path>
-            </svg>
+            < ChevronDownIcon className="w-4 h-4 icon" />
         </th>
     );
 
@@ -249,7 +262,7 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
                                         }}
                                         className={`${item.key === "delete" ? "text-danger hover:text-white" : "hover:text-white"}`}
                                     >
-                                        {item.label}
+                                        {item.key === "freeze" && scopedUserObject && scopedUserObject.user.is_frozen ? "Unfreeze user" : item.label}
                                     </DropdownItem>
                                 )
                             )}
@@ -277,15 +290,82 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
                     )}
 
                     {scopedUserObject && (
-                        <ValueCopyChipInlineLabel
-                            label="Email Address"
-                            value={scopedUserObject.email || scopedUserObject.user.email}
-                            copy={true}
-                            hover={true}
-                            isText={true}
-                            notificationType='Email Address'
-                            width='full'
-                        />
+                        <Fragment>
+
+
+                            <ValueCopyChipInlineLabel
+                                label="Role"
+                                value={scopedUserObject.role}
+                                copy={true}
+                                hover={true}
+                                isText={true}
+                                notificationType='Role'
+                                width='full'
+                            />
+
+
+
+                            <ValueCopyChipInlineLabel
+                                label="Email Address"
+                                value={scopedUserObject.email || scopedUserObject.user.email}
+                                copy={true}
+                                hover={true}
+                                isText={true}
+                                notificationType='Email Address'
+                                width='full'
+                            />
+
+                            {scopedUserObject.user && (
+                                <Fragment>
+                                    <ValueCopyChipInlineLabel
+                                        label="Full Name"
+                                        value={scopedUserObject.user.full_name}
+                                        copy={true}
+                                        hover={true}
+                                        isText={true}
+                                        notificationType='Full Name'
+                                        width='full'
+                                    />
+                                    <ValueCopyChipInlineLabel
+                                        label="Is Flagged"
+                                        value={scopedUserObject.user.is_flagged ? "Yes" : "No"}
+                                        copy={true}
+                                        hover={true}
+                                        isText={true}
+                                        notificationType='Is Flagged'
+                                        width='full'
+                                    />
+                                    <ValueCopyChipInlineLabel
+                                        label="Is Frozen"
+                                        value={scopedUserObject.user.is_frozen ? "Yes" : "No"}
+                                        copy={true}
+                                        hover={true}
+                                        isText={true}
+                                        notificationType='Is Frozen'
+                                        width='full'
+                                    />
+                                    <ValueCopyChipInlineLabel
+                                        label="Is Negative"
+                                        value={scopedUserObject.user.is_negative ? "Yes" : "No"}
+                                        copy={true}
+                                        hover={true}
+                                        isText={true}
+                                        notificationType='Is Negative'
+                                        width='full'
+                                    />
+
+                                    <ValueCopyChipInlineLabel
+                                        label="Country"
+                                        value={scopedUserObject.user.country || "N/A"}
+                                        copy={true}
+                                        hover={true}
+                                        isText={true}
+                                        notificationType='Country'
+                                        width='full'
+                                    />
+                                </Fragment>
+                            )}
+                        </Fragment>
                     )}
                 </div>
             </DrawerHero>
@@ -317,10 +397,10 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
                 ref={modalRef_freezeUser}
                 buttonText={'Freeze user'}
                 title={'Freeze'}
-                onButtonPress={refreshPage}
+                onButtonPress={handleUserFreeze}
             >
                 <p className="text-primary">
-                    Freeze user
+                    Are you sure you want to freeze this user? They will not be able to use their account until you unfreeze them.
                 </p>
             </Modal>
 

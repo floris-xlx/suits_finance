@@ -49,7 +49,7 @@ const DrawerHero = forwardRef(({ children = null }, ref) => {
                 <DrawerContent className={`sm:max-w-lg transition-transform duration-500 ${isDrawerOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                     <DrawerHeader>
                         <DrawerTitle className="select-none">
-                            View trade
+                            View user
                         </DrawerTitle>
                         <DrawerDescription className="mt-2 text-sm w-full ">
                             {children}

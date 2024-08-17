@@ -328,7 +328,7 @@ export async function addUserRoleObject({ email, role }) {
 
 
 export async function fetchUserRoles(
-  page = 1, 
+  page = 1,
   pageSize = 10
 ) {
   const offset = (page - 1) * pageSize;
@@ -369,7 +369,7 @@ export async function deleteUserRole(
   userId
 ) {
   const column = typeof userId === 'number' ? 'id' : 'user_id';
-  
+
   const { data, error } = await supabase
     .from('user_roles')
     .delete()
@@ -378,4 +378,67 @@ export async function deleteUserRole(
   if (error) throw error;
 
   return data;
+}
+
+
+export async function freezeUserAccount(
+  userId,
+  freeze
+) {
+  const { data, error } = await supabase
+    .from('users')
+    .update({
+      is_frozen: freeze
+    })
+    .eq('user_id', userId);
+
+  if (error) throw error;
+
+  return data;
+}
+
+
+export async function isFrozenUserId(userId) {
+  const { data, error } = await supabase
+    .from('users')
+    .select('is_frozen')
+    .eq('user_id', userId);
+
+  if (error) throw error;
+
+  if (data.length === 0) {
+    return null;
+  }
+
+  return data[0].is_frozen;
+}
+
+
+export async function flagUserAccount(userId, flag) {
+  const { data, error } = await supabase
+    .from('users')
+    .update({
+      is_flagged: flag
+    })
+    .eq('user_id', userId);
+
+  if (error) throw error;
+
+  return data;
+}
+
+
+export async function isFlaggedUserId(userId) {
+  const { data, error } = await supabase
+    .from('users')
+    .select('is_flagged')
+    .eq('user_id', userId);
+
+  if (error) throw error;
+
+  if (data.length === 0) {
+    return null;
+  }
+
+  return data[0].is_flagged;
 }
