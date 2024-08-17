@@ -11,6 +11,7 @@ interface AddAuditLogEntryParams {
   user_id: string;
   message?: string;
   author_user_id?: string;
+  email?: string;
 }
 
 
@@ -22,6 +23,7 @@ export default async function AddAuditLogEntry({
   user_id,
   message = '',
   author_user_id = '',
+  email = '',
 }: AddAuditLogEntryParams): 
 Promise<any> {
   const current_unixtime = Math.floor(Date.now() / 1000);
@@ -37,6 +39,7 @@ Promise<any> {
         message,
         unix_time: current_unixtime,
         author_user_id,
+        email,
       }
     ]);
 

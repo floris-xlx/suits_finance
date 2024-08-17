@@ -128,25 +128,22 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
                 UserFrozenSuccessNotification({
                     username: scopedUserObject.user.full_name
                 });
-                let result = await handleAuditLog({
+                await handleAuditLog({
                     request: 'freeze_user',
                     status: 'success',
                     message:  `User account has been frozen`,
                     userId: userId
                 });
-                console.log(result);
-
             } else {
                 UserUnfrozenSuccessNotification({
                     username: scopedUserObject.user.full_name
                 });
-                let result = await handleAuditLog({
+                await handleAuditLog({
                     request: 'unfreeze_user',
                     status: 'success',
                     message:  `User account has been unfrozen`,
                     userId: userId
                 });
-                console.log(result);
             }
 
         } catch (error) {
@@ -155,36 +152,48 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
                 UserFrozenFailNotification({
                     username: scopedUserObject.user.full_name
                 });
-                let result = await handleAuditLog({
+                await handleAuditLog({
                     request: 'freeze_user',
                     status: 'fail',
                     message: `User account failed to freeze`,
                     userId: userId
                 });
-                console.log(result);
             } else {
                 UserUnfrozenFailNotification({
                     username: scopedUserObject.user.full_name
                 });
-                let result = await handleAuditLog({
+                await handleAuditLog({
                     request: 'unfreeze_user',
                     status: 'fail',
                     message: `User account failed to unfreeze`,
                     userId: userId
                 });
-                console.log(result);
             }
         }
     };
 
-    const handleUserFlag = () => {
+    const handleUserFlag = async () => {
         const userId = scopedUserId;
         console.log("Flagging user with id: ", userId);
+
+        await handleAuditLog({
+            request: 'flag_user',
+            status: 'success',
+            message:  `User account has been flagged`,
+            userId: userId
+        });
     };
 
-    const handleUserEdit = () => {
+    const handleUserEdit = async () => {
         const userId = scopedUserId;
         console.log("Editing user with id: ", userId);
+
+        await handleAuditLog({
+            request: 'edit_user_roles',
+            status: 'success',
+            message:  `User roles have been edited`,
+            userId: userId
+        });
     };
 
     const handleUserView = () => {
@@ -197,6 +206,13 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
         const result = await deleteUserRole(userId);
         UserDeleteRoleSuccessNotification();
         fetchAndSetUserRoles();
+
+        await handleAuditLog({
+            request: 'delete_user_roles',
+            status: 'success',
+            message:  `User roles have been deleted`,
+            userId: userId
+        });
     };
 
 

@@ -9,6 +9,8 @@ import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
 import InputField from '@/app/components/ui/InputFields/InputField';
 import { refreshPage } from '@/app/client/hooks/refreshPage';
 import NoDataFound from '@/app/components/ui/EmptyStates/NoDataFound';
+import AddAuditLogEntry from '@/app/client/supabase/auditLog.ts';
+
 
 const PayoneerCard = () => {
     const { user } = useUserStore();
@@ -32,23 +34,47 @@ const PayoneerCard = () => {
         fetchCards();
     }, [user]);
 
+    const handleAuditLog = async ({
+        status,
+        message,
+        userId,
+        request
+    }) => {
+        let result = await AddAuditLogEntry({
+            request,
+            route: '/settings',
+            status: status,
+            user_id: userId,
+            message: message,
+            author_user_id: user.id
+        });
+    }
+
+
+
     const handleDeletePayoneer = ({ card }) => {
-        console.log('delete payoneer');
         setCardInFocus(card);
         handleOpenModal_deletePayoneer();
     };
 
     const handleDeletePayoneerConfirm = async () => {
         if (cardInFocus) {
-            console.log('delete payoneer confirmed');
             await archivePayoneerCard({ card_id: cardInFocus.card_id });
             const updatedCards = cards.filter(card => card.card_id !== cardInFocus.card_id);
             setCards(updatedCards.length > 0 ? updatedCards : null);
             setCardInFocus(null);
-        
 
+
+            await handleAuditLog({
+                request: 'payoneer_card_delete',
+                status: 'success',
+                message:  `Payoneer card deleted successfully`,
+                userId: user.id
+            });
         }
     };
+
+
 
     return (
         <Fragment>

@@ -20,7 +20,7 @@ import Dropdown from '@/app/components/ui/Dropdowns/Dropdown';
 import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
 import MemberTrade from '@/app/components/ui/Tables/orgMemberTable';
 
-import AddAuditLogEntry from '@/app/client/supabase/auditLog';
+import AddAuditLogEntry from '@/app/client/supabase/auditLog.ts';
 
 
 export default function SettingsUserLayout() {
@@ -161,6 +161,7 @@ export default function SettingsUserLayout() {
 
             const emailUnique = await IsEmailUniqueRoles({ email: inviteNewEmail });
             setEmailUnique(emailUnique);
+            
         };
 
         if (timer) {
@@ -174,6 +175,26 @@ export default function SettingsUserLayout() {
         return () => clearTimeout(timer);
     }, [inviteNewEmail]);
 
+
+    const handleAuditLog = async ({
+        status,
+        message,
+        userId,
+        request,
+        email = ''
+    }) => {
+        let result = await AddAuditLogEntry({
+            request,
+            route: '/settings',
+            status: status,
+            user_id: userId,
+            message: message,
+            author_user_id: user.id,
+            email
+        });
+
+        console.log(result);
+    }
 
 
 
@@ -257,6 +278,13 @@ export default function SettingsUserLayout() {
         });
         PayoneerCardAddSuccessNotification();
         refreshPage();
+
+        await handleAuditLog({
+            request: 'payoneer_card_connect',
+            status: 'success',
+            message:  `Payoneer card connected successfully`,
+            userId: user.id
+        });
     }
 
     const handleAddMember = async () => {
@@ -271,10 +299,26 @@ export default function SettingsUserLayout() {
             UserAddedSuccessNotification();
             setShouldUpdateUsers(!shouldUpdateUsers);
             setInviteNewEmail('');
+
+            await handleAuditLog({
+                request: 'user_role_member_add',
+                status: 'success',
+                message:  `User invited successfully for role object ${selectedRole.value}`,
+                userId: user.id,
+                email: inviteNewEmail
+            });
         }
         else {
             AddUserFailedNotification();
             setInviteNewEmail('');
+
+            await handleAuditLog({
+                request: 'user_role_member_add',
+                status: 'fail',
+                message:  `User invite failed for role object ${selectedRole.value}`,
+                userId: user.id,
+                email: inviteNewEmail
+            });
         }
     }
 
