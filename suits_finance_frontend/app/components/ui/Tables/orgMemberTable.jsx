@@ -35,8 +35,8 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
     const memberStates = ["Members", "Pending", "Frozen"];
     const dropdownItems = [
         { key: "view", label: "View profile", onClick: handleOpenDrawer_viewUser, tab: ["members", "pending", "frozen"] },
-        { key: "edit", label: "Edit user", onClick: handleOpenModal_editUser, tab: ["members"] },
-        { key: "flag", label: "Flag user", onClick: handleOpenModal_flagUser, tab: ["members"] },
+        //{ key: "edit", label: "Edit user", onClick: handleOpenModal_editUser, tab: ["members"] }, FIXME: Implement edit user
+        //{ key: "flag", label: "Flag user", onClick: handleOpenModal_flagUser, tab: ["members"] }, FIXME: Implement flag user
         { key: "freeze", label: "Freeze user", onClick: handleOpenModal_freezeUser, tab: ["members", "frozen"] },
         { key: "delete", label: "Delete user", onClick: handleOpenModal_deleteUser, tab: ["members", "pending", "frozen"] },
     ];
