@@ -22,18 +22,19 @@ import { ChevronDownIcon } from "./ChevronDownIcon";
 import { columns, statusOptions } from "./data";
 import { capitalize } from "./utils";
 import { getRelativeTime } from "@/app/client/hooks/datetime/RelativeDate.js";
-import { GetTradesByStrategyId } from "@/app/client/supabase/SupabaseUserData.js";
+import { GetTradesByStrategyId, addTransaction, fetchTransactions } from "@/app/client/supabase/SupabaseUserData.js";
 import TradeStatusChip from "@/app/components/ui/Chips/TradeStatusChip.jsx";
 import { TradeStatus } from "@/app/types/tradeStatus"
 import UpdateTradeStatusLayout from "@/app/components/layouts/Modals/updateTradeStatus";
-import { PlusIcon  } from "@heroicons/react/24/outline";
+import { PlusIcon } from "@heroicons/react/24/outline";
 
 // da modal component
 import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
 import { refreshPage } from '@/app/client/hooks/refreshPage';
 import { DrawerHero, useDrawer } from "@/app/components/ui/Drawers/DrawerViewTrade";
 import DrawerViewTradeLayout from "@/app/components/layouts/Drawers/DrawerViewTrade";
-import { useTradeFiltersStore } from "@/app/stores/stores";
+import { useTradeFiltersStore, useUserStore } from "@/app/stores/stores";
+import { AddTransactionSuccessNotification } from "@/app/components/ui/Notifications/Notifications.jsx";
 
 // layout 
 import AddTransactionLayout from "@/app/components/layouts/Forms/AddTransaction";
@@ -52,6 +53,7 @@ export default function App({
 }) {
     // zustand
     const { tradeFilters, setIsTradeStatusFilters } = useTradeFiltersStore();
+    const { user } = useUserStore();
 
     // modal shit
     const { modalRef: modalRef_updateTradeStatus, handleOpenModal: handleOpenModal_updateTradeStatus } = useModal();
@@ -63,6 +65,7 @@ export default function App({
     // these are the main loaded objects
     const [tradeObjects, setTradeObjects] = useState([]);
     const [isLoading, setIsDataLoading] = useState(true);
+    const [transactionObjects, setTransactionObjects] = useState([]);
 
     // states
     const [filterValue, setFilterValue] = useState("");
@@ -72,15 +75,31 @@ export default function App({
     const [scopedTradeHash, setScopedTradeHash] = useState(null);
     const [page, setPage] = useState(1);
 
-    console.log(transactions);
+    const [unsavedTransaction, setUnsavedTransaction] = useState({
+        amount: 0,
+        currency: "eur",
+        title: "",
+        recipient: "",
+        sender: "",
+    });
+
+    const handleAddTransaction = async () => {
+        const { sender, recipient, amount, title } = unsavedTransaction;
+        if (sender && recipient && amount > 0 && title) {
+            const { title, amount, currency, recipient, sender } = unsavedTransaction;
+            const user_id = user.id;
+            await addTransaction({ user_id, title, amount, currency, recipient, sender });
+        }
+    };
 
 
     useEffect(() => {
         if (!strategyId) return;
         const fetchTrades = async () => {
-            const trades = await GetTradesByStrategyId(strategyId);
+            const trades = await fetchTransactions(user.id);
             trades.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
             setTradeObjects(trades);
+            setTransactionObjects(trades);
             setIsDataLoading(false);
         };
 
@@ -415,8 +434,9 @@ export default function App({
                 title={'Add Transaction'}
                 // buttonText={'Add'}
                 ref={drawerRef_addTransaction}
+                onClick={handleAddTransaction}
             >
-                <AddTransactionLayout />
+                <AddTransactionLayout setUnsavedTransaction={setUnsavedTransaction} />
             </DrawerHero>
 
 

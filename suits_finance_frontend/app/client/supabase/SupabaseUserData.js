@@ -455,3 +455,53 @@ export async function isFlaggedUserId(userId) {
 
   return data[0].is_flagged;
 }
+
+
+export async function addTransaction({
+  user_id,
+  title,
+  amount,
+  currency,
+  recipient,
+  sender,
+  card = null,
+}) {
+  const { data, error } = await supabase
+    .from('transactions')
+    .insert([
+      {
+        user_id,
+        title,
+        amount,
+        currency,
+        recipient,
+        sender,
+        card,
+        status: 'pending'
+      }
+    ]);
+
+  if (error) throw error;
+
+  return data;
+}
+
+
+export async function fetchTransactions(
+  userId,
+  page = 1,
+  pageSize = 10
+) {
+  const offset = (page - 1) * pageSize;
+
+  const { data, error } = await supabase
+    .from('transactions')
+    .select('*')
+    .eq('user_id', userId)
+    .order('id', { ascending: false })
+    .range(offset, offset + pageSize - 1);
+
+  if (error) throw error;
+
+  return data;
+}

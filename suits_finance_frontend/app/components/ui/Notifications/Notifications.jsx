@@ -30,6 +30,7 @@ import InvoiceErrorNotification from './invoiceError.jsx';
 import TransfersBlockedAccountFrozenNotification from './transfersBlockedAccountFrozen.jsx';
 import BalanceTopUpSuccessNotification from './balanceTopUpSuccess.jsx';
 import TransfersBlockedAccountReviewalNotification from './transfersBlockedAccountReviewal.jsx';
+import AddTransactionSuccessNotification from './addTransactionSuccess.jsx';
 
 
 export {
@@ -64,5 +65,6 @@ export {
     InvoiceErrorNotification,
     TransfersBlockedAccountFrozenNotification,
     BalanceTopUpSuccessNotification,
-    TransfersBlockedAccountReviewalNotification
+    TransfersBlockedAccountReviewalNotification,
+    AddTransactionSuccessNotification
 }
