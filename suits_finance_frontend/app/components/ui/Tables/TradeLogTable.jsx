@@ -251,9 +251,9 @@ export default function App({
                                 </Button>
                             </DropdownTrigger>
                             <DropdownMenu className="rounded-md" aria-labelledby="actionsMenu">
-                                <DropdownItem id="editAction" onClick={() => {handleTradeEdit(user.hash)}}>
+                                {/* <DropdownItem id="editAction" onClick={() => {handleTradeEdit(user.hash)}}>
                                     Edit
-                                </DropdownItem>
+                                </DropdownItem> */}
                                 <DropdownItem id="viewAction" onClick={() => {handleDrawerOpen(user.hash)}}>
                                     View
                                 </DropdownItem>
@@ -458,7 +458,7 @@ export default function App({
                 title={'View transaction'}
                 ref={drawerRef_viewTrade}
             >
-                <DrawerViewTransactionLayout transaction={scopedTransaction} />
+                <DrawerViewTransactionLayout transaction={tradeObjectOfHash} />
             </DrawerHero>
 
             {/* Scrollable Container */}
