@@ -1,25 +1,19 @@
 const columns = [
-  { name: "Trade hash", uid: "trade_hash", sortable: false },
-  { name: "Pairname", uid: "pairname", sortable: true },
-  // { name: "Position size", uid: "position_size", sortable: true },
-  { name: "Date", uid: "created_at", sortable: true },
-  // { name: "Profit & Loss", uid: "pnl" },
-  { name: "Entry level", uid: "entry_level" },
-  { name: "Trade Status", uid: "trade_status", sortable: true },
-  //{ name: "Trading session", uid: "session", sortable: true },
+  { name: "Amount", uid: "amount", sortable: true },
+  { name: "Title", uid: "title", sortable: false },
+  { name: "Recipient", uid: "recipient", sortable: true },
+  { name: "Sender", uid: "sender", sortable: true },
+  { name: "Transaction Status", uid: "status", sortable: true },
+  { name: "Hash", uid: "hash" },
+  { name: "Date", uid: "date", sortable: true },
   { name: "Actions", uid: "actions" },
-  // { name: "Unix time", uid: "unix_time" },
-
 ];
 
 const statusOptions = [
   { name: "Loss", uid: "Loss" },
   { name: "Pending", uid: "Pending" },
-  { name: "Tp1", uid: "Tp1" },
-  { name: "Tp2", uid: "Tp2" },
-  { name: "TP3", uid: "TP3" },
-  { name: "Unapproved", uid: "Unapproved" },
-  { name: "Invalid", uid: "Invalid" },
+  { name: "Rejected", uid: "Rejected" },
+  { name: "Approved", uid: "Approved" },
 ];
 
 const users = [

@@ -39,6 +39,7 @@ import SnowingParticles from '@/app/components/ui/Effects/SnowParticles';
 import TradeLogTable from '@/app/components/ui/Tables/TradeLogTable';
 
 
+
 export default function DashboardPage() {
   // auth
   const { userId } = useRequireAuth();
@@ -50,6 +51,7 @@ export default function DashboardPage() {
   const [pendingTradesUpdate, setPendingTradesUpdate] = useState(false);
   const [topUpAmount, setTopUpAmount] = useState(0);
   const [userFrozen, setUserFrozen] = useState(false);
+
 
   useEffect(() => {
     const checkIfUserFrozen = async () => {
@@ -179,7 +181,7 @@ export default function DashboardPage() {
       >
         <CardLimitsLayout />
       </Modal>
- 
+
 
       <div className="bg-primary  mt-0 lg:mt-[80px] h-[99%] min-h-[90.75vh] pb-[100px]">
         <div className="flex flex-col items-center gap-3 max-w-[1400px] w-full lg:hidden pb-0 ">
@@ -231,16 +233,13 @@ export default function DashboardPage() {
             handleViewTransactions={handleViewTransactions}
           />
         </div>
-
-
-
-
-
       </div>
 
       <div className="hidden lg:block">
         <Header setIsPaletteSearchOpen={setIsPaletteSearchOpen} logoHref={'/journal'} />
       </div>
+
+
 
 
       <div className="fixed bottom-0 left-0 p-4 ml-[1px]  ">

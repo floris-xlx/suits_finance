@@ -487,21 +487,31 @@ export async function addTransaction({
 }
 
 
-export async function fetchTransactions(
+export async function fetchTransactions({
   userId,
-  page = 1,
-  pageSize = 10
-) {
-  const offset = (page - 1) * pageSize;
+}) {
+  if (!userId) {
+    console.error('No user id provided');
+    return [];
+  }
+  console.log('userId', userId);
+
 
   const { data, error } = await supabase
     .from('transactions')
     .select('*')
     .eq('user_id', userId)
-    .order('id', { ascending: false })
-    .range(offset, offset + pageSize - 1);
 
-  if (error) throw error;
+
+  if (error) {
+    console.error('Error fetching transactions:', error);
+    return [];
+  }
+
+  if (!data || data.length === 0) {
+    console.warn('No transactions found for user:', userId);
+    return [];
+  }
 
   return data;
 }

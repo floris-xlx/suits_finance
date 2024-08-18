@@ -27,12 +27,14 @@ import TradeStatusChip from "@/app/components/ui/Chips/TradeStatusChip.jsx";
 import { TradeStatus } from "@/app/types/tradeStatus"
 import UpdateTradeStatusLayout from "@/app/components/layouts/Modals/updateTradeStatus";
 import { PlusIcon } from "@heroicons/react/24/outline";
+import CurrencySymbol from "@/app/client/hooks/formatting/CurrencySymbol";
 
 // da modal component
 import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
 import { refreshPage } from '@/app/client/hooks/refreshPage';
 import { DrawerHero, useDrawer } from "@/app/components/ui/Drawers/DrawerViewTrade";
 import DrawerViewTradeLayout from "@/app/components/layouts/Drawers/DrawerViewTrade";
+import DrawerViewTransactionLayout from "@/app/components/layouts/Drawers/DrawerViewTransaction";
 import { useTradeFiltersStore, useUserStore } from "@/app/stores/stores";
 import { AddTransactionSuccessNotification } from "@/app/components/ui/Notifications/Notifications.jsx";
 
@@ -41,7 +43,7 @@ import AddTransactionLayout from "@/app/components/layouts/Forms/AddTransaction"
 
 
 // statics
-const INITIAL_VISIBLE_COLUMNS = ["pairname", "created_at", "trade_status", "actions"];
+const INITIAL_VISIBLE_COLUMNS = ["created_at", "amount", "recipient", "sender", "status", "actions"];
 
 
 
@@ -67,6 +69,13 @@ export default function App({
     const [isLoading, setIsDataLoading] = useState(true);
     const [transactionObjects, setTransactionObjects] = useState([]);
 
+    // transaction
+    const [scopedTransaction, setScopedTransaction] = useState([]);
+    const [scopedTransactionHash, setScopedTransactionHash] = useState('');
+
+    
+
+
     // states
     const [filterValue, setFilterValue] = useState("");
     const [selectedKeys, setSelectedKeys] = useState(new Set([]));
@@ -75,13 +84,7 @@ export default function App({
     const [scopedTradeHash, setScopedTradeHash] = useState(null);
     const [page, setPage] = useState(1);
 
-    const [unsavedTransaction, setUnsavedTransaction] = useState({
-        amount: 0,
-        currency: "eur",
-        title: "",
-        recipient: "",
-        sender: "",
-    });
+    const [unsavedTransaction, setUnsavedTransaction] = useState({});
 
     const handleAddTransaction = async () => {
         const { sender, recipient, amount, title } = unsavedTransaction;
@@ -94,9 +97,11 @@ export default function App({
 
 
     useEffect(() => {
-        if (!strategyId) return;
+
         const fetchTrades = async () => {
-            const trades = await fetchTransactions(user.id);
+            const trades = await fetchTransactions({
+                userId: user.id,
+            });
             trades.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
             setTradeObjects(trades);
             setTransactionObjects(trades);
@@ -116,7 +121,7 @@ export default function App({
         handleOpenModal_updateTradeStatus();
     };
 
-    const tradeObjectOfHash = tradeObjects.find((trade) => trade.trade_hash === scopedTradeHash);
+    const tradeObjectOfHash = tradeObjects.find((trade) => trade.hash === scopedTradeHash);
 
     const handleDrawerOpen = (tradeHash) => {
         setScopedTradeHash(tradeHash);
@@ -142,11 +147,16 @@ export default function App({
     const filteredItems = useMemo(() => {
         let filteredTrades = [...tradeObjects];
 
-        if (hasSearchFilter) { filteredTrades = filteredTrades.filter((trade) => trade.pairname.toLowerCase().includes(filterValue.toLowerCase())) }
+        if (hasSearchFilter) {
+            filteredTrades = filteredTrades.filter((trade) =>
+                trade.recipient.toLowerCase().includes(filterValue.toLowerCase()) ||
+                trade.sender.toLowerCase().includes(filterValue.toLowerCase())
+            );
+        }
 
         if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
             filteredTrades = filteredTrades.filter((trade) =>
-                Array.from(statusFilter).includes(trade.trade_status),
+                Array.from(statusFilter).includes(trade.status),
             );
         }
 
@@ -175,10 +185,10 @@ export default function App({
                 first = new Date(a.created_at).getTime();
                 second = new Date(b.created_at).getTime();
 
-            } else if (sortDescriptor.column === "trade_status") {
-                const statusOrder = ["pending", "entry", "tp1", "tp2", "tp3", "loss", "invalid"];
-                first = statusOrder.indexOf(a.trade_status.toLowerCase());
-                second = statusOrder.indexOf(b.trade_status.toLowerCase());
+            } else if (sortDescriptor.column === "status") {
+                const statusOrder = ["loss", "pending", "rejected", "approved"];
+                first = statusOrder.indexOf(a.status.toLowerCase());
+                second = statusOrder.indexOf(b.status.toLowerCase());
             }
 
 
@@ -192,19 +202,19 @@ export default function App({
         const cellValue = user[columnKey];
 
         switch (columnKey) {
-            case "name":
+            case "amount":
                 return (
-                    <User
-                        classNames={{ description: "text-primary font-bold" }}
-                        className="font-bold"
-                        description={user.entry_level}
+                    <div
+                        classNames={{ description: "text-primary font-normal text-xs" }}
+                        className="text-primary font-normal text-xs"
+                        description={user.amount}
                         name={cellValue}
                     >
-                        {parseFloat(user.entry_level).toFixed(4)}
-                    </User>
+                        {CurrencySymbol(user.currency)} {parseFloat(user.amount).toFixed(2)}
+                    </div>
                 );
 
-            case "created_at":
+            case "date":
                 return (
                     <div className="flex flex-col">
                         <p className="font-normal text-sm text-primary">{getRelativeTime(user.created_at)}</p>
@@ -221,14 +231,14 @@ export default function App({
                                         minute: '2-digit'
                                     }
                                 )
-                            }</p>
-                        {/* this is where we display the date in a human readable format 21-03-2024 12:23 */}
+                            }
+                        </p>
                     </div>
                 ); // sessions should go here FIXME {user.pnl}
 
-            case "trade_status":
+            case "status":
                 return (
-                    < TradeStatusChip tradeStatus={user.trade_status} />
+                    < TradeStatusChip tradeStatus={user.status} />
                 );
 
             case "actions":
@@ -241,8 +251,12 @@ export default function App({
                                 </Button>
                             </DropdownTrigger>
                             <DropdownMenu className="rounded-md" aria-labelledby="actionsMenu">
-                                <DropdownItem id="editAction" onClick={() => handleTradeEdit(user.trade_hash)}>Edit</DropdownItem>
-                                <DropdownItem id="viewAction" onClick={() => handleDrawerOpen(user.trade_hash)}>View</DropdownItem>
+                                <DropdownItem id="editAction" onClick={() => {handleTradeEdit(user.hash)}}>
+                                    Edit
+                                </DropdownItem>
+                                <DropdownItem id="viewAction" onClick={() => {handleDrawerOpen(user.hash)}}>
+                                    View
+                                </DropdownItem>
 
                             </DropdownMenu>
                         </Dropdown>
@@ -440,8 +454,11 @@ export default function App({
             </DrawerHero>
 
 
-            <DrawerHero ref={drawerRef_viewTrade}>
-                <DrawerViewTradeLayout trade={tradeObjectOfHash} />
+            <DrawerHero
+                title={'View transaction'}
+                ref={drawerRef_viewTrade}
+            >
+                <DrawerViewTransactionLayout transaction={scopedTransaction} />
             </DrawerHero>
 
             {/* Scrollable Container */}
@@ -481,7 +498,7 @@ export default function App({
 
                     <TableBody emptyContent={"No trades found"} items={sortedItems} isLoading={isLoading} >
                         {(item) => (
-                            <TableRow key={item.trade_hash}>
+                            <TableRow key={item.hash}>
                                 {(columnKey) => (
                                     <TableCell>
                                         <span

@@ -13,6 +13,8 @@ const TradeStatusChip = ({ tradeStatus }) => {
         invalid: "bg-red-accent text-red border border-red-500/30",
         entry: "bg-blue-primary text-blue border border-blue-500/30",
         duplicate: "bg-red-accent text-red border border-red-500/30",
+        approved: "bg-green-accent text-green border border-green-500/30",
+        rejected: "bg-red-accent text-red border border-red-500/30",
     };
 
     // if the tradeStatus is not int he list make the text ???
