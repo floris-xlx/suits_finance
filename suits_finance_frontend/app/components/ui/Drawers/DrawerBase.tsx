@@ -86,7 +86,7 @@ const DrawerContent = React.forwardRef<
                             "bg-primary",
                             // transition
                             "data-[state=closed]:animate-drawerSlideRightAndFade data-[state=open]:animate-drawerSlideLeftAndFade",
-                            focusRing,
+                            // focusRing,
                             className,
                         )}
                         {...props}
