@@ -1134,3 +1134,18 @@ span {
   --tw-bg-opacity: 1;
   background-color: var(--color-red-primary) !important;
 }
+
+
+.focus\:xlx-ring-primary:focus {
+  --tw-ring-color: var(--color-ring-primary);
+}
+
+.xlx-border-primary {
+  border-color: var(--color-brand-primary) !important;
+}
+
+/* outline of the drawer*/
+.focus\:outline-none:focus {
+  outline: 0px solid transparent !important;
+  outline-offset: 0px !important;
+}

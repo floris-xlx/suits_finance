@@ -23,7 +23,7 @@ const useDrawer = () => {
     return { drawerRef, handleOpenDrawer };
 };
 
-const DrawerHero = forwardRef(({ children = null }, ref) => {
+const DrawerHero = forwardRef(({ children = null, title = 'View user' }, ref) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
     const handleOpenDrawer = () => {
@@ -38,9 +38,6 @@ const DrawerHero = forwardRef(({ children = null }, ref) => {
         handleOpenDrawer,
     }));
 
-    useEffect(() => {
-        console.log('DrawerHero useEffect, is open:', isDrawerOpen);
-    }, [isDrawerOpen]);
 
 
     return (
@@ -49,7 +46,7 @@ const DrawerHero = forwardRef(({ children = null }, ref) => {
                 <DrawerContent className={`sm:max-w-lg transition-transform duration-500 ${isDrawerOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                     <DrawerHeader>
                         <DrawerTitle className="select-none">
-                            View user
+                            {title}
                         </DrawerTitle>
                         <DrawerDescription className="mt-2 text-sm w-full ">
                             {children}
@@ -59,7 +56,7 @@ const DrawerHero = forwardRef(({ children = null }, ref) => {
                         <DrawerClose asChild>
                             <Button className="w-full sm:w-fit bg-brand-primary text-white" onClick={handleCloseDrawer}>Close</Button>
                         </DrawerClose>
-                    </DrawerFooter>
+                    </DrawerFooter>s
                 </DrawerContent>
             </Drawer>
 

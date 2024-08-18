@@ -14,6 +14,7 @@ import {
     DropdownItem,
     User,
     Pagination,
+    Spinner
 } from "@nextui-org/react";
 import { VerticalDotsIcon } from "./VerticalDotsIcon";
 import { SearchIcon } from "./SearchIcon";
@@ -25,16 +26,17 @@ import { GetTradesByStrategyId } from "@/app/client/supabase/SupabaseUserData.js
 import TradeStatusChip from "@/app/components/ui/Chips/TradeStatusChip.jsx";
 import { TradeStatus } from "@/app/types/tradeStatus"
 import UpdateTradeStatusLayout from "@/app/components/layouts/Modals/updateTradeStatus";
-import CenterFull from "@/app/components/ui/Containers/CenterFull";
-import { Spinner } from '@nextui-org/react'
+import { PlusIcon  } from "@heroicons/react/24/outline";
 
-import { ValueCopyChipInlineLabel } from '@/app/components/ui/Chips/ValueCopyChip';
 // da modal component
 import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
 import { refreshPage } from '@/app/client/hooks/refreshPage';
 import { DrawerHero, useDrawer } from "@/app/components/ui/Drawers/DrawerViewTrade";
-import DrawerViewTradeLayout  from "@/app/components/layouts/Drawers/DrawerViewTrade";
+import DrawerViewTradeLayout from "@/app/components/layouts/Drawers/DrawerViewTrade";
 import { useTradeFiltersStore } from "@/app/stores/stores";
+
+// layout 
+import AddTransactionLayout from "@/app/components/layouts/Forms/AddTransaction";
 
 
 // statics
@@ -46,18 +48,17 @@ import PropTypes from "prop-types";
 
 export default function App({
     strategyId = null,
+    transactions = [],
 }) {
     // zustand
     const { tradeFilters, setIsTradeStatusFilters } = useTradeFiltersStore();
 
-    const convertTradeFilterCacheIntoFormat = () => {
-        const tradeStatusFilters = new Set(tradeFilters.isTradeStatusFilters);
-        setIsTradeStatusFilters(tradeStatusFilters);
-    }
-
     // modal shit
-    const { modalRef: modalRef_updateTradeStatus, handleOpenModal: handleOpenModal_updateTradeStatus } = useModal(); // update trade status modal
+    const { modalRef: modalRef_updateTradeStatus, handleOpenModal: handleOpenModal_updateTradeStatus } = useModal();
+    const { modalRef: modalRef_addTransaction, handleOpenModal: handleOpenModal_addTransaction } = useModal();
+
     const { drawerRef: drawerRef_viewTrade, handleOpenDrawer: handleOpenDrawer_viewTrade } = useDrawer();
+    const { drawerRef: drawerRef_addTransaction, handleOpenDrawer: handleOpenDrawer_addTransaction } = useDrawer();
 
     // these are the main loaded objects
     const [tradeObjects, setTradeObjects] = useState([]);
@@ -70,6 +71,8 @@ export default function App({
     const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
     const [scopedTradeHash, setScopedTradeHash] = useState(null);
     const [page, setPage] = useState(1);
+
+    console.log(transactions);
 
 
     useEffect(() => {
@@ -271,7 +274,7 @@ export default function App({
                         />
 
                         <div className="flex flex-row gap-3  ">
-                            <div className="flex flex-row w-full gap-x-2  justify-between sm:justify-end">
+                            <div className="flex flex-row w-full gap-x-2 justify-between sm:justify-end">
                                 {/* this handles the trade status dropdown */}
                                 <Dropdown className="bg-secondary border border-primary">
                                     <DropdownTrigger className="sm:flex w-full sm:w-fit">
@@ -280,9 +283,8 @@ export default function App({
                                             size="md"
                                             variant="bordered"
                                             className="bg-secondary "
-
                                         >
-                                            Trade Status
+                                            Transaction Status
                                         </Button>
                                     </DropdownTrigger>
                                     <DropdownMenu
@@ -332,6 +334,18 @@ export default function App({
                                         ))}
                                     </DropdownMenu>
                                 </Dropdown>
+
+                                <button
+                                    className="bg-brand-primary hover:bg-brand-accent hover:transition text-white rounded-md flex flex-row items-center p-2 gap-x-2 text-sm"
+                                    onClick={handleOpenDrawer_addTransaction}
+                                >
+                                    <PlusIcon className="h-5 w-5 text-white" />
+                                    Add transaction
+                                </button>
+
+
+
+
                             </div>
                         </div>
 
@@ -397,6 +411,15 @@ export default function App({
                 <UpdateTradeStatusLayout trade_hash={scopedTradeHash} />
             </Modal>
 
+            <DrawerHero
+                title={'Add Transaction'}
+                // buttonText={'Add'}
+                ref={drawerRef_addTransaction}
+            >
+                <AddTransactionLayout />
+            </DrawerHero>
+
+
             <DrawerHero ref={drawerRef_viewTrade}>
                 <DrawerViewTradeLayout trade={tradeObjectOfHash} />
             </DrawerHero>
@@ -456,7 +479,9 @@ export default function App({
                     </TableBody>
                 </Table>
 
-                {isLoading && ( <CenterFull> <Spinner color="warning" size="lg" label="Loading trades..." /> </CenterFull> )}
+                {isLoading && (<div className="flex flex-col mx-auto">
+                    <Spinner color="warning" size="lg" label="Loading transactions..." />
+                </div>)}
             </div>
         </Fragment>
     );

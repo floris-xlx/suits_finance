@@ -36,6 +36,7 @@ import CardLimitsLayout from '@/app/components/layouts/Modals/cardLimits';
 import DeveloperView from '@/app/components/layouts/Developer/DeveloperView';
 import FrozenBanner from '@/app/components/ui/Banners/FrozenBanner';
 import SnowingParticles from '@/app/components/ui/Effects/SnowParticles';
+import TradeLogTable from '@/app/components/ui/Tables/TradeLogTable';
 
 
 export default function DashboardPage() {
@@ -136,6 +137,10 @@ export default function DashboardPage() {
     handleOpenModal_CardLimits();
   }
 
+  // card limits
+  const handleAddTransaction = () => {
+    console.log('add transaction');
+  }
 
 
 
@@ -174,6 +179,7 @@ export default function DashboardPage() {
       >
         <CardLimitsLayout />
       </Modal>
+ 
 
       <div className="bg-primary  mt-0 lg:mt-[80px] h-[99%] min-h-[90.75vh] pb-[100px]">
         <div className="flex flex-col items-center gap-3 max-w-[1400px] w-full lg:hidden pb-0 ">
@@ -193,26 +199,43 @@ export default function DashboardPage() {
 
 
         {/* This is where the body layout goes */}
-        <div className="flex flex-col gap-y-2 pt-8">
-          < BalanceCard
-            balance={currentCard.balance}
-            currency={currentCard.currency}
-          />
-          < CreditCard
-            fullName={currentCard.fullName}
-          />
+        <div className="flex lg:flex-row flex-col gap-y-2 pt-8 max-w-[1200px] mx-auto lg:mt-[100px]">
+          <div className="flex flex-col">
+            < BalanceCard
+              balance={currentCard.balance}
+              currency={currentCard.currency}
+            />
+            < CreditCard
+              fullName={currentCard.fullName}
+            />
 
-          <div className="flex flex-row gap-x-8 w-fit mx-auto">
-            <ButtonIconWithLabel label="Top up" onClick={handleTopUpBalance} > < PlusIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
-            <ButtonIconWithLabel label="Transfer" onClick={handleTransfer} > < ArrowUpIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
-            <ButtonIconWithLabel label="Details" onClick={handleOpenCardDetails} > < CreditCardIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
-            <ButtonIconWithLabel label="Limits" onClick={handleCardLimits} > < GaugeIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
+            <div className="flex flex-row gap-x-8 w-fit mx-auto">
+              <ButtonIconWithLabel label="Top up" onClick={handleTopUpBalance} > < PlusIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
+              <ButtonIconWithLabel label="Transfer" onClick={handleTransfer} > < ArrowUpIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
+              <ButtonIconWithLabel label="Details" onClick={handleOpenCardDetails} > < CreditCardIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
+              <ButtonIconWithLabel label="Limits" onClick={handleCardLimits} > < GaugeIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
+            </div>
+
           </div>
+
+          <div className="w-full px-4 lg:flex hidden">
+            <TradeLogTable transactions={[DEMO_TRANSACTION]} />
+
+          </div>
+
         </div>
 
-        <div className="flex flex-row mx-auto max-w-[400px] mt-[45px]">
-          < TransactionsTableMobile transactions={[DEMO_TRANSACTION]} handleViewTransactions={handleViewTransactions} />
+        <div className="flex flex-row mx-auto max-w-[400px] mt-[45px] lg:hidden">
+          < TransactionsTableMobile
+            transactions={[DEMO_TRANSACTION]}
+            handleViewTransactions={handleViewTransactions}
+          />
         </div>
+
+
+
+
+
       </div>
 
       <div className="hidden lg:block">
