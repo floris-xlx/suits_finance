@@ -409,10 +409,34 @@ export default function Example({
                         )}
                       </div>
                     </span>
-                    <br />
-                    7363 Cynthia Pass
-                    <br />
-                    Toronto, ON N3Y 4H8
+                    <div className="h-[24px] w-[110px] mt-2">
+                      {invoiceObject?.from_address_line_1 ? (
+                        <div>
+                          {invoiceObject?.from_address_line_1}
+                        </div>
+                      ) : (
+                        <SkeletonLoader />
+                      )}
+                    </div>
+                    <div className="h-[24px] w-[140px] mt-1">
+                      {invoiceObject?.from_state ? (
+                        <div>
+                          {invoiceObject?.from_state}, {invoiceObject?.from_postal_code}
+                        </div>
+                      ) : (
+                        <SkeletonLoader />
+                      )}
+                    </div>
+                    <div className="h-[24px] w-[110px] mt-1">
+                      {invoiceObject?.from_country ? (
+                        <div>
+                          {invoiceObject?.from_country}
+                        </div>
+                      ) : (
+                        <SkeletonLoader />
+                      )}
+                    </div>
+
                   </dd>
                 </div>
                 <div className="mt-8 sm:mt-6 sm:border-t sm:border-primary sm:pl-4 sm:pt-6">
