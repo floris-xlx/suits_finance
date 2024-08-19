@@ -24,10 +24,10 @@ const InvoiceApprovedSuccessInlineNotification = ({
             <div className="flex flex-col gap-y-1">
 
                 <span className="pl-3 text-primary sm:text-[14px] text-[14px] font-semibold">
-                    Invoice was successfully submitted for approval
+                    Invoice was successfully approved!
                 </span>
 
-                <span className="pl-3 text-secondary sm:text-[12px] text-[12px]">
+                <span className="pl-3 mt-[2px] text-secondary sm:text-[12px] text-[12px]">
                     Invoice ID: {invoice_id}
                 </span>
             </div>

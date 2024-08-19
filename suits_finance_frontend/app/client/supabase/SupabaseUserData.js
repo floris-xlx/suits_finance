@@ -582,7 +582,7 @@ export async function getInvoiceById({
     .from('invoices')
     .select('*')
     .eq('invoice_id', invoiceId);
-    
+
   console.log(data);
   if (error) throw error;
 
@@ -590,7 +590,7 @@ export async function getInvoiceById({
     return null;
   }
 
-  return data[0]; 
+  return data[0];
 
 }
 
@@ -712,13 +712,28 @@ export async function getInvoicePaidStatus(invoiceId) {
   return data?.paid || false; // Return false if no data found
 }
 
-export async function updateInvoicePaidStatus(invoiceId, isPaid) {
+export async function updateInvoicePaidStatus({ invoiceId, isPaid }) {
   const { data, error } = await supabase
     .from('invoices')
-    .update({ paid: isPaid })
+    .update({
+      paid: isPaid,
+      status: isPaid ? 'paid' : 'unpaid'
+    })
     .eq('invoice_id', invoiceId);
 
   if (error) throw error;
 
   return data;
+}
+
+export async function getInvoiceStatus({ invoiceId }) {
+  const { data, error } = await supabase
+    .from('invoices')
+    .select('status')
+    .eq('invoice_id', invoiceId)
+    .single();
+
+  if (error) throw error;
+
+  return data?.status || 'unpaid'; // Return 'unpaid' if no data found
 }

@@ -1,16 +1,9 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import { Dialog, Listbox, Menu, Transition } from '@headlessui/react'
 import {
-  Bars3Icon,
   CalendarDaysIcon,
   CreditCardIcon,
   EllipsisVerticalIcon,
-  FaceFrownIcon,
-  FaceSmileIcon,
-  FireIcon,
-  HandThumbUpIcon,
-  HeartIcon,
-  PaperClipIcon,
   UserCircleIcon,
   CheckIcon,
   XMarkIcon as XMarkIconMini,
@@ -23,78 +16,19 @@ import { getInvoiceById, getUsernameById, fetchInvoiceComments } from '@/app/cli
 import CurrencySymbol from '@/app/client/hooks/formatting/CurrencySymbol'
 import TradeStatusChip from '@/app/components/ui/Chips/TradeStatusChip'
 import TimeChip from '@/app/components/ui/Chips/TimeChip'
-import { addInvoiceComment, getInvoicePaidStatus, updateInvoicePaidStatus } from '@/app/client/supabase/SupabaseUserData'
-import { AddCommentSuccessNotification } from '@/app/components/ui/Notifications/Notifications.jsx'
+import { addInvoiceComment, getInvoicePaidStatus, updateInvoicePaidStatus, getInvoiceStatus } from '@/app/client/supabase/SupabaseUserData'
+import { AddCommentSuccessNotification, InvoiceApprovedSuccessNotification } from '@/app/components/ui/Notifications/Notifications.jsx'
+import { getRelativeTime } from '@/app/client/hooks/datetime/RelativeDate'
 
-
-const invoice = {
-  subTotal: '$8,800.00',
-  tax: '$1,760.00',
-  total: '$10,560.00',
-  items: [
-    {
-      id: 1,
-      title: 'Logo redesign',
-      description: 'New logo and digital asset playbook.',
-      hours: '20.0',
-      rate: '$100.00',
-      price: '$2,000.00',
-    },
-    {
-      id: 2,
-      title: 'Website redesign',
-      description: 'Design and program new company website.',
-      hours: '52.0',
-      rate: '$100.00',
-      price: '$5,200.00',
-    },
-    {
-      id: 3,
-      title: 'Business cards',
-      description: 'Design and production of 3.5" x 2.0" business cards.',
-      hours: '12.0',
-      rate: '$100.00',
-      price: '$1,200.00',
-    },
-    {
-      id: 4,
-      title: 'T-shirt design',
-      description: 'Three t-shirt design concepts.',
-      hours: '4.0',
-      rate: '$100.00',
-      price: '$400.00',
-    },
-  ],
-}
 
 import { useUserStore } from '@/app/stores/stores'
-
-const activity = [
-  { id: 1, type: 'created', person: { name: 'Dave Diederen' }, date: '7d ago', dateTime: '2024-01-23T10:32' },
-  { id: 2, type: 'edited', person: { name: 'Dave Diederen' }, date: '6d ago', dateTime: '2024-01-23T11:03' },
-  { id: 3, type: 'sent', person: { name: 'Dave Diederen' }, date: '6d ago', dateTime: '2024-01-23T11:24' },
-  {
-    id: 4,
-    type: 'commented',
-    person: {
-      name: 'Dave Diederen',
-      imageUrl:
-        'https://xylex.ams3.cdn.digitaloceanspaces.com/suits_finance/profilePics/dave.png',
-    },
-    comment: 'Called client, they reassured me the invoice would be paid by the 25th.',
-    date: '3d ago',
-    dateTime: '2024-01-23T15:56',
-  },
-  { id: 5, type: 'viewed', person: { name: 'Floris' }, date: '2d ago', dateTime: '2023-01-24T09:12' },
-  { id: 6, type: 'paid', person: { name: 'Floris' }, date: '1d ago', dateTime: '2023-01-24T09:20' },
-]
 
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Example({
+export default function InvoiceComponent({
   invoice
 }) {
   const { user } = useUserStore()
@@ -102,29 +36,21 @@ export default function Example({
   const [invoiceObject, setInvoiceObject] = useState(null)
   const [comments, setComments] = useState([])
   const [invoicePaid, setInvoicePaid] = useState(false)
-  console.log("comments: ", comments);
-
-
-
-  console.log(invoiceObject);
-  console.log(invoice?.invoice_id);
-  console.log(user);
+  const [commentField, setCommentField] = useState('')
+  const [invoiceStatus, setInvoiceStatus] = useState('')
 
   useEffect(() => {
-    console.log(invoice);
     if (!invoice) return
 
     const fetchInvoice = async () => {
       const invoice_result = await getInvoiceById({
         invoiceId: invoice?.invoice_id
       })
-      console.log(invoice_result);
       setInvoiceObject(invoice_result)
     }
 
     fetchInvoice()
   }, [invoice])
-
 
   const fetchInvoicePaidStatus = async () => {
     const status = await getInvoicePaidStatus(invoice?.invoice_id);
@@ -132,9 +58,24 @@ export default function Example({
   };
 
   const toggleInvoicePaidStatus = async () => {
-    const newStatus = !invoicePaid;
-    await updateInvoicePaidStatus(invoice?.invoice_id, newStatus);
+    const newStatus = true; // Set status to true only
+
+    if (invoicePaid) { return;}
+
+    if (invoice?.invoice_id === undefined || invoice?.invoice_id === null) {
+      console.log('Invoice ID is not defined');
+      return;
+    }
+
+    await updateInvoicePaidStatus({
+      invoiceId: invoice.invoice_id,
+      isPaid: newStatus
+    });
     setInvoicePaid(newStatus);
+    
+    InvoiceApprovedSuccessNotification({
+      invoice_id: invoice.invoice_id
+    });
   };
 
   useEffect(() => {
@@ -143,8 +84,16 @@ export default function Example({
     }
   }, [invoice]);
 
+  const fetchInvoiceStatus = async () => {
+    const status = await getInvoiceStatus({ invoiceId: invoice?.invoice_id });
+    setInvoiceStatus(status);
+  };
 
-  const [commentField, setCommentField] = useState('')
+  useEffect(() => {
+    if (invoice?.invoice_id) {
+      fetchInvoiceStatus();
+    }
+  }, [invoice]);
 
 
   useEffect(() => {
@@ -156,7 +105,6 @@ export default function Example({
       invoiceId: invoice?.invoice_id
     })
     setComments(comments)
-    console.log(comments);
 
     // Auto scroll to the bottom of the comment box
     const commentBox = document.getElementById('comment_box');
@@ -190,10 +138,14 @@ export default function Example({
     setCommentField('')
     AddCommentSuccessNotification();
     await fetchComments();
+
   }
 
   const handleNewCommentInvoiceAuthorized = async () => {
     const name = user.full_name || user.username;
+
+    await toggleInvoicePaidStatus();
+    await fetchInvoiceStatus();
 
     await addInvoiceComment({
       invoiceId: invoice?.invoice_id,
@@ -209,10 +161,10 @@ export default function Example({
 
 
 
+
+
   return (
     <>
-
-
       <main>
         <header className="relative isolate">
           <div className="absolute inset-0 -z-10 " aria-hidden="true">
@@ -257,14 +209,23 @@ export default function Example({
               <div className="flex items-center gap-x-4 sm:gap-x-6">
 
 
-                <button
-                  onClick={handleNewCommentInvoiceAuthorized}
-                  className="rounded-md bg-green-primary px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-green-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:transition flex-row flex items-center gap-x-2"
-                >
-                  <CheckIcon className="h-6 w-6 text-black" aria-hidden="true" />
-                  Authorize
-                </button>
-
+                {invoicePaid ? (
+                  <button
+                    disabled={true}
+                    className="rounded-md bg-brand-disabled px-3 py-2 text-sm font-semibold text-gray-200 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:transition flex-row flex items-center gap-x-2 select-none"
+                  >
+                    <CheckIcon className="h-6 w-6 text-gray-200" aria-hidden="true" />
+                    Already paid
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleNewCommentInvoiceAuthorized}
+                    className="rounded-md bg-green-primary px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-green-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:transition flex-row flex items-center gap-x-2"
+                  >
+                    <CheckIcon className="h-6 w-6 text-black" aria-hidden="true" />
+                    Authorize
+                  </button>
+                )}
 
                 <Menu as="div" className="relative sm:hidden">
                   <Menu.Button className="-m-3 block p-3">
@@ -345,10 +306,10 @@ export default function Example({
                     <dd className="rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ring-primary select-none">
 
                       <div className="h-[24px] w-[50px]">
-                        {typeof invoiceObject?.status ? (
+                        {typeof invoiceStatus ? (
                           <div>
                             {TradeStatusChip({
-                              tradeStatus: invoiceObject?.status
+                              tradeStatus: invoiceStatus
                             })}
                           </div>
                         ) : (
@@ -643,7 +604,7 @@ export default function Example({
             <div className="lg:col-start-3">
               {/* Activity feed */}
               <h2 className="text-sm font-semibold leading-6 text-primary select-none">Activity</h2>
-              <ul role="list" id="comment_box" key="comment_box" className="mt-6 space-y-1 overflow-y-auto max-h-96">
+              <ul role="list" id="comment_box" key="comment_box" className="mt-6 space-y-1 overflow-y-auto max-h-96 overflow-x-hidden max-w-[400px]">
                 {comments?.map((commentItem, commentItemIdx) => (
                   <li key={commentItem?.comment_id} className="relative flex gap-x-2">
                     <div
@@ -652,7 +613,7 @@ export default function Example({
                         'absolute left-0 top-0 flex w-6 justify-center'
                       )}
                     >
-                      <div className="w-px bg-gray-200" />
+                      <div className="w-px bg-accent" />
                     </div>
                     {commentItem?.type === 'commented' ? (
                       <>
@@ -664,38 +625,38 @@ export default function Example({
                           height={24}
                         />
                         <div className="flex-auto rounded-md p-3 ring-1 ring-inset ring-primary">
-                          <div className="flex justify-between gap-x-4">
+                          <div className="flex justify-between ">
                             <div className="py-0.5 text-xs leading-5 text-secondary">
-                              <span className="font-medium text-primary">{commentItem?.username}</span> commented
+                              <span className="font-medium text-primary select-none">{commentItem?.username}</span> commented
                             </div>
                             <time
                               dateTime={commentItem?.datetime}
                               className="flex-none py-0.5 text-xs leading-5 text-secondary"
                             >
-                              {new Date(commentItem?.datetime).toLocaleDateString()}
+                              {getRelativeTime(commentItem?.datetime)}
                             </time>
                           </div>
-                          <p className="text-sm leading-6 text-secondary">{commentItem?.comment}</p>
+                          <p className="text-sm leading-6 text-secondary break-words w-[320px] ">{commentItem?.comment}</p>
                         </div>
                       </>
                     ) : (
                       <>
-                        <div className="relative flex h-6 w-6 flex-none items-center justify-center bg-primary">
+                        <div className="relative flex h-6 w-6 flex-none items-center justify-center bg-primary ">
                           {commentItem?.type === 'paid' ? (
                             <CheckCircleIcon className="h-6 w-6 text-brand-primary" aria-hidden="true" />
                           ) : (
                             <div className="h-1.5 w-1.5 rounded-full bg-secondary ring-1 ring-primary" />
                           )}
                         </div>
-                        <p className="flex-auto py-0.5 text-xs leading-5 text-secondary">
-                          <span className="font-medium text-primary">{commentItem?.username}</span>{' '}
+                        <p className="flex-auto py-0.5 text-xs leading-5 text-secondary ml-3  ">
+                          <span className="font-medium text-primary select-none">{commentItem?.username}</span>{' '}
                           {commentItem?.type} the invoice.
                         </p>
                         <time
                           dateTime={commentItem?.datetime}
-                          className="flex-none py-0.5 text-xs leading-5 text-secondary"
+                          className="flex-none py-0.5 text-xs leading-5 text-secondary pr-[4px] select-none"
                         >
-                          {new Date(commentItem?.datetime).toLocaleDateString()}
+                          {getRelativeTime(commentItem?.datetime)}
                         </time>
                       </>
                     )}

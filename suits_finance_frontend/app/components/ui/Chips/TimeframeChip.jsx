@@ -13,6 +13,12 @@ const TimeframeChip = ({ timeframe }) => {
                     {Text}
                 </div>
             </div>
+
+
+
+
+
+
         </>
     );
 };

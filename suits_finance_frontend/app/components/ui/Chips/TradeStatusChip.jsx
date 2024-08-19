@@ -14,6 +14,7 @@ const TradeStatusChip = ({ tradeStatus }) => {
         entry: "bg-blue-primary text-blue border border-blue-500/30",
         duplicate: "bg-red-accent text-red border border-red-500/30",
         approved: "bg-green-accent text-green border border-green-500/30",
+        paid: "bg-green-accent text-green border border-green-500/30",
         rejected: "bg-red-accent text-red border border-red-500/30",
     };
 
