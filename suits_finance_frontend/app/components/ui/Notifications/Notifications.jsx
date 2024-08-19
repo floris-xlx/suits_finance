@@ -31,6 +31,7 @@ import TransfersBlockedAccountFrozenNotification from './transfersBlockedAccount
 import BalanceTopUpSuccessNotification from './balanceTopUpSuccess.jsx';
 import TransfersBlockedAccountReviewalNotification from './transfersBlockedAccountReviewal.jsx';
 import AddTransactionSuccessNotification from './addTransactionSuccess.jsx';
+import AddCommentSuccessNotification from './addCommentSuccess.jsx';
 
 
 export {
@@ -66,5 +67,6 @@ export {
     TransfersBlockedAccountFrozenNotification,
     BalanceTopUpSuccessNotification,
     TransfersBlockedAccountReviewalNotification,
-    AddTransactionSuccessNotification
+    AddTransactionSuccessNotification,
+    AddCommentSuccessNotification
 }

@@ -594,6 +594,7 @@ export async function getInvoiceById({
 
 }
 
+
 export async function getUsernameById(userId) {
   const { data, error } = await supabase
     .from('users')
@@ -607,4 +608,93 @@ export async function getUsernameById(userId) {
   }
 
   return data[0];
+}
+
+
+export async function fetchInvoiceComments({
+  invoiceId
+}) {
+  const { data, error } = await supabase
+    .from('invoices_comments')
+    .select('*')
+    .eq('invoice_id', invoiceId);
+
+  if (error) throw error;
+
+  if (data.length === 0) {
+    return null;
+  }
+
+  return data[0].comments;
+}
+
+
+export async function addInvoiceComment({
+  invoiceId,
+  comment,
+  userId,
+  username,
+  profile_pic,
+  type
+}) {
+  const randomId = Math.floor(Math.random() * 1000000);
+  const commentId = `${invoiceId}-${randomId}`;
+
+
+  // Check if the invoice_id is already present
+  const { data: existingData, error: existingError } = await supabase
+    .from('invoices_comments')
+    .select('comments')
+    .eq('invoice_id', invoiceId);
+
+  if (existingError) throw existingError;
+
+  if (existingData.length > 0) {
+    // If invoice_id is present, update the comments key
+    const updatedComments = [
+      ...existingData[0].comments,
+      {
+        comment: comment,
+        user_id: userId,
+        datetime: new Date().toISOString(),
+        username: username,
+        profile_pic: profile_pic,
+        type: type,
+        comment_id: commentId
+      }
+    ];
+
+    const { data, error } = await supabase
+      .from('invoices_comments')
+      .update({ comments: updatedComments })
+      .eq('invoice_id', invoiceId);
+
+    if (error) throw error;
+
+    return data;
+  } else {
+    // If invoice_id is not present, insert a new record
+    const { data, error } = await supabase
+      .from('invoices_comments')
+      .insert([
+        {
+          invoice_id: invoiceId,
+          comments: [
+            {
+              comment: comment,
+              user_id: userId,
+              datetime: new Date().toISOString(),
+              username: username,
+              profile_pic: profile_pic,
+              type: type,
+              comment_id: commentId
+            }
+          ]
+        }
+      ]);
+
+    if (error) throw error;
+
+    return data;
+  }
 }

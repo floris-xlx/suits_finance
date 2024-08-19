@@ -19,18 +19,13 @@ import { BellIcon, XMarkIcon as XMarkIconOutline } from '@heroicons/react/24/out
 import { CheckCircleIcon } from '@heroicons/react/24/solid'
 import SkeletonLoader from '@/app/components/ui/Loading/SkeletonLoader'
 import Image from 'next/image'
-import { getInvoiceById, getUsernameById } from '@/app/client/supabase/SupabaseUserData'
+import { getInvoiceById, getUsernameById, fetchInvoiceComments } from '@/app/client/supabase/SupabaseUserData'
 import CurrencySymbol from '@/app/client/hooks/formatting/CurrencySymbol'
 import TradeStatusChip from '@/app/components/ui/Chips/TradeStatusChip'
 import TimeChip from '@/app/components/ui/Chips/TimeChip'
+import { addInvoiceComment } from '@/app/client/supabase/SupabaseUserData'
+import { AddCommentSuccessNotification } from '@/app/components/ui/Notifications/Notifications.jsx'
 
-
-const navigation = [
-  { name: 'Home', href: '#' },
-  { name: 'Invoices', href: '#' },
-  { name: 'Clients', href: '#' },
-  { name: 'Expenses', href: '#' },
-]
 
 const invoice = {
   subTotal: '$8,800.00',
@@ -94,15 +89,6 @@ const activity = [
   { id: 6, type: 'paid', person: { name: 'Floris' }, date: '1d ago', dateTime: '2023-01-24T09:20' },
 ]
 
-const moods = [
-  { name: 'Excited', value: 'excited', icon: FireIcon, iconColor: 'text-primary', bgColor: 'bg-red-500' },
-  { name: 'Loved', value: 'loved', icon: HeartIcon, iconColor: 'text-primary', bgColor: 'bg-pink-400' },
-  { name: 'Happy', value: 'happy', icon: FaceSmileIcon, iconColor: 'text-primary', bgColor: 'bg-green-400' },
-  { name: 'Sad', value: 'sad', icon: FaceFrownIcon, iconColor: 'text-primary', bgColor: 'bg-yellow-400' },
-  { name: 'Thumbsy', value: 'thumbsy', icon: HandThumbUpIcon, iconColor: 'text-primary', bgColor: 'bg-blue-500' },
-  { name: 'I feel nothing', value: null, icon: XMarkIconMini, iconColor: 'text-primary', bgColor: 'bg-transparent' },
-]
-
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -112,12 +98,12 @@ export default function Example({
   invoice
 }) {
   const { user } = useUserStore()
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [selected, setSelected] = useState(moods[5])
-
-  const [comment, setComment] = useState('')
-
+ 
   const [invoiceObject, setInvoiceObject] = useState(null)
+  const [comments, setComments] = useState([])
+
+
+
   console.log(invoiceObject);
   console.log(invoice?.invoice_id);
   console.log(user);
@@ -138,19 +124,55 @@ export default function Example({
   }, [invoice])
 
 
-  const handleNewComments = async () => { 
-    if (!comment) return
+  const [commentField, setCommentField] = useState('')
 
-    const newComment = {
+
+  useEffect(() => {
+    fetchComments()
+  }, [invoiceObject])
+
+  const fetchComments = async () => {
+    const comments = await fetchInvoiceComments({
+      invoiceId: invoice?.invoice_id
+    })
+    setComments(comments)
+    console.log(comments);
+  }
+
+  
+  const handleNewComments = async () => {
+    if (commentField.length === 0) return
+
+    const name = user.full_name || user.username;
+
+    await addInvoiceComment({
       invoiceId: invoice?.invoice_id,
-      comment,
-      userId: user.id
-    }
+      comment: commentField,
+      userId: user.id,
+      username: name,
+      profile_pic: user.profile_picture,
+      type: 'commented'
+    })
+    
+    setCommentField('')
+    AddCommentSuccessNotification();
+    await fetchComments();
+  }
 
-    const result = await addComment(newComment)
-    console.log(result);
-  } 
+  const handleNewCommentInvoiceAuthorized = async () => {
+    const name = user.full_name || user.username;
 
+    await addInvoiceComment({
+      invoiceId: invoice?.invoice_id,
+      comment: 'Invoice has been authorized',
+      userId: user.id,
+      username: name,
+      profile_pic: user.profile_picture,
+      type: 'paid'
+    })
+
+    await fetchComments();
+  }
 
 
 
@@ -657,7 +679,7 @@ export default function Example({
                   width={24}
                   height={24}
                 />
-                <form action="#" className="relative flex-auto">
+                <div action="#" className="relative flex-auto">
                   <div className="p-2 px-4 overflow-hidden rounded-lg pb-12 shadow-sm ring-1 ring-inset ring-primary focus-within:ring-2 focus-within:ring-indigo-600 border border-primary">
                     <label htmlFor="comment" className="sr-only">
                       Add your comment
@@ -666,6 +688,8 @@ export default function Example({
                       rows={2}
                       name="comment"
                       id="comment"
+                      value={commentField}
+                      onChange={(e) => setCommentField(e.target.value)}
                       className="block w-full resize-none border-0 bg-transparent py-1.5 text-primary placeholder:text-secondary focus:ring-0 sm:text-sm sm:leading-6"
                       placeholder=""
                       defaultValue={''}
@@ -675,13 +699,14 @@ export default function Example({
                   <div className="absolute inset-x-0 bottom-0 flex justify-between py-2 pl-3 pr-2">
 
                     <button
+                      onClick={handleNewComments}
                       type="submit"
-                      className="rounded-md bg-input-primary px-2.5 py-1.5 text-sm font-normal text-primary shadow-sm  ring-primary hover:bg-secondary border hover:border-primary hover:transition"
+                      className="rounded-md bg-input-primary px-2.5 py-1.5 text-sm font-normal text-primary shadow-sm  ring-primary hover:bg-accent border border-primary hover:transition"
                     >
                       Comment
                     </button>
                   </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>
