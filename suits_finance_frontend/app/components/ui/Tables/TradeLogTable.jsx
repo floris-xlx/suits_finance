@@ -111,6 +111,8 @@ export default function App({
     };
 
     const handleTransactionDeletePress = ({ transactionId }) => {
+        // close the drawer
+        handleOpenDrawer_viewTrade();
         if (!transactionId) { return null; }
         if (!isSuperAdmin) { return null; }
 
@@ -274,15 +276,7 @@ export default function App({
                                 </Button>
                             </DropdownTrigger>
                             <DropdownMenu className="rounded-md" aria-labelledby="actionsMenu">
-                                {isSuperAdmin && (
-                                    <DropdownItem id="editAction" onClick={() => {
-                                        handleTransactionDeletePress({
-                                            transactionId: user.transaction_id
-                                        })
-                                    }}>
-                                        Delete
-                                    </DropdownItem>
-                                )}
+
                                 <DropdownItem id="viewAction" onClick={() => { handleDrawerOpen(user.hash) }}>
                                     View
                                 </DropdownItem>
@@ -485,6 +479,15 @@ export default function App({
                 ref={drawerRef_viewTrade}
             >
                 <DrawerViewTransactionLayout transaction={tradeObjectOfHash} />
+
+                {isSuperAdmin && (
+                    <Button
+                        className="rounded-md p-2 bg-red-primary hover:transition hover:bg-red-secondary  text-white mt-8"
+                        onClick={() => handleTransactionDeletePress({ transactionId: tradeObjectOfHash.transaction_id })}
+                    >
+                        Delete transaction
+                    </Button>
+                )}
             </DrawerHero>
 
             <Modal
