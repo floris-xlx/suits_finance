@@ -138,8 +138,21 @@ export default function Example({
     })
     setComments(comments)
     console.log(comments);
+    
+    // Auto scroll to the bottom of the comment box
+    const commentBox = document.getElementById('comment_box');
+    if (commentBox) {
+      commentBox.scrollTop = commentBox.scrollHeight;
+    }
   }
 
+  useEffect(() => {
+    // Scroll to the bottom whenever comments are updated
+    const commentBox = document.getElementById('comment_box');
+    if (commentBox) {
+      commentBox.scrollTop = commentBox.scrollHeight;
+    }
+  }, [comments]);
 
   const handleNewComments = async () => {
     if (commentField.length === 0) return
@@ -611,7 +624,7 @@ export default function Example({
             <div className="lg:col-start-3">
               {/* Activity feed */}
               <h2 className="text-sm font-semibold leading-6 text-primary select-none">Activity</h2>
-              <ul role="list" id="comment_box" key="comment_box"   className="mt-6 space-y-1 overflow-y-auto max-h-96">
+              <ul role="list" id="comment_box" key="comment_box"  className="mt-6 space-y-1 overflow-y-auto max-h-96">
                 {comments?.map((commentItem, commentItemIdx) => (
                   <li key={commentItem?.comment_id} className="relative flex gap-x-2">
                     <div
