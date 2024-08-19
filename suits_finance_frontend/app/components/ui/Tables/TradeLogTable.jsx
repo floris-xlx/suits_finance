@@ -112,6 +112,7 @@ export default function App({
         });
 
         setTradeObjects(tradeObjects.filter((trade) => trade.transaction_id !== transactionId));
+        handleOpenDrawer_viewTrade();
     }
 
 
