@@ -518,12 +518,29 @@ export async function fetchTransactions({
 export async function deleteTransaction({
   transactionId,
 }) {
-  const { data, error } = await supabase
+  // Fetch the transaction to be deleted
+  const { data: transactionData, error: fetchError } = await supabase
+    .from('transactions')
+    .select('*')
+    .eq('transaction_id', transactionId)
+    .single();
+
+  if (fetchError) throw fetchError;
+
+  // Insert the transaction into the transactions_archive table
+  const { error: insertError } = await supabase
+    .from('transactions_archive')
+    .insert([transactionData]);
+
+  if (insertError) throw insertError;
+
+  // Delete the transaction from the transactions table
+  const { data, error: deleteError } = await supabase
     .from('transactions')
     .delete()
     .eq('transaction_id', transactionId);
 
-  if (error) throw error;
+  if (deleteError) throw deleteError;
 
   return data;
-} 
+}

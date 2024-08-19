@@ -52,8 +52,21 @@ export default function DashboardPage() {
   const [topUpAmount, setTopUpAmount] = useState(0);
   const [userFrozen, setUserFrozen] = useState(false);
   const [superAdmin, setSuperAdmin] = useState(false);
+  // admin
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
 
 
+  useEffect(() => {
+    const fetchAdminState = async () => {
+        const isAdmin = await isUserSuperAdmin({ user_id: userId });
+        console.log(isAdmin);
+        setIsSuperAdmin(isAdmin);
+    };
+
+    fetchAdminState();
+}, [userId]);
+
+console.log(isSuperAdmin);
   useEffect(() => {
     const checkIfUserFrozen = async () => {
       const frozen = await isFrozenUserId(user.id);
@@ -169,7 +182,6 @@ export default function DashboardPage() {
         title={'Card Details'}
         buttonText={'Close'}
         ref={modalRef_viewDetailsCard}
-
       >
         <CardDetailsLayout card={currentCard} />
       </Modal>
@@ -193,7 +205,6 @@ export default function DashboardPage() {
       <Modal
         title={'Card Limits'}
         buttonText={'Close'}
-
         ref={modalRef_cardLimits}
       >
         <CardLimitsLayout />
@@ -249,6 +260,7 @@ export default function DashboardPage() {
 
           </div>
           <div className="w-full px-4 lg:flex hidden">
+            <TradeLogTable isSuperAdmin={isSuperAdmin}/>
             <TradeLogTable transactions={[DEMO_TRANSACTION]} />
           </div>
         </div>

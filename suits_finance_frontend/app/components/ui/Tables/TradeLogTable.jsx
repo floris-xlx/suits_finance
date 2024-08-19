@@ -22,7 +22,7 @@ import { ChevronDownIcon } from "./ChevronDownIcon";
 import { columns, statusOptions } from "./data";
 import { capitalize } from "./utils";
 import { getRelativeTime } from "@/app/client/hooks/datetime/RelativeDate.js";
-import { GetTradesByStrategyId, addTransaction, fetchTransactions } from "@/app/client/supabase/SupabaseUserData.js";
+import { GetTradesByStrategyId, addTransaction, fetchTransactions, deleteTransaction, isUserSuperAdmin } from "@/app/client/supabase/SupabaseUserData.js";
 import TradeStatusChip from "@/app/components/ui/Chips/TradeStatusChip.jsx";
 import { TradeStatus } from "@/app/types/tradeStatus"
 import UpdateTradeStatusLayout from "@/app/components/layouts/Modals/updateTradeStatus";
@@ -51,7 +51,7 @@ import PropTypes from "prop-types";
 
 export default function App({
     strategyId = null,
-    transactions = [],
+    isSuperAdmin = false
 }) {
     // zustand
     const { tradeFilters, setIsTradeStatusFilters } = useTradeFiltersStore();
@@ -59,7 +59,7 @@ export default function App({
 
     // modal shit
     const { modalRef: modalRef_updateTradeStatus, handleOpenModal: handleOpenModal_updateTradeStatus } = useModal();
-    const { modalRef: modalRef_addTransaction, handleOpenModal: handleOpenModal_addTransaction } = useModal();
+    const { modalRef: modalRef_deleteTransaction, handleOpenModal: handleOpenModal_deleteTransaction } = useModal();
 
     const { drawerRef: drawerRef_viewTrade, handleOpenDrawer: handleOpenDrawer_viewTrade } = useDrawer();
     const { drawerRef: drawerRef_addTransaction, handleOpenDrawer: handleOpenDrawer_addTransaction } = useDrawer();
@@ -73,7 +73,6 @@ export default function App({
     const [scopedTransaction, setScopedTransaction] = useState([]);
     const [scopedTransactionHash, setScopedTransactionHash] = useState('');
 
-    
 
 
     // states
@@ -82,9 +81,12 @@ export default function App({
     const [statusFilter, setStatusFilter] = useState(tradeFilters.isTradeStatusFilters);
     const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
     const [scopedTradeHash, setScopedTradeHash] = useState(null);
+    const [transactionId, setTransactionId] = useState(null);
     const [page, setPage] = useState(1);
+    console.log('tradeObjects', tradeObjects);
 
     const [unsavedTransaction, setUnsavedTransaction] = useState({});
+    console.log('unsavedTransaction', unsavedTransaction);
 
     const handleAddTransaction = async () => {
         const { sender, recipient, amount, title } = unsavedTransaction;
@@ -94,6 +96,25 @@ export default function App({
             await addTransaction({ user_id, title, amount, currency, recipient, sender });
         }
     };
+
+    const handleDeleteTransaction = async () => {
+        const result = await deleteTransaction({
+            transactionId
+        });
+        console.log(result);
+
+        if (result) {
+            setTradeObjects(tradeObjects.filter((trade) => trade.transaction_id !== transactionId));
+        }
+    };
+
+    const handleTransactionDeletePress = ({ transactionId }) => {
+        if (!transactionId) { return null; }
+        if (!isSuperAdmin) { return null; }
+
+        setTransactionId(transactionId);    
+        handleOpenModal_deleteTransaction();
+    }
 
 
     useEffect(() => {
@@ -251,10 +272,16 @@ export default function App({
                                 </Button>
                             </DropdownTrigger>
                             <DropdownMenu className="rounded-md" aria-labelledby="actionsMenu">
-                                {/* <DropdownItem id="editAction" onClick={() => {handleTradeEdit(user.hash)}}>
-                                    Edit
-                                </DropdownItem> */}
-                                <DropdownItem id="viewAction" onClick={() => {handleDrawerOpen(user.hash)}}>
+                                {isSuperAdmin && (
+                                    <DropdownItem id="editAction" onClick={() => {
+                                        handleTransactionDeletePress({
+                                            transactionId: user.transaction_id
+                                        })
+                                    }}>
+                                        Delete
+                                    </DropdownItem>
+                                )}
+                                <DropdownItem id="viewAction" onClick={() => { handleDrawerOpen(user.hash) }}>
                                     View
                                 </DropdownItem>
 
@@ -457,6 +484,17 @@ export default function App({
             >
                 <DrawerViewTransactionLayout transaction={tradeObjectOfHash} />
             </DrawerHero>
+
+            <Modal
+                ref={modalRef_deleteTransaction}
+                buttonText={'Delete'}
+                title={'Delete transaction'}
+                onButtonPress={handleDeleteTransaction}
+            >
+                <div className="flex flex-col gap-4">
+                    <p className="text-primary">Are you sure you want to delete this transaction?</p>
+                </div>
+            </Modal>
 
             {/* Scrollable Container */}
             <div className="scrollable-x overflow-y-hidden !scroll-my-0 scroll">

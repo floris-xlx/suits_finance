@@ -3,8 +3,9 @@ import i18nConfig from './next-i18next.config.js';
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['xylex.ams3.cdn.digitaloceanspaces.com', 'nextuipro.nyc3.cdn.digitaloceanspaces.com'],
+    domains: ['xylex.ams3.cdn.digitaloceanspaces.com', 'nextuipro.nyc3.cdn.digitaloceanspaces.com', 'images.unsplash.com'],
   },
+  
   async redirects() {
     return [
       {

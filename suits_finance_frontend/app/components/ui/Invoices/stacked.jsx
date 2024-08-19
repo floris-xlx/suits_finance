@@ -1,18 +1,4 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
-import { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import { Dialog, Listbox, Menu, Transition } from '@headlessui/react'
 import {
   Bars3Icon,
@@ -31,6 +17,7 @@ import {
 } from '@heroicons/react/20/solid'
 import { BellIcon, XMarkIcon as XMarkIconOutline } from '@heroicons/react/24/outline'
 import { CheckCircleIcon } from '@heroicons/react/24/solid'
+import Image from 'next/image'
 
 const navigation = [
   { name: 'Home', href: '#' },
@@ -38,6 +25,7 @@ const navigation = [
   { name: 'Clients', href: '#' },
   { name: 'Expenses', href: '#' },
 ]
+
 const invoice = {
   subTotal: '$8,800.00',
   tax: '$1,760.00',
@@ -77,6 +65,7 @@ const invoice = {
     },
   ],
 }
+
 const activity = [
   { id: 1, type: 'created', person: { name: 'Dave Diederen' }, date: '7d ago', dateTime: '2024-01-23T10:32' },
   { id: 2, type: 'edited', person: { name: 'Dave Diederen' }, date: '6d ago', dateTime: '2024-01-23T11:03' },
@@ -96,6 +85,7 @@ const activity = [
   { id: 5, type: 'viewed', person: { name: 'Floris' }, date: '2d ago', dateTime: '2023-01-24T09:12' },
   { id: 6, type: 'paid', person: { name: 'Floris' }, date: '1d ago', dateTime: '2023-01-24T09:20' },
 ]
+
 const moods = [
   { name: 'Excited', value: 'excited', icon: FireIcon, iconColor: 'text-primary', bgColor: 'bg-red-500' },
   { name: 'Loved', value: 'loved', icon: HeartIcon, iconColor: 'text-primary', bgColor: 'bg-pink-400' },
@@ -105,6 +95,7 @@ const moods = [
   { name: 'I feel nothing', value: null, icon: XMarkIconMini, iconColor: 'text-primary', bgColor: 'bg-transparent' },
 ]
 
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
@@ -112,6 +103,8 @@ function classNames(...classes) {
 export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [selected, setSelected] = useState(moods[5])
+
+  const [comment, setComment] = useState('')
 
   return (
     <>
@@ -127,10 +120,12 @@ export default function Example() {
           <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
             <div className="mx-auto flex max-w-2xl items-center justify-between gap-x-8 lg:mx-0 lg:max-w-none">
               <div className="flex items-center gap-x-6">
-                <img
+                <Image
                   src="https://xylex.ams3.cdn.digitaloceanspaces.com/profilePics/xylexIcon.png"
                   alt=""
-                  className="h-16 w-16 flex-none rounded-full ring-1 ring-gray-900/10"
+                  className="h-16 w-16 flex-none rounded-md ring-1 ring-gray-900/10"
+                  width={64}
+                  height={64}
                 />
                 <h1>
                   <div className="text-sm leading-6  bg-blue-primary text-blue border border-blue-500/30 rounded-md px-1">
@@ -203,6 +198,7 @@ export default function Example() {
 
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="mx-auto grid max-w-2xl grid-cols-1 grid-rows-1 items-start gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+            
             {/* Invoice summary */}
             <div className="lg:col-start-3 lg:row-end-1">
               <h2 className="sr-only">Summary</h2>
@@ -389,10 +385,12 @@ export default function Example() {
                     </div>
                     {activityItem.type === 'commented' ? (
                       <>
-                        <img
+                        <Image
                           src={activityItem.person.imageUrl}
                           alt=""
                           className="relative mt-3 h-6 w-6 flex-none rounded-full bg-secondary"
+                          width={24}
+                          height={24}
                         />
                         <div className="flex-auto rounded-md p-3 ring-1 ring-inset ring-primary">
                           <div className="flex justify-between gap-x-4">
@@ -436,13 +434,15 @@ export default function Example() {
 
               {/* New comment form */}
               <div className="mt-6 flex gap-x-3">
-                <img
+                <Image
                   src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                   alt=""
                   className="h-6 w-6 flex-none rounded-full bg-secondary"
+                  width={24}
+                  height={24}
                 />
                 <form action="#" className="relative flex-auto">
-                  <div className="overflow-hidden rounded-lg pb-12 shadow-sm ring-1 ring-inset ring-primary focus-within:ring-2 focus-within:ring-indigo-600">
+                  <div className="p-2 px-4 overflow-hidden rounded-lg pb-12 shadow-sm ring-1 ring-inset ring-primary focus-within:ring-2 focus-within:ring-indigo-600 border border-primary">
                     <label htmlFor="comment" className="sr-only">
                       Add your comment
                     </label>
@@ -451,94 +451,13 @@ export default function Example() {
                       name="comment"
                       id="comment"
                       className="block w-full resize-none border-0 bg-transparent py-1.5 text-primary placeholder:text-secondary focus:ring-0 sm:text-sm sm:leading-6"
-                      placeholder="Add your comment..."
+                      placeholder=""
                       defaultValue={''}
                     />
                   </div>
 
                   <div className="absolute inset-x-0 bottom-0 flex justify-between py-2 pl-3 pr-2">
-                    <div className="flex items-center space-x-5">
-                      <div className="flex items-center">
-                        <button
-                          type="button"
-                          className="-m-2.5 flex h-10 w-10 items-center justify-center rounded-full text-secondary hover:text-secondary"
-                        >
-                          <PaperClipIcon className="h-5 w-5" aria-hidden="true" />
-                          <span className="sr-only">Attach a file</span>
-                        </button>
-                      </div>
-                      <div className="flex items-center">
-                        <Listbox value={selected} onChange={setSelected}>
-                          {({ open }) => (
-                            <>
-                              <Listbox.Label className="sr-only">Your mood</Listbox.Label>
-                              <div className="relative">
-                                <Listbox.Button className="relative -m-2.5 flex h-10 w-10 items-center justify-center rounded-full text-secondary hover:text-secondary">
-                                  <span className="flex items-center justify-center">
-                                    {selected.value === null ? (
-                                      <span>
-                                        <FaceSmileIcon className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
-                                        <span className="sr-only">Add your mood</span>
-                                      </span>
-                                    ) : (
-                                      <span>
-                                        <span
-                                          className={classNames(
-                                            selected.bgColor,
-                                            'flex h-8 w-8 items-center justify-center rounded-full'
-                                          )}
-                                        >
-                                          <selected.icon
-                                            className="h-5 w-5 flex-shrink-0 text-primary"
-                                            aria-hidden="true"
-                                          />
-                                        </span>
-                                        <span className="sr-only">{selected.name}</span>
-                                      </span>
-                                    )}
-                                  </span>
-                                </Listbox.Button>
 
-                                <Transition
-                                  show={open}
-                                  as={Fragment}
-                                  leave="transition ease-in duration-100"
-                                  leaveFrom="opacity-100"
-                                  leaveTo="opacity-0"
-                                >
-                                  <Listbox.Options className="absolute z-10 -ml-6 mt-1 w-60 rounded-lg bg-primary py-3 text-base shadow ring-1 ring-primary ring-opacity-5 focus:outline-none sm:ml-auto sm:w-64 sm:text-sm">
-                                    {moods.map((mood) => (
-                                      <Listbox.Option
-                                        key={mood.value}
-                                        className={({ active }) =>
-                                          classNames(
-                                            active ? 'bg-gray-100' : 'bg-primary',
-                                            'relative cursor-default select-none px-3 py-2'
-                                          )
-                                        }
-                                        value={mood}
-                                      >
-                                        <div className="flex items-center">
-                                          <div
-                                            className={classNames(
-                                              mood.bgColor,
-                                              'flex h-8 w-8 items-center justify-center rounded-full'
-                                            )}
-                                          >
-
-                                          </div>
-                                          <span className="ml-3 block truncate font-medium">{mood.name}</span>
-                                        </div>
-                                      </Listbox.Option>
-                                    ))}
-                                  </Listbox.Options>
-                                </Transition>
-                              </div>
-                            </>
-                          )}
-                        </Listbox>
-                      </div>
-                    </div>
                     <button
                       type="submit"
                       className="rounded-md bg-primary px-2.5 py-1.5 text-sm font-semibold text-primary shadow-sm ring-1 ring-inset ring-primary hover:bg-secondary"
