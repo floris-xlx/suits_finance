@@ -11,6 +11,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, SUPABASE_ANON_KEY);
 
+
 export async function GetUserNameById(id) {
   const { data, error } = await supabase
     .from('users')
@@ -29,7 +30,6 @@ export async function GetUserNameById(id) {
 
   return username;
 }
-
 
 
 export async function GetProfilePicById(id) {
@@ -494,8 +494,6 @@ export async function fetchTransactions({
     console.error('No user id provided');
     return [];
   }
-  console.log('userId', userId);
-
 
   const { data, error } = await supabase
     .from('transactions')
@@ -515,3 +513,17 @@ export async function fetchTransactions({
 
   return data;
 }
+
+
+export async function deleteTransaction({
+  transactionId,
+}) {
+  const { data, error } = await supabase
+    .from('transactions')
+    .delete()
+    .eq('transaction_id', transactionId);
+
+  if (error) throw error;
+
+  return data;
+} 

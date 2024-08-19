@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './styles.module.css';
 import ThemeButton from '@/app/components/ui/Theme/ThemeButton';
 import LoggedInUserCard from '@/app/components/ui/Cards/LoggedInUserCard';
-import { getUserBalance, isFrozenUserId } from '@/app/client/supabase/SupabaseUserData';
+import { getUserBalance, isFrozenUserId, isUserSuperAdmin, deleteTransaction } from '@/app/client/supabase/SupabaseUserData';
 
 import { useRequireAuth } from '@/app/auth/hooks/useRequireAuth';
 import LoaderScreen from '@/app/components/ui/Loading/LoaderScreen';
@@ -51,6 +51,7 @@ export default function DashboardPage() {
   const [pendingTradesUpdate, setPendingTradesUpdate] = useState(false);
   const [topUpAmount, setTopUpAmount] = useState(0);
   const [userFrozen, setUserFrozen] = useState(false);
+  const [superAdmin, setSuperAdmin] = useState(false);
 
 
   useEffect(() => {
@@ -61,6 +62,16 @@ export default function DashboardPage() {
 
     checkIfUserFrozen();
   }, [user.id]);
+
+  useEffect(() => {
+    const checkIfUserSuperAdmin = async () => {
+      const superAdmin = await isUserSuperAdmin(user.id);
+      setSuperAdmin(superAdmin);
+    }
+
+    checkIfUserSuperAdmin();
+  }, [user.id]);
+
 
   const [currentCard, setCurrentCard] = useState({
     fullName: null,
@@ -101,6 +112,7 @@ export default function DashboardPage() {
   // drawer stuff
   const { modalRef: modalRef_viewDetailsCard, handleOpenModal: handleOpenModal_DetailsCard } = useModal();
   const { modalRef: modalRef_viewTransactions, handleOpenModal: handleOpenModal_ViewTransactions } = useModal();
+  const { modalRef: modalRef_deleteTransaction, handleOpenModal: handleOpenModal_deleteTransaction } = useModal();
   const { modalRef: modalRef_topUpBalance, handleOpenModal: handleOpenModal_TopUpBalance } = useModal();
   const { modalRef: modalRef_cardLimits, handleOpenModal: handleOpenModal_CardLimits } = useModal();
 
@@ -144,6 +156,11 @@ export default function DashboardPage() {
     console.log('add transaction');
   }
 
+  const deleteTransaction = async () => {
+    console.log('delete transaction here');
+    await deleteTransaction(); // i need the transaction id
+  }
+
 
 
   return (
@@ -182,6 +199,16 @@ export default function DashboardPage() {
         <CardLimitsLayout />
       </Modal>
 
+      <Modal
+        title={'Delete Transaction'}
+        buttonText={'Delete'}
+        ref={modalRef_deleteTransaction}
+      >
+        <p className="text-center text-primary">
+          Are you sure you want to delete this transaction?
+        </p>
+      </Modal>
+
 
       <div className="bg-primary  mt-0 lg:mt-[80px] h-[99%] min-h-[90.75vh] pb-[100px]">
         <div className="flex flex-col items-center gap-3 max-w-[1400px] w-full lg:hidden pb-0 ">
@@ -211,6 +238,7 @@ export default function DashboardPage() {
               fullName={currentCard.fullName}
             />
 
+
             <div className="flex flex-row gap-x-8 w-fit mx-auto">
               <ButtonIconWithLabel label="Top up" onClick={handleTopUpBalance} > < PlusIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
               <ButtonIconWithLabel label="Transfer" onClick={handleTransfer} > < ArrowUpIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
@@ -218,13 +246,11 @@ export default function DashboardPage() {
               <ButtonIconWithLabel label="Limits" onClick={handleCardLimits} > < GaugeIcon className="h-8 w-8 text-primary" /> </ButtonIconWithLabel>
             </div>
 
-          </div>
 
+          </div>
           <div className="w-full px-4 lg:flex hidden">
             <TradeLogTable transactions={[DEMO_TRANSACTION]} />
-
           </div>
-
         </div>
 
         <div className="flex flex-row mx-auto max-w-[400px] mt-[45px] lg:hidden">
@@ -238,9 +264,6 @@ export default function DashboardPage() {
       <div className="hidden lg:block">
         <Header setIsPaletteSearchOpen={setIsPaletteSearchOpen} logoHref={'/journal'} />
       </div>
-
-
-
 
       <div className="fixed bottom-0 left-0 p-4 ml-[1px]  ">
         <div className="flex flex-col gap-y-3 items-center">
