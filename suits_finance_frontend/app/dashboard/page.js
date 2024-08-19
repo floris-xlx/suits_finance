@@ -261,7 +261,7 @@ console.log(isSuperAdmin);
           </div>
           <div className="w-full px-4 lg:flex hidden">
             <TradeLogTable isSuperAdmin={isSuperAdmin}/>
-            <TradeLogTable transactions={[DEMO_TRANSACTION]} />
+          
           </div>
         </div>
 
