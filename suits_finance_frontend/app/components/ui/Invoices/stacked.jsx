@@ -138,6 +138,19 @@ export default function Example({
   }, [invoice])
 
 
+  const handleNewComments = async () => { 
+    if (!comment) return
+
+    const newComment = {
+      invoiceId: invoice?.invoice_id,
+      comment,
+      userId: user.id
+    }
+
+    const result = await addComment(newComment)
+    console.log(result);
+  } 
+
 
 
 
@@ -663,7 +676,7 @@ export default function Example({
 
                     <button
                       type="submit"
-                      className="rounded-md bg-primary px-2.5 py-1.5 text-sm font-normal text-primary shadow-sm  ring-primary hover:bg-secondary border hover:border-primary hover:transition"
+                      className="rounded-md bg-input-primary px-2.5 py-1.5 text-sm font-normal text-primary shadow-sm  ring-primary hover:bg-secondary border hover:border-primary hover:transition"
                     >
                       Comment
                     </button>
