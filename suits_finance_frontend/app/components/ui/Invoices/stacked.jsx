@@ -17,7 +17,13 @@ import {
 } from '@heroicons/react/20/solid'
 import { BellIcon, XMarkIcon as XMarkIconOutline } from '@heroicons/react/24/outline'
 import { CheckCircleIcon } from '@heroicons/react/24/solid'
+import SkeletonLoader from '@/app/components/ui/Loading/SkeletonLoader'
 import Image from 'next/image'
+import { getInvoiceById, getUsernameById } from '@/app/client/supabase/SupabaseUserData'
+import CurrencySymbol from '@/app/client/hooks/formatting/CurrencySymbol'
+import TradeStatusChip from '@/app/components/ui/Chips/TradeStatusChip'
+import TimeChip from '@/app/components/ui/Chips/TimeChip'
+
 
 const navigation = [
   { name: 'Home', href: '#' },
@@ -66,6 +72,8 @@ const invoice = {
   ],
 }
 
+import { useUserStore } from '@/app/stores/stores'
+
 const activity = [
   { id: 1, type: 'created', person: { name: 'Dave Diederen' }, date: '7d ago', dateTime: '2024-01-23T10:32' },
   { id: 2, type: 'edited', person: { name: 'Dave Diederen' }, date: '6d ago', dateTime: '2024-01-23T11:03' },
@@ -76,7 +84,7 @@ const activity = [
     person: {
       name: 'Dave Diederen',
       imageUrl:
-        'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        'https://xylex.ams3.cdn.digitaloceanspaces.com/suits_finance/profilePics/dave.png',
     },
     comment: 'Called client, they reassured me the invoice would be paid by the 25th.',
     date: '3d ago',
@@ -100,11 +108,38 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Example() {
+export default function Example({
+  invoice
+}) {
+  const { user } = useUserStore()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [selected, setSelected] = useState(moods[5])
 
   const [comment, setComment] = useState('')
+
+  const [invoiceObject, setInvoiceObject] = useState(null)
+  console.log(invoiceObject);
+  console.log(invoice?.invoice_id);
+  console.log(user);
+
+  useEffect(() => {
+    console.log(invoice);
+    if (!invoice) return
+
+    const fetchInvoice = async () => {
+      const invoice_result = await getInvoiceById({
+        invoiceId: invoice?.invoice_id
+      })
+      console.log(invoice_result);
+      setInvoiceObject(invoice_result)
+    }
+
+    fetchInvoice()
+  }, [invoice])
+
+
+
+
 
   return (
     <>
@@ -129,9 +164,26 @@ export default function Example() {
                 />
                 <h1>
                   <div className="text-sm leading-6  bg-blue-primary text-blue border border-blue-500/30 rounded-md px-1">
-                    Invoice #00011
+
+                    <div className="h-[24px] w-[140px] ">
+                      {invoiceObject?.invoice_number ? (
+                        <div>{`Invoice #000${invoiceObject.invoice_number}`}</div>
+                      ) : (
+                        <SkeletonLoader />
+                      )}
+                    </div>
+
                   </div>
-                  <div className="mt-1 text-base font-semibold leading-6 text-primary">Xylex, Enterprises</div>
+                  <div className="mt-1 text-base font-semibold leading-6 text-primary">
+
+                    <div className="h-[24px] w-[170px] mt-[7px]">
+                      {invoiceObject?.company_name ? (
+                        <div>{`${invoiceObject.company_name}`}</div>
+                      ) : (
+                        <SkeletonLoader />
+                      )}
+                    </div>
+                  </div>
                 </h1>
               </div>
               <div className="flex items-center gap-x-4 sm:gap-x-6">
@@ -198,20 +250,44 @@ export default function Example() {
 
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="mx-auto grid max-w-2xl grid-cols-1 grid-rows-1 items-start gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-            
+
             {/* Invoice summary */}
-            <div className="lg:col-start-3 lg:row-end-1">
+            <div className="lg:col-start-3 lg:row-end-1 border border-primary rounded-md">
               <h2 className="sr-only">Summary</h2>
               <div className="rounded-lg bg-secondary shadow-sm ring-1 ring-primary">
                 <dl className="flex flex-wrap">
                   <div className="flex-auto pl-6 pt-6">
                     <dt className="text-sm font-semibold leading-6 text-primary">Amount</dt>
-                    <dd className="mt-1 text-base font-semibold leading-6 text-primary">$10,560.00</dd>
+                    <dd className="mt-1 text-base font-semibold leading-6 text-primary">
+
+                      <div className="h-[24px] w-[90px]">
+                        {typeof invoiceObject?.total === 'number' ? (
+                          <div className="flex flex-row">
+                            {invoiceObject?.total} {CurrencySymbol(invoiceObject?.currency)}
+                          </div>
+                        ) : (
+                          <SkeletonLoader />
+                        )}
+                      </div>
+
+                    </dd>
                   </div>
                   <div className="flex-none self-end px-6 pt-4">
                     <dt className="sr-only">Status</dt>
-                    <dd className="rounded-md bg-green-accent text-green border border-green-500/30 px-2 py-1 text-xs font-medium ring-1 ring-inset ring-primary select-none">
-                      Paid
+                    <dd className="rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ring-primary select-none">
+
+                      <div className="h-[24px] w-[50px]">
+                        {typeof invoiceObject?.status ? (
+                          <div>
+                            {TradeStatusChip({
+                              tradeStatus: invoiceObject?.status
+                            })}
+                          </div>
+                        ) : (
+                          <SkeletonLoader />
+                        )}
+                      </div>
+
                     </dd>
                   </div>
                   <div className="mt-6 flex w-full flex-none gap-x-4 border-t border-primary px-6 pt-6">
@@ -219,7 +295,17 @@ export default function Example() {
                       <span className="sr-only">Client</span>
                       <UserCircleIcon className="h-6 w-5 text-secondary" aria-hidden="true" />
                     </dt>
-                    <dd className="text-sm font-medium leading-6 text-primary ">Alex Curren</dd>
+                    <dd className="text-sm font-medium leading-6 text-primary ">
+                      <div className="h-[24px] w-[110px]">
+                        {typeof invoiceObject?.authorizer_name ? (
+                          <div>
+                            {invoiceObject?.authorizer_name}
+                          </div>
+                        ) : (
+                          <SkeletonLoader />
+                        )}
+                      </div>
+                    </dd>
                   </div>
                   <div className="mt-4 flex w-full flex-none gap-x-4 px-6">
                     <dt className="flex-none">
@@ -227,7 +313,19 @@ export default function Example() {
                       <CalendarDaysIcon className="h-6 w-5 text-secondary" aria-hidden="true" />
                     </dt>
                     <dd className="text-sm leading-6 text-secondary select-none">
-                      <time dateTime="2023-01-31">January 31, 2024</time>
+                      <div className="h-[24px] w-[110px]">
+                        {invoiceObject?.due_date ? (
+                          <div>
+                            {new Date(invoiceObject?.due_date.replace(/(\d{2})-(\d{2})-(\d{4})/, '$2/$1/$3')).toLocaleDateString('en-GB', {
+                              day: '2-digit',
+                              month: 'long',
+                              year: 'numeric'
+                            })}
+                          </div>
+                        ) : (
+                          <SkeletonLoader />
+                        )}
+                      </div>
                     </dd>
                   </div>
                   <div className="mt-4 flex w-full flex-none gap-x-4 px-6">
@@ -235,13 +333,24 @@ export default function Example() {
                       <span className="sr-only">Status</span>
                       <CreditCardIcon className="h-6 w-5 text-secondary" aria-hidden="true" />
                     </dt>
-                    <dd className="text-sm leading-6 text-secondary">Paid with MasterCard</dd>
+                    <dd className="text-sm leading-6 text-secondary">
+                      <div className="h-[24px] w-[140px]">
+                        {typeof invoiceObject?.payment_method ? (
+                          <div>
+                            Paid with {invoiceObject?.payment_method}
+                          </div>
+                        ) : (
+                          <SkeletonLoader />
+                        )}
+                      </div>
+
+                    </dd>
                   </div>
                 </dl>
                 <div className="mt-6 border-t border-primary px-6 py-6">
-                  <a href="#" className="text-sm font-semibold leading-6 text-brand-primary select-none">
-                    Download receipt
-                  </a>
+                  {/* <a href="#" className="text-sm font-semibold leading-6 text-brand-primary select-none">
+                    Download invoice
+                  </a> */}
                 </div>
               </div>
             </div>
@@ -253,19 +362,53 @@ export default function Example() {
                 <div className="sm:pr-4">
                   <dt className="inline text-secondary">Issued on</dt>{' '}
                   <dd className="inline text-primary">
-                    <time dateTime="2023-23-01">January 23, 2023</time>
+                    <div className="h-[24px] w-[110px]">
+                      {invoiceObject?.issue_date ? (
+                        <div>
+                          {new Date(invoiceObject?.issue_date.replace(/(\d{2})-(\d{2})-(\d{4})/, '$2/$1/$3')).toLocaleDateString('en-GB', {
+                            day: '2-digit',
+                            month: 'long',
+                            year: 'numeric'
+                          })}
+                        </div>
+                      ) : (
+                        <SkeletonLoader />
+                      )}
+                    </div>
                   </dd>
                 </div>
                 <div className="mt-2 sm:mt-0 sm:pl-4">
                   <dt className="inline text-secondary">Due on</dt>{' '}
                   <dd className="inline text-primary">
-                    <time dateTime="2023-31-01">January 31, 2023</time>
+                    <div className="h-[24px] w-[110px]">
+                      {invoiceObject?.due_date ? (
+                        <div>
+                          {new Date(invoiceObject?.due_date.replace(/(\d{2})-(\d{2})-(\d{4})/, '$2/$1/$3')).toLocaleDateString('en-GB', {
+                            day: '2-digit',
+                            month: 'long',
+                            year: 'numeric'
+                          })}
+                        </div>
+                      ) : (
+                        <SkeletonLoader />
+                      )}
+                    </div>
                   </dd>
                 </div>
                 <div className="mt-6 border-t border-primary pt-6 sm:pr-4">
                   <dt className="font-semibold text-primary">From</dt>
                   <dd className="mt-2 text-secondary">
-                    <span className="font-medium text-primary">Acme, Inc.</span>
+                    <span className="font-medium text-primary">
+                      <div className="h-[24px] w-[110px]">
+                        {invoiceObject?.sender ? (
+                          <div className="font-medium text-primary">
+                            {invoiceObject?.sender}
+                          </div>
+                        ) : (
+                          <SkeletonLoader />
+                        )}
+                      </div>
+                    </span>
                     <br />
                     7363 Cynthia Pass
                     <br />
@@ -275,7 +418,15 @@ export default function Example() {
                 <div className="mt-8 sm:mt-6 sm:border-t sm:border-primary sm:pl-4 sm:pt-6">
                   <dt className="font-semibold text-primary">To</dt>
                   <dd className="mt-2 text-secondary">
-                    <span className="font-medium text-primary">Tuple, Inc</span>
+                    <div className="h-[24px] w-[110px]">
+                      {invoiceObject?.recipient ? (
+                        <div className="font-medium text-primary">
+                          {invoiceObject?.recipient}
+                        </div>
+                      ) : (
+                        <SkeletonLoader />
+                      )}
+                    </div>
                     <br />
                     886 Walter Street
                     <br />
@@ -292,7 +443,7 @@ export default function Example() {
                 </colgroup>
                 <thead className="border-b border-primary text-primary">
                   <tr>
-                    <th scope="col" className="px-0 py-3 font-semibold">
+                    {/* <th scope="col" className="px-0 py-3 font-semibold">
                       Projects
                     </th>
                     <th scope="col" className="hidden py-3 pl-8 pr-0 text-right font-semibold sm:table-cell">
@@ -300,26 +451,26 @@ export default function Example() {
                     </th>
                     <th scope="col" className="hidden py-3 pl-8 pr-0 text-right font-semibold sm:table-cell">
                       Rate
-                    </th>
+                    </th> 
                     <th scope="col" className="py-3 pl-8 pr-0 text-right font-semibold">
                       Price
-                    </th>
+                    </th>*/}
                   </tr>
                 </thead>
                 <tbody>
-                  {invoice.items.map((item) => (
-                    <tr key={item.id} className="border-b border-primary">
+                  {invoice?.items?.map((item) => (
+                    <tr key={item?.id} className="border-b border-primary">
                       <td className="max-w-0 px-0 py-5 align-top">
-                        <div className="truncate font-medium text-primary">{item.title}</div>
-                        <div className="truncate text-secondary">{item.description}</div>
+                        <div className="truncate font-medium text-primary">{item?.title}</div>
+                        <div className="truncate text-secondary">{item?.description}</div>
                       </td>
                       <td className="hidden py-5 pl-8 pr-0 text-right align-top tabular-nums text-primary sm:table-cell">
-                        {item.hours}
+                        {item?.hours}
                       </td>
                       <td className="hidden py-5 pl-8 pr-0 text-right align-top tabular-nums text-primary sm:table-cell">
-                        {item.rate}
+                        {item?.rate}
                       </td>
-                      <td className="py-5 pl-8 pr-0 text-right align-top tabular-nums text-primary">{item.price}</td>
+                      <td className="py-5 pl-8 pr-0 text-right align-top tabular-nums text-primary">{item?.price}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -335,20 +486,40 @@ export default function Example() {
                     >
                       Subtotal
                     </th>
-                    <td className="pb-0 pl-8 pr-0 pt-6 text-right tabular-nums text-primary">{invoice.subTotal}</td>
+                    <td className="pb-0 pl-8 pr-0 pt-6 text-right tabular-nums text-primary">
+                      <div className="h-[24px] w-[60px]">
+                        {invoiceObject?.subtotal ? (
+                          <div className="font-medium text-primary">
+                            {invoiceObject?.subtotal}
+                          </div>
+                        ) : (
+                          <SkeletonLoader />
+                        )}
+                      </div>
+                    </td>
                   </tr>
                   <tr>
                     <th scope="row" className="pt-4 font-normal text-primary sm:hidden select-none">
-                      Tax
+                      Fee
                     </th>
                     <th
                       scope="row"
                       colSpan={3}
                       className="hidden pt-4 text-right font-normal text-primary sm:table-cell"
                     >
-                      Tax
+                      Fee
                     </th>
-                    <td className="pb-0 pl-8 pr-0 pt-4 text-right tabular-nums text-primary">{invoice.tax}</td>
+                    <td className="pb-0 pl-8 pr-0 pt-4 text-right tabular-nums text-primary">
+                      <div className="h-[24px] w-[60px]">
+                        {invoiceObject?.fee ? (
+                          <div className="font-medium text-primary">
+                            {invoiceObject?.fee}
+                          </div>
+                        ) : (
+                          <SkeletonLoader />
+                        )}
+                      </div>
+                    </td>
                   </tr>
                   <tr>
                     <th scope="row" className="pt-4 font-semibold text-primary sm:hidden">
@@ -362,7 +533,15 @@ export default function Example() {
                       Total
                     </th>
                     <td className="pb-0 pl-8 pr-0 pt-4 text-right font-semibold tabular-nums text-primary">
-                      {invoice.total}
+                      <div className="h-[24px] w-[60px]">
+                        {invoiceObject?.total ? (
+                          <div className="font-medium text-primary">
+                            {invoiceObject?.total}
+                          </div>
+                        ) : (
+                          <SkeletonLoader />
+                        )}
+                      </div>
                     </td>
                   </tr>
                 </tfoot>
@@ -395,36 +574,36 @@ export default function Example() {
                         <div className="flex-auto rounded-md p-3 ring-1 ring-inset ring-primary">
                           <div className="flex justify-between gap-x-4">
                             <div className="py-0.5 text-xs leading-5 text-secondary">
-                              <span className="font-medium text-primary">{activityItem.person.name}</span> commented
+                              <span className="font-medium text-primary">{activityItem?.person.name}</span> commented
                             </div>
                             <time
-                              dateTime={activityItem.dateTime}
+                              dateTime={activityItem?.dateTime}
                               className="flex-none py-0.5 text-xs leading-5 text-secondary"
                             >
-                              {activityItem.date}
+                              {activityItem?.date}
                             </time>
                           </div>
-                          <p className="text-sm leading-6 text-secondary">{activityItem.comment}</p>
+                          <p className="text-sm leading-6 text-secondary">{activityItem?.comment}</p>
                         </div>
                       </>
                     ) : (
                       <>
                         <div className="relative flex h-6 w-6 flex-none items-center justify-center bg-primary">
-                          {activityItem.type === 'paid' ? (
+                          {activityItem?.type === 'paid' ? (
                             <CheckCircleIcon className="h-6 w-6 text-brand-primary" aria-hidden="true" />
                           ) : (
                             <div className="h-1.5 w-1.5 rounded-full bg-secondary ring-1 ring-primary" />
                           )}
                         </div>
                         <p className="flex-auto py-0.5 text-xs leading-5 text-secondary">
-                          <span className="font-medium text-primary">{activityItem.person.name}</span>{' '}
-                          {activityItem.type} the invoice.
+                          <span className="font-medium text-primary">{activityItem?.person.name}</span>{' '}
+                          {activityItem?.type} the invoice.
                         </p>
                         <time
                           dateTime={activityItem.dateTime}
                           className="flex-none py-0.5 text-xs leading-5 text-secondary"
                         >
-                          {activityItem.date}
+                          {activityItem?.date}
                         </time>
                       </>
                     )}
@@ -435,7 +614,7 @@ export default function Example() {
               {/* New comment form */}
               <div className="mt-6 flex gap-x-3">
                 <Image
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                  src={user?.profile_picture}
                   alt=""
                   className="h-6 w-6 flex-none rounded-full bg-secondary"
                   width={24}
@@ -460,7 +639,7 @@ export default function Example() {
 
                     <button
                       type="submit"
-                      className="rounded-md bg-primary px-2.5 py-1.5 text-sm font-semibold text-primary shadow-sm ring-1 ring-inset ring-primary hover:bg-secondary"
+                      className="rounded-md bg-primary px-2.5 py-1.5 text-sm font-normal text-primary shadow-sm  ring-primary hover:bg-secondary border hover:border-primary hover:transition"
                     >
                       Comment
                     </button>

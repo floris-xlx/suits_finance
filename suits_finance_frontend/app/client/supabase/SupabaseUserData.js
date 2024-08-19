@@ -544,3 +544,67 @@ export async function deleteTransaction({
 
   return data;
 }
+
+
+export async function fetchUserInvoices({
+  userId,
+  invoiceId
+}) {
+  if (!userId) {
+    console.error('No user id provided');
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from('invoices')
+    .select('user_id, payoneer_invoice_id, payoneer_invoice_reference, invoice_id')
+    .eq('user_id', userId)
+    .eq('invoice_id', invoiceId);
+
+  if (error) {
+    console.error('Error fetching invoices:', error);
+    return [];
+  }
+
+  if (!data || data.length === 0) {
+    console.warn('No invoices found for user:', userId);
+    return [];
+  }
+
+  return data;
+
+}
+
+export async function getInvoiceById({
+  invoiceId
+}) {
+  const { data, error } = await supabase
+    .from('invoices')
+    .select('*')
+    .eq('invoice_id', invoiceId);
+    
+  console.log(data);
+  if (error) throw error;
+
+  if (data.length === 0) {
+    return null;
+  }
+
+  return data[0]; 
+
+}
+
+export async function getUsernameById(userId) {
+  const { data, error } = await supabase
+    .from('users')
+    .select('username, full_name')
+    .eq('user_id', userId);
+
+  if (error) throw error;
+
+  if (data.length === 0) {
+    return null;
+  }
+
+  return data[0];
+}

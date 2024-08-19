@@ -5,52 +5,69 @@ import React, { useState, useEffect, Fragment } from 'react';
 import styles from '../styles.module.css';
 import ThemeButton from '@/app/components/ui/Theme/ThemeButton';
 import LoggedInUserCard from '@/app/components/ui/Cards/LoggedInUserCard';
+import { fetchUserInvoices } from '@/app/client/supabase/SupabaseUserData';
 
 import { useRequireAuth } from '@/app/auth/hooks/useRequireAuth';
 import LoaderScreen from '@/app/components/ui/Loading/LoaderScreen';
 import Header from '@/app/components/ui/Headers/Header';
-import { HomeIcon, ArrowUpIcon, DeviceTabletIcon, BoltIcon } from '@heroicons/react/24/outline';
-import { GaugeIcon } from '@/app/components/ui/Icon';
-import BalanceCard from '@/app/components/ui/Cards/BalanceCard';
-import CreditCard from '@/app/components/ui/Cards/CreditCard';
-import {
-  PlusIcon,
-  CreditCardIcon,
-} from '@heroicons/react/24/outline';
-
+import { useRouter } from 'next/navigation';
 // zustand
 import {
   useUserStore,
   useLoadingStore,
 } from '@/app/stores/stores';
 
-import { Button } from "@nextui-org/react";
-import ButtonIconWithLabel from '@/app/components/ui/Buttons/ButtonIconWithLabel';
 import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
-import { refreshPage } from '@/app/client/hooks/refreshPage';
-import { DrawerHero, useDrawer } from "@/app/components/ui/Drawers/DrawerViewTrade";
-import CardDetailsLayout from '@/app/components/layouts/Modals/cardDetails';
 import { TransfersBlockedNoBalanceNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
-import TransactionsTableMobile from '@/app/components/ui/Tables/TransactionsTableMobile';
-import TransactionsOverviewLayout from '@/app/components/layouts/Modals/transactionsOverview';
-import TopUpBalanceLayout from '@/app/components/layouts/Modals/topUpBalance';
-import CardLimitsLayout from '@/app/components/layouts/Modals/cardLimits';
-
 import Stacked from '@/app/components/ui/Invoices/stacked';
 
 
-export default function DashboardPage() {
+export default function InvoicesPage() {
   // auth
   const { userId } = useRequireAuth();
   const { user } = useUserStore();
   const { loading } = useLoadingStore();
+
+  // INSERT_YOUR_CODE
+
+  
+  const [invoiceId, setInvoiceId] = useState(null);
+  const [loadingInvoices, setLoadingInvoices] = useState(true);
+  const [invoice, setInvoice] = useState(null);
+
+  useEffect(() => {
+    const fetchInvoices = async () => {
+      const { search } = location;
+      const params = new URLSearchParams(search);
+      const invoiceId = params.get('id');
+
+      if (!invoiceId) {
+        setLoadingInvoices(false);
+        location.replace('/dashboard');
+        return;
+      }
+      setLoadingInvoices
+      setInvoiceId(invoiceId);
+      const invoices = await fetchUserInvoices({ userId: user.id, invoiceId });
+      setInvoice(invoices[0]);
+      setLoadingInvoices(false);
+
+      if (!invoices.length) {
+        
+        location.replace('/dashboard');
+        setLoadingInvoices(false);
+      }
+    };
+
+    fetchInvoices();
+  }, [user.id]);
 
 
   const [isPaletteSearchOpen, setIsPaletteSearchOpen] = useState(false);
   const [pendingTradesUpdate, setPendingTradesUpdate] = useState(false);
 
   const [isMobile, setIsMobile] = useState(false);
-  const [topUpAmount, setTopUpAmount] = useState(0);
+
 
   const [currentCard, setCurrentCard] = useState({
     fullName: 'John Doe',
@@ -72,41 +89,6 @@ export default function DashboardPage() {
     card: currentCard,
   };
 
-  // drawer stuff
-  const { modalRef: modalRef_viewDetailsCard, handleOpenModal: handleOpenModal_DetailsCard } = useModal();
-  const { modalRef: modalRef_viewTransactions, handleOpenModal: handleOpenModal_ViewTransactions } = useModal();
-  const { modalRef: modalRef_topUpBalance, handleOpenModal: handleOpenModal_TopUpBalance } = useModal();
-  const { modalRef: modalRef_cardLimits, handleOpenModal: handleOpenModal_CardLimits } = useModal();
-
-  // open card details
-  const handleOpenCardDetails = () => {
-    handleOpenModal_DetailsCard();
-  }
-
-  const isBalanceNegative = currentCard.balance < 0;
-
-  // transfer money
-  const handleTransfer = () => {
-    if (isBalanceNegative) {
-      TransfersBlockedNoBalanceNotification();
-    }
-  }
-
-  // transaction view 
-  const handleViewTransactions = () => {
-    console.log('view transactions');
-    handleOpenModal_ViewTransactions();
-  }
-
-  // top up balance
-  const handleTopUpBalance = () => {
-    handleOpenModal_TopUpBalance();
-  }
-
-  // card limits
-  const handleCardLimits = () => {
-    handleOpenModal_CardLimits();
-  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -129,11 +111,14 @@ export default function DashboardPage() {
     };
   }, []);
 
-  // auth stuff
-  if (loading.authLoading) {
+
+
+  if (loading.authLoading && loadingInvoices) {
     return <LoaderScreen />;
   }
 
+
+  
   return (
     <div className={styles.containerLogin}>
       <div className="bg-primary  mt-0 lg:mt-[80px] h-[120vh] mb-[400px] min-h-[90.75vh]">
@@ -151,7 +136,7 @@ export default function DashboardPage() {
 
         {/* This is where the body layout goes */}
         <div className="flex flex-col gap-y-2 pt-8">
-          <Stacked />
+          <Stacked invoice={invoice}/>
         </div>
       </div>
 

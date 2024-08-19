@@ -125,7 +125,6 @@ console.log(isSuperAdmin);
   // drawer stuff
   const { modalRef: modalRef_viewDetailsCard, handleOpenModal: handleOpenModal_DetailsCard } = useModal();
   const { modalRef: modalRef_viewTransactions, handleOpenModal: handleOpenModal_ViewTransactions } = useModal();
-  const { modalRef: modalRef_deleteTransaction, handleOpenModal: handleOpenModal_deleteTransaction } = useModal();
   const { modalRef: modalRef_topUpBalance, handleOpenModal: handleOpenModal_TopUpBalance } = useModal();
   const { modalRef: modalRef_cardLimits, handleOpenModal: handleOpenModal_CardLimits } = useModal();
 
@@ -209,17 +208,6 @@ console.log(isSuperAdmin);
       >
         <CardLimitsLayout />
       </Modal>
-
-      <Modal
-        title={'Delete Transaction'}
-        buttonText={'Delete'}
-        ref={modalRef_deleteTransaction}
-      >
-        <p className="text-center text-primary">
-          Are you sure you want to delete this transaction?
-        </p>
-      </Modal>
-
 
       <div className="bg-primary  mt-0 lg:mt-[80px] h-[99%] min-h-[90.75vh] pb-[100px]">
         <div className="flex flex-col items-center gap-3 max-w-[1400px] w-full lg:hidden pb-0 ">
