@@ -376,9 +376,6 @@ export default function App({
                                     Add transaction
                                 </button>
 
-
-
-
                             </div>
                         </div>
 
