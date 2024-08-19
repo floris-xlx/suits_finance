@@ -698,3 +698,27 @@ export async function addInvoiceComment({
     return data;
   }
 }
+
+
+export async function getInvoicePaidStatus(invoiceId) {
+  const { data, error } = await supabase
+    .from('invoices')
+    .select('paid')
+    .eq('invoice_id', invoiceId)
+    .single();
+
+  if (error) throw error;
+
+  return data?.paid || false; // Return false if no data found
+}
+
+export async function updateInvoicePaidStatus(invoiceId, isPaid) {
+  const { data, error } = await supabase
+    .from('invoices')
+    .update({ paid: isPaid })
+    .eq('invoice_id', invoiceId);
+
+  if (error) throw error;
+
+  return data;
+}

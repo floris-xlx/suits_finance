@@ -23,7 +23,7 @@ import { getInvoiceById, getUsernameById, fetchInvoiceComments } from '@/app/cli
 import CurrencySymbol from '@/app/client/hooks/formatting/CurrencySymbol'
 import TradeStatusChip from '@/app/components/ui/Chips/TradeStatusChip'
 import TimeChip from '@/app/components/ui/Chips/TimeChip'
-import { addInvoiceComment } from '@/app/client/supabase/SupabaseUserData'
+import { addInvoiceComment, getInvoicePaidStatus, updateInvoicePaidStatus } from '@/app/client/supabase/SupabaseUserData'
 import { AddCommentSuccessNotification } from '@/app/components/ui/Notifications/Notifications.jsx'
 
 
@@ -101,6 +101,7 @@ export default function Example({
 
   const [invoiceObject, setInvoiceObject] = useState(null)
   const [comments, setComments] = useState([])
+  const [invoicePaid, setInvoicePaid] = useState(false)
   console.log("comments: ", comments);
 
 
@@ -125,6 +126,24 @@ export default function Example({
   }, [invoice])
 
 
+  const fetchInvoicePaidStatus = async () => {
+    const status = await getInvoicePaidStatus(invoice?.invoice_id);
+    setInvoicePaid(status);
+  };
+
+  const toggleInvoicePaidStatus = async () => {
+    const newStatus = !invoicePaid;
+    await updateInvoicePaidStatus(invoice?.invoice_id, newStatus);
+    setInvoicePaid(newStatus);
+  };
+
+  useEffect(() => {
+    if (invoice?.invoice_id) {
+      fetchInvoicePaidStatus();
+    }
+  }, [invoice]);
+
+
   const [commentField, setCommentField] = useState('')
 
 
@@ -138,7 +157,7 @@ export default function Example({
     })
     setComments(comments)
     console.log(comments);
-    
+
     // Auto scroll to the bottom of the comment box
     const commentBox = document.getElementById('comment_box');
     if (commentBox) {
@@ -238,13 +257,13 @@ export default function Example({
               <div className="flex items-center gap-x-4 sm:gap-x-6">
 
 
-                <a
-                  href="#"
+                <button
+                  onClick={handleNewCommentInvoiceAuthorized}
                   className="rounded-md bg-green-primary px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-green-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:transition flex-row flex items-center gap-x-2"
                 >
                   <CheckIcon className="h-6 w-6 text-black" aria-hidden="true" />
                   Authorize
-                </a>
+                </button>
 
 
                 <Menu as="div" className="relative sm:hidden">
@@ -624,7 +643,7 @@ export default function Example({
             <div className="lg:col-start-3">
               {/* Activity feed */}
               <h2 className="text-sm font-semibold leading-6 text-primary select-none">Activity</h2>
-              <ul role="list" id="comment_box" key="comment_box"  className="mt-6 space-y-1 overflow-y-auto max-h-96">
+              <ul role="list" id="comment_box" key="comment_box" className="mt-6 space-y-1 overflow-y-auto max-h-96">
                 {comments?.map((commentItem, commentItemIdx) => (
                   <li key={commentItem?.comment_id} className="relative flex gap-x-2">
                     <div
