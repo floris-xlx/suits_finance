@@ -57,6 +57,8 @@ export default function App({
     const { tradeFilters, setIsTradeStatusFilters } = useTradeFiltersStore();
     const { user } = useUserStore();
 
+    console.log(isSuperAdmin);
+
     // modal shit
     const { modalRef: modalRef_updateTradeStatus, handleOpenModal: handleOpenModal_updateTradeStatus } = useModal();
     const { modalRef: modalRef_deleteTransaction, handleOpenModal: handleOpenModal_deleteTransaction } = useModal();
@@ -112,7 +114,7 @@ export default function App({
         if (!transactionId) { return null; }
         if (!isSuperAdmin) { return null; }
 
-        setTransactionId(transactionId);    
+        setTransactionId(transactionId);
         handleOpenModal_deleteTransaction();
     }
 
