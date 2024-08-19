@@ -63,7 +63,7 @@ export default function App({
     const { modalRef: modalRef_updateTradeStatus, handleOpenModal: handleOpenModal_updateTradeStatus } = useModal();
     const { modalRef: modalRef_deleteTransaction, handleOpenModal: handleOpenModal_deleteTransaction } = useModal();
 
-    const { drawerRef: drawerRef_viewTrade, handleOpenDrawer: handleOpenDrawer_viewTrade } = useDrawer();
+    const { drawerRef: drawerRef_viewTrade, handleOpenDrawer: handleOpenDrawer_viewTrade, handleCloseDrawer: handleCloseDrawer_viewTrade } = useDrawer();
     const { drawerRef: drawerRef_addTransaction, handleOpenDrawer: handleOpenDrawer_addTransaction } = useDrawer();
 
     // these are the main loaded objects
@@ -103,7 +103,7 @@ export default function App({
 
     const handleTransactionDeletePress = async ({ transactionId }) => {
         // close the drawer
-   
+
         if (!transactionId) { return null; }
         if (!isSuperAdmin) { return null; }
 
@@ -112,7 +112,7 @@ export default function App({
         });
 
         setTradeObjects(tradeObjects.filter((trade) => trade.transaction_id !== transactionId));
-        handleOpenDrawer_viewTrade();
+        handleCloseDrawer_viewTrade();
     }
 
 
@@ -485,7 +485,7 @@ export default function App({
                 )}
             </DrawerHero>
 
- 
+
 
             {/* Scrollable Container */}
             <div className="scrollable-x overflow-y-hidden !scroll-my-0 scroll">

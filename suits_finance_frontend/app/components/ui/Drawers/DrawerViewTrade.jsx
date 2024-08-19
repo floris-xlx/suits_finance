@@ -20,7 +20,13 @@ const useDrawer = () => {
         }
     };
 
-    return { drawerRef, handleOpenDrawer };
+    const handleCloseDrawer = () => {
+        if (drawerRef.current) {
+            drawerRef.current.handleCloseDrawer();
+        }
+    }
+
+    return { drawerRef, handleOpenDrawer, handleCloseDrawer };
 };
 
 const DrawerHero = forwardRef(({ children = null, title = 'View user', onClick = null }, ref) => {
@@ -54,8 +60,9 @@ const DrawerHero = forwardRef(({ children = null, title = 'View user', onClick =
                     </DrawerHeader>
                     <DrawerFooter className="mt-6">
                         <DrawerClose asChild>
-                            <Button className="w-full sm:w-fit bg-brand-primary text-white" onClick={() => { 
-                                handleCloseDrawer(); if (onClick) onClick(); }}>Close</Button>
+                            <Button className="w-full sm:w-fit bg-brand-primary text-white" onClick={() => {
+                                handleCloseDrawer(); if (onClick) onClick();
+                            }}>Close</Button>
                         </DrawerClose>
                     </DrawerFooter>
                 </DrawerContent>
