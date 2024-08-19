@@ -99,25 +99,19 @@ export default function App({
         }
     };
 
-    const handleDeleteTransaction = async () => {
-        const result = await deleteTransaction({
-            transactionId
-        });
-        console.log(result);
 
-        if (result) {
-            setTradeObjects(tradeObjects.filter((trade) => trade.transaction_id !== transactionId));
-        }
-    };
 
-    const handleTransactionDeletePress = ({ transactionId }) => {
+    const handleTransactionDeletePress = async ({ transactionId }) => {
         // close the drawer
-        handleOpenDrawer_viewTrade();
+   
         if (!transactionId) { return null; }
         if (!isSuperAdmin) { return null; }
 
-        setTransactionId(transactionId);
-        handleOpenModal_deleteTransaction();
+        const result = await deleteTransaction({
+            transactionId: transactionId
+        });
+
+        setTradeObjects(tradeObjects.filter((trade) => trade.transaction_id !== transactionId));
     }
 
 
@@ -490,16 +484,7 @@ export default function App({
                 )}
             </DrawerHero>
 
-            <Modal
-                ref={modalRef_deleteTransaction}
-                buttonText={'Delete'}
-                title={'Delete transaction'}
-                onButtonPress={handleDeleteTransaction}
-            >
-                <div className="flex flex-col gap-4">
-                    <p className="text-primary">Are you sure you want to delete this transaction?</p>
-                </div>
-            </Modal>
+ 
 
             {/* Scrollable Container */}
             <div className="scrollable-x overflow-y-hidden !scroll-my-0 scroll">
