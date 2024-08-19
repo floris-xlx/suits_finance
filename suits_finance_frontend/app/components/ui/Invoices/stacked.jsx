@@ -98,9 +98,10 @@ export default function Example({
   invoice
 }) {
   const { user } = useUserStore()
- 
+
   const [invoiceObject, setInvoiceObject] = useState(null)
   const [comments, setComments] = useState([])
+  console.log("comments: ", comments);
 
 
 
@@ -139,7 +140,7 @@ export default function Example({
     console.log(comments);
   }
 
-  
+
   const handleNewComments = async () => {
     if (commentField.length === 0) return
 
@@ -153,7 +154,7 @@ export default function Example({
       profile_pic: user.profile_picture,
       type: 'commented'
     })
-    
+
     setCommentField('')
     AddCommentSuccessNotification();
     await fetchComments();
@@ -610,21 +611,21 @@ export default function Example({
             <div className="lg:col-start-3">
               {/* Activity feed */}
               <h2 className="text-sm font-semibold leading-6 text-primary select-none">Activity</h2>
-              <ul role="list" className="mt-6 space-y-6">
-                {activity.map((activityItem, activityItemIdx) => (
-                  <li key={activityItem.id} className="relative flex gap-x-4">
+              <ul role="list" id="comment_box" key="comment_box"   className="mt-6 space-y-1 overflow-y-auto max-h-96">
+                {comments?.map((commentItem, commentItemIdx) => (
+                  <li key={commentItem?.comment_id} className="relative flex gap-x-2">
                     <div
                       className={classNames(
-                        activityItemIdx === activity.length - 1 ? 'h-6' : '-bottom-6',
+                        commentItemIdx === comments?.length - 1 ? 'h-6' : '-bottom-6',
                         'absolute left-0 top-0 flex w-6 justify-center'
                       )}
                     >
                       <div className="w-px bg-gray-200" />
                     </div>
-                    {activityItem.type === 'commented' ? (
+                    {commentItem?.type === 'commented' ? (
                       <>
                         <Image
-                          src={activityItem.person.imageUrl}
+                          src={commentItem?.profile_pic}
                           alt=""
                           className="relative mt-3 h-6 w-6 flex-none rounded-full bg-secondary"
                           width={24}
@@ -633,36 +634,36 @@ export default function Example({
                         <div className="flex-auto rounded-md p-3 ring-1 ring-inset ring-primary">
                           <div className="flex justify-between gap-x-4">
                             <div className="py-0.5 text-xs leading-5 text-secondary">
-                              <span className="font-medium text-primary">{activityItem?.person.name}</span> commented
+                              <span className="font-medium text-primary">{commentItem?.username}</span> commented
                             </div>
                             <time
-                              dateTime={activityItem?.dateTime}
+                              dateTime={commentItem?.datetime}
                               className="flex-none py-0.5 text-xs leading-5 text-secondary"
                             >
-                              {activityItem?.date}
+                              {new Date(commentItem?.datetime).toLocaleDateString()}
                             </time>
                           </div>
-                          <p className="text-sm leading-6 text-secondary">{activityItem?.comment}</p>
+                          <p className="text-sm leading-6 text-secondary">{commentItem?.comment}</p>
                         </div>
                       </>
                     ) : (
                       <>
                         <div className="relative flex h-6 w-6 flex-none items-center justify-center bg-primary">
-                          {activityItem?.type === 'paid' ? (
+                          {commentItem?.type === 'paid' ? (
                             <CheckCircleIcon className="h-6 w-6 text-brand-primary" aria-hidden="true" />
                           ) : (
                             <div className="h-1.5 w-1.5 rounded-full bg-secondary ring-1 ring-primary" />
                           )}
                         </div>
                         <p className="flex-auto py-0.5 text-xs leading-5 text-secondary">
-                          <span className="font-medium text-primary">{activityItem?.person.name}</span>{' '}
-                          {activityItem?.type} the invoice.
+                          <span className="font-medium text-primary">{commentItem?.username}</span>{' '}
+                          {commentItem?.type} the invoice.
                         </p>
                         <time
-                          dateTime={activityItem.dateTime}
+                          dateTime={commentItem?.datetime}
                           className="flex-none py-0.5 text-xs leading-5 text-secondary"
                         >
-                          {activityItem?.date}
+                          {new Date(commentItem?.datetime).toLocaleDateString()}
                         </time>
                       </>
                     )}
