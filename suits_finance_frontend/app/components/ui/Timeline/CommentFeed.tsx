@@ -244,8 +244,16 @@ const CommentFeed: React.FC<CommentFeedProps> = ({
                                         </div>
                                     </div>
                                     <div className="w-full  rounded-md ">
-                                        <p className={`text-sm leading-6  break-words w-[320px] ${commentItem?.mention_user_id === user.id ? ' bg-orange-primary text-primary border-l-2 border-orange-secondary rounded-r-md pl-2 w-full' : 'text-secondary'}`}>
-                                            {commentItem?.comment}
+                                        <p className={`text-sm leading-6 break-words w-[320px] ${commentItem?.mention_user_id === user.id ? ' bg-orange-primary text-primary border-l-2 border-orange-secondary rounded-r-md pl-2 w-full' : 'text-secondary'}`}>
+                                            {commentItem?.mention_user_id === user.id ? (
+                                                commentItem?.comment
+                                            ) : (
+                                                commentItem?.comment.split(' ').map((word, index) => (
+                                                    <span key={index} className={word.startsWith('@') ? 'bg-accent pl-[5px] pb-[3px] pt-[1px] mr-[4px] rounded-md' : ''}>
+                                                        {word}{' '}
+                                                    </span>
+                                                ))
+                                            )}
                                         </p>
                                     </div>
 
