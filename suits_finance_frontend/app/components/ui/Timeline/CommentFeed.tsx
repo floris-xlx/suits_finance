@@ -308,21 +308,22 @@ const CommentFeed: React.FC<CommentFeedProps> = ({
                             name="comment"
                             id="comment"
                             value={comment}
+                            
                             onChange={(e) => {
                                 if (!isMention || (isMention && e.nativeEvent.inputType === 'deleteContentBackward')) {
                                     setComment(e.target.value);
                                 }
                             }}
                             onKeyDown={(e) => {
-                                if (isMention && e.key === 'ArrowDown') {
+                                if (e.key === 'Enter' && !isMention) {
+                                    handleNewComments();
+                                } else if (isMention && e.key === 'ArrowDown') {
                                     e.preventDefault();
                                 } else {
                                     handleKeyDown(e);
                                 }
                             }}
-                            onKeyDown={handleKeyDown}
                             
-                         
                             className="block w-full resize-none border-0 bg-transparent py-1.5 text-primary placeholder:text-secondary focus:ring-0 sm:text-sm sm:leading-6 h-[50px] pointer-events-auto"
                             placeholder=""
                         />
