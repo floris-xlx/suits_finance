@@ -91,7 +91,7 @@ export async function addComment({
                 profile_pic: profile_pic,
                 type: type,
                 comment_id: commentId,
-                mention_user_id: mentionUserId // Added mentionUserId to the comment object
+                mention_user_id: comment.includes('@') ? mentionUserId : null // Added mentionUserId to the comment object if it contains '@'
             }
         ];
 
@@ -122,7 +122,7 @@ export async function addComment({
                             profile_pic: profile_pic,
                             type: type,
                             comment_id: commentId,
-                            mention_user_id: mentionUserId // Added mentionUserId to the comment object
+                            mention_user_id: comment.includes('@') ? mentionUserId : null // Added mentionUserId to the comment object if it contains '@'
                         }
                     ]
                 }
