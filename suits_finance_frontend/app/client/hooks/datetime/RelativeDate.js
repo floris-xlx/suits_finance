@@ -23,7 +23,17 @@ const seconds_in_month = 30 * seconds_in_day;
 
 
 const getRelativeTime = (isoString) => {
-  const date = new Date(isoString);
+  // Check if the input is in the format '2024-08-20T04:11:38.806Z'
+  const isoFormatRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
+  let date;
+
+  if (isoFormatRegex.test(isoString)) {
+    date = new Date(isoString);
+  } else {
+    // Fallback to parsing as a regular ISO string
+    date = new Date(isoString);
+  }
+
   const unixTime = Math.floor(date.getTime() / 1000);
   const timeDifference = currentUnixTime - unixTime;
 
