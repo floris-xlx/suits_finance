@@ -134,7 +134,7 @@ const CommentFeed: React.FC<CommentFeedProps> = ({
     const handleAddUserToComment = () => {
         setComment((comment) => {
             const newComment = `${comment.replace(/@\w*\s*$/, '')}@${tagUsers[selectedTagUser].username}`;
-            const textarea = document.getElementById('comment');
+            const textarea = document.getElementById('comment') as HTMLTextAreaElement;
             if (textarea) {
                 const cursorPosition = textarea.selectionStart + tagUsers[selectedTagUser].username.length;
                 setTimeout(() => {
@@ -145,6 +145,7 @@ const CommentFeed: React.FC<CommentFeedProps> = ({
         });
         setIsMention(false);
     }
+    
 
     const handleAddUserToCommentWithClick = (username) => {
         setComment((comment) => {

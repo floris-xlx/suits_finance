@@ -20,6 +20,7 @@ import {
 import { Modal, useModal } from '@/app/components/ui/Modals/ModalHelper';
 import { TransfersBlockedNoBalanceNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
 import Stacked from '@/app/components/ui/Invoices/stacked';
+import TradeLogTable from '@/app/components/ui/Tables/TradeLogTable';
 
 
 export default function InvoicesPage() {
