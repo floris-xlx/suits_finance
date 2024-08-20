@@ -249,7 +249,7 @@ const CommentFeed: React.FC<CommentFeedProps> = ({
                                                 commentItem?.comment
                                             ) : (
                                                 commentItem?.comment.split(' ').map((word, index) => (
-                                                    <span key={index} className={word.startsWith('@') ? 'bg-accent pl-[5px] pb-[3px] pt-[1px] mr-[4px] rounded-md' : ''}>
+                                                    <span key={index} className={word.startsWith('@') ? 'bg-accent pl-[5px] pb-[3px] pt-[1px] px-[4px] mr-[4px] rounded-md' : ''}>
                                                         {word}{' '}
                                                     </span>
                                                 ))
