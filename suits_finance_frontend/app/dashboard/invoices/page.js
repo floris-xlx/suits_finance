@@ -34,6 +34,7 @@ export default function InvoicesPage() {
   const [invoiceId, setInvoiceId] = useState(null);
   const [loadingInvoices, setLoadingInvoices] = useState(true);
   const [invoice, setInvoice] = useState(null);
+  const [noQuery, setNoQuery] = useState(false);
 
   useEffect(() => {
     const fetchInvoices = async () => {
@@ -41,9 +42,11 @@ export default function InvoicesPage() {
       const params = new URLSearchParams(search);
       const invoiceId = params.get('id');
 
+      setNoQuery(!invoiceId);
+
       if (!invoiceId) {
         setLoadingInvoices(false);
-        location.replace('/dashboard');
+        //location.replace('/dashboard');
         return;
       }
       setLoadingInvoices
@@ -54,7 +57,7 @@ export default function InvoicesPage() {
 
       if (!invoices.length) {
 
-        location.replace('/dashboard');
+        //location.replace('/dashboard');
         setLoadingInvoices(false);
       }
     };
@@ -136,7 +139,7 @@ export default function InvoicesPage() {
 
         {/* This is where the body layout goes */}
         <div className="flex flex-col gap-y-2 pt-8 h-full w-full">
-          <Stacked invoice={invoice} />
+          {!noQuery && <Stacked invoice={invoice} />}
         </div>
       </div>
 
