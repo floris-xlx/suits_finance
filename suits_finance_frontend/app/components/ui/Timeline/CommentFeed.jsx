@@ -18,26 +18,26 @@ import { AddCommentSuccessNotification } from '@/app/components/ui/Notifications
 
 import { Popover, PopoverTrigger, PopoverContent, Button } from "@nextui-org/react";
 
-interface Comment {
-    comment_id: number;
-    username: string;
-    profile_pic: string;
-    comment: string;
-    datetime: string;
-    type: string;
-    user_id: string;
-    mention_user_id: string;
-}
+// interface Comment {
+//     comment_id: number;
+//     username: string;
+//     profile_pic: string;
+//     comment: string;
+//     datetime: string;
+//     type: string;
+//     user_id: string;
+//     mention_user_id: string;
+// }
 
-interface CommentFeedProps {
-    title: string;
-    tableName: string;
-    columnValue: string;
-    columnName: string;
-    forceRefresh: boolean;
-}
+// interface CommentFeedProps {
+//     title: string;
+//     tableName: string;
+//     columnValue: string;
+//     columnName: string;
+//     forceRefresh: boolean;
+// }
 
-const CommentFeed: React.FC<CommentFeedProps> = ({
+const CommentFeed = ({
     title = 'Activity',
     tableName,
     columnValue,
@@ -45,7 +45,7 @@ const CommentFeed: React.FC<CommentFeedProps> = ({
     forceRefresh = false,
 }) => {
     const [comment, setComment] = useState<string>('');
-    const [comments, setComments] = useState<Comment[]>([]);
+    const [comments, setComments] = useState([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [isMention, setIsMention] = useState<boolean>(false);
     const [tagUsers, setTagUsers] = useState([]);
@@ -66,7 +66,7 @@ const CommentFeed: React.FC<CommentFeedProps> = ({
             table: tableName,
             columnName: columnName,
             columnValue: columnValue,
-        }) as Comment[]; // Ensure the fetched comments are of type Comment
+        }) ; // Ensure the fetched comments are of type Comment
         setLoading(false);
         setComments(fetchedComments || []);
     };
@@ -98,7 +98,7 @@ const CommentFeed: React.FC<CommentFeedProps> = ({
         AddCommentSuccessNotification(); // Notify user of success
     };
 
-    const handleDeleteComment = async (commentId: string) => {
+    const handleDeleteComment = async (commentId) => {
         const result = await deleteComment({
             table: tableName,
             commentId: commentId,
@@ -134,7 +134,7 @@ const CommentFeed: React.FC<CommentFeedProps> = ({
     const handleAddUserToComment = () => {
         setComment((comment) => {
             const newComment = `${comment.replace(/@\w*\s*$/, '')}@${tagUsers[selectedTagUser].username}`;
-            const textarea = document.getElementById('comment') as HTMLTextAreaElement;
+            const textarea = document.getElementById('comment');
             if (textarea) {
                 const cursorPosition = textarea.selectionStart + tagUsers[selectedTagUser].username.length;
                 setTimeout(() => {
