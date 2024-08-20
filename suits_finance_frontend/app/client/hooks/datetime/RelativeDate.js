@@ -52,7 +52,7 @@ const getRelativeTime = (isoString) => {
     return `${Math.floor(timeDifference / seconds_in_minute)} Minutes ago`;
 
   } else if (timeDifference < seconds_in_day) {
-    return `${Math.floor(timeDifference / seconds_in_hour)} Hours ago`;
+    return `${Math.floor(timeDifference / seconds_in_hour)} ${Math.floor(timeDifference / seconds_in_hour) === 1 ? 'Hour' : 'Hours'} ago`;
 
   } else if (timeDifference < seconds_in_week) {
     if (timeDifference < seconds_in_day * 2) {

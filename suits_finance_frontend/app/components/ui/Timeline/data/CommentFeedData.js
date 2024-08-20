@@ -168,6 +168,16 @@ export async function deleteComment({
     return updatedData;
 }
 
+export async function getAllUsers() {
+    const { data, error } = await supabase
+        .from('users')
+        .select('username');
+
+    if (error) throw error;
+
+    return data;
+}
+
 
 /**
  * Generates a random ID for comments.
