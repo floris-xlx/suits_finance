@@ -16,6 +16,8 @@ import { fetchComments, addComment, deleteComment } from '@/app/components/ui/Ti
 // notifications
 import { AddCommentSuccessNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
 
+import {Popover, PopoverTrigger, PopoverContent, Button} from "@nextui-org/react";
+
 interface Comment {
     comment_id: number;
     username: string;
@@ -86,7 +88,7 @@ const CommentFeed: React.FC<CommentFeedProps> = ({
             columnName: columnName,
             columnValue: columnValue,
         })
-        console.log(result);
+
         // Fetch comments again to update the UI
         await handleFetchComments();
     };
