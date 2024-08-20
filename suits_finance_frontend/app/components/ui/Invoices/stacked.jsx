@@ -153,22 +153,32 @@ export default function InvoiceComponent({ invoice }) {
             <div className="mx-auto flex flex-col gap-y-4 sm:flex-row  w-full sm:items-center justify-between gap-x-8 lg:mx-0 lg:max-w-none">
 
               <div className="flex items-center gap-x-6">
-                <Image
-                  src="https://xylex.ams3.cdn.digitaloceanspaces.com/profilePics/xylexIcon.png"
-                  alt=""
-                  className="h-16 w-16 flex-none rounded-md ring-1 ring-gray-900/10"
-                  width={64}
-                  height={64}
-                />
+
+                <div className="h-[64px] w-[64px] ">
+                  {invoiceObject?.company_profile_pic ? (
+                    <Image
+                      src={invoiceObject?.company_profile_pic}
+                      alt=""
+                      className="h-16 w-16 flex-none rounded-md ring-1 ring-gray-900/10"
+                      width={64}
+                      height={64}
+                    />
+                  ) : (
+                    <SkeletonLoader />
+                  )}
+                </div>
+
                 <h1>
-                  <div className="text-sm leading-6  bg-blue-primary text-blue border border-blue-500/30 rounded-md px-1">
-                    <div className="h-[24px] w-[140px] ">
-                      {invoiceObject?.invoice_number ? (
+
+                  <div className="h-[24px] w-[140px] ">
+                    {invoiceObject?.invoice_number ? (
+                      <div className="text-sm leading-6 px-2 bg-blue-primary text-blue border border-blue-500/30 rounded-md">
                         <div>{`Invoice #000${invoiceObject.invoice_number}`}</div>
-                      ) : (
-                        <SkeletonLoader />
-                      )}
-                    </div>
+                      </div>
+                    ) : (
+                      <SkeletonLoader />
+                    )}
+
                   </div>
                   <div className="mt-1 text-base font-semibold leading-6 text-primary">
                     <div className="h-[24px] w-[170px] mt-[7px]">
@@ -342,7 +352,7 @@ export default function InvoiceComponent({ invoice }) {
                         <div>
                           {new Date(
                             invoiceObject?.issue_date.replace(
-                              /(\d{2})-(\d{2})-(\d{4})/,
+                              /(\d{1,2})-(\d{1,2})-(\d{4})/,
                               '$2/$1/$3'
                             )
                           ).toLocaleDateString('en-GB', {
@@ -365,7 +375,7 @@ export default function InvoiceComponent({ invoice }) {
                         <div>
                           {new Date(
                             invoiceObject?.due_date.replace(
-                              /(\d{2})-(\d{2})-(\d{4})/,
+                              /(\d{1,2})-(\d{1,2})-(\d{4})/,
                               '$2/$1/$3'
                             )
                           ).toLocaleDateString('en-GB', {
@@ -432,10 +442,30 @@ export default function InvoiceComponent({ invoice }) {
                         <SkeletonLoader />
                       )}
                     </div>
-                    <br />
-                    886 Walter Street
-                    <br />
-                    New York, NY 12345
+                    <div className="h-[24px] w-[110px] mt-2">
+                      {invoiceObject?.to_address_line_1 ? (
+                        <div>{invoiceObject?.to_address_line_1}</div>
+                      ) : (
+                        <SkeletonLoader />
+                      )}
+                    </div>
+                    <div className="h-[24px] w-[140px] mt-1">
+                      {invoiceObject?.to_state ? (
+                        <div>
+                          {invoiceObject?.to_state},{' '}
+                          {invoiceObject?.to_postal_code}
+                        </div>
+                      ) : (
+                        <SkeletonLoader />
+                      )}
+                    </div>
+                    <div className="h-[24px] w-[110px] mt-1">
+                      {invoiceObject?.to_country ? (
+                        <div>{invoiceObject?.to_country}</div>
+                      ) : (
+                        <SkeletonLoader />
+                      )}
+                    </div>
                   </dd>
                 </div>
               </dl>
@@ -448,43 +478,10 @@ export default function InvoiceComponent({ invoice }) {
                 </colgroup>
                 <thead className="border-b border-primary text-primary">
                   <tr>
-                    {/* <th scope="col" className="px-0 py-3 font-semibold">
-                      Projects
-                    </th>
-                    <th scope="col" className="hidden py-3 pl-8 pr-0 text-right font-semibold sm:table-cell">
-                      Hours
-                    </th>
-                    <th scope="col" className="hidden py-3 pl-8 pr-0 text-right font-semibold sm:table-cell">
-                      Rate
-                    </th> 
-                    <th scope="col" className="py-3 pl-8 pr-0 text-right font-semibold">
-                      Price
-                    </th>*/}
+
                   </tr>
                 </thead>
-                <tbody>
-                  {invoice?.items?.map((item) => (
-                    <tr key={item?.id} className="border-b border-primary">
-                      <td className="max-w-0 px-0 py-5 align-top">
-                        <div className="truncate font-medium text-primary">
-                          {item?.title}
-                        </div>
-                        <div className="truncate text-secondary">
-                          {item?.description}
-                        </div>
-                      </td>
-                      <td className="hidden py-5 pl-8 pr-0 text-right align-top tabular-nums text-primary sm:table-cell">
-                        {item?.hours}
-                      </td>
-                      <td className="hidden py-5 pl-8 pr-0 text-right align-top tabular-nums text-primary sm:table-cell">
-                        {item?.rate}
-                      </td>
-                      <td className="py-5 pl-8 pr-0 text-right align-top tabular-nums text-primary">
-                        {item?.price}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
+
                 <tfoot>
                   <tr>
                     <th
@@ -504,7 +501,7 @@ export default function InvoiceComponent({ invoice }) {
                       <div className="h-[24px] w-[60px]">
                         {invoiceObject?.subtotal ? (
                           <div className="font-medium text-primary">
-                            {invoiceObject?.subtotal}
+                            {invoiceObject?.subtotal} {CurrencySymbol(invoiceObject?.currency)}
                           </div>
                         ) : (
                           <SkeletonLoader />
@@ -530,7 +527,7 @@ export default function InvoiceComponent({ invoice }) {
                       <div className="h-[24px] w-[60px]">
                         {invoiceObject?.fee ? (
                           <div className="font-medium text-primary">
-                            {invoiceObject?.fee}
+                            {invoiceObject?.fee} {CurrencySymbol(invoiceObject?.currency)}
                           </div>
                         ) : (
                           <SkeletonLoader />
