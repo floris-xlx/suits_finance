@@ -18,25 +18,6 @@ import { AddCommentSuccessNotification } from '@/app/components/ui/Notifications
 
 import { Popover, PopoverTrigger, PopoverContent, Button } from "@nextui-org/react";
 
-// interface Comment {
-//     comment_id: number;
-//     username: string;
-//     profile_pic: string;
-//     comment: string;
-//     datetime: string;
-//     type: string;
-//     user_id: string;
-//     mention_user_id: string;
-// }
-
-// interface CommentFeedProps {
-//     title: string;
-//     tableName: string;
-//     columnValue: string;
-//     columnName: string;
-//     forceRefresh: boolean;
-// }
-
 const CommentFeed = ({
     title = 'Activity',
     tableName,
@@ -44,10 +25,10 @@ const CommentFeed = ({
     columnName,
     forceRefresh = false,
 }) => {
-    const [comment, setComment] = useState<string>('');
+    const [comment, setComment] = useState('');
     const [comments, setComments] = useState([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [isMention, setIsMention] = useState<boolean>(false);
+    const [loading, setLoading] = useState(true);
+    const [isMention, setIsMention] = useState(false);
     const [tagUsers, setTagUsers] = useState([]);
     const [selectedTagUser, setSelectedTagUser] = useState(0);
     console.log("setSelectedTagUser", selectedTagUser);
@@ -66,7 +47,7 @@ const CommentFeed = ({
             table: tableName,
             columnName: columnName,
             columnValue: columnValue,
-        }) ; // Ensure the fetched comments are of type Comment
+        });
         setLoading(false);
         setComments(fetchedComments || []);
     };
@@ -121,9 +102,6 @@ const CommentFeed = ({
         if (commentBox) {
             commentBox.scrollTop = commentBox.scrollHeight;
         }
-
-
-
     }, [comments]);
 
     useEffect(() => {

@@ -13,7 +13,7 @@ import { UserDeleteRoleSuccessNotification } from '@/app/components/ui/Notificat
 import { ValueCopyChipInlineLabel } from '@/app/components/ui/Chips/ValueCopyChip';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { UserUnfrozenSuccessNotification, UserFrozenFailNotification, UserFrozenSuccessNotification, UserUnfrozenFailNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
-
+import Image from 'next/image';
 import { useUserStore } from '@/app/stores/stores';
 
 import AddAuditLogEntry from '@/app/client/supabase/auditLog.ts';
@@ -279,11 +279,12 @@ const MemberTrade = ({ shouldUpdateUsers, setShouldUpdateUsers }) => {
                         className="flex relative justify-center items-center box-border overflow-hidden align-middle z-0 outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 w-10 h-10 text-tiny bg-default text-default-foreground rounded-large"
                     >
                         {user.user && user.user.profile_pic ? (
-                            <img
+                            <Image
                                 src={user.user.profile_pic}
                                 className="flex object-cover w-full h-full transition-opacity !duration-500 opacity-0 data-[loaded=true]:opacity-100"
                                 alt={user.user.full_name}
                                 data-loaded="true"
+                            
                             />
                         ) : (
                             <div className="flex items-center justify-center w-full h-full bg-brand-primary rounded-md">

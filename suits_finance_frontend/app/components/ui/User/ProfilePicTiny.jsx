@@ -1,12 +1,15 @@
 import React from 'react';
+import Image from 'next/image';
 
 const ProfilePicTiny = ({ profilePicture }) => {
   return (
     <>
       {profilePicture ? (
-        <img
+        <Image
           src={profilePicture}
           alt="Profile picture"
+          width={32}
+          height={32}
           className="w-8 h-8 rounded-md"
         />
       ) : (

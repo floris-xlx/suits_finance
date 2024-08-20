@@ -7,7 +7,7 @@ import { SuccessSyncValueNotification, DuplicateValueFailNotification } from "@/
 import SkeletonLoader from "@/app/components/ui/Loading/SkeletonLoader";
 import { SetKeyLocalStorage, GetKeyLocalStorage } from "@/app/client/caching/LocalStorageRouter";
 import { IsEmailUnique } from "../../client/supabase/SupabaseUserData";
-import { AddAuditLogEntry } from "@/app/client/supabase/auditLog.ts";
+import AddAuditLogEntry from "@/app/client/supabase/auditLog.ts";
 
 import PropTypes from 'prop-types';
 

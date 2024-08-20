@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import SkeletonLoader from '@/app/components/ui/Loading/SkeletonLoader';
 
 import { useLoadingStore } from '@/app/stores/stores';
@@ -23,11 +24,6 @@ const CreditCard = ({
     }
 
     const lastFourDigits = cardNumber.slice(-4);
-
-
-
-
-
 
     return (
         <div className="flex justify-center items-center scale-[75%] xs:scale-75 sm:scale-80 md:scale-80 lg:scale-80 xl:scale-85 flex-col gap-y-1 select-none w-fit mx-auto">
@@ -61,7 +57,7 @@ const CreditCard = ({
                                 )}
                             </p>
                         </div>
-                        <img className="w-14 h-14" src="https://i.imgur.com/bbPHJVe.png" />
+                        <Image className="w-14 h-14" src="https://i.imgur.com/bbPHJVe.png" alt="Card Logo" width={56} height={56} />
                     </div>
                     <div className="pt-1">
                         <p className="font-light select-none">

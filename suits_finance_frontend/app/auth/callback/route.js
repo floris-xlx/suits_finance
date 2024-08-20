@@ -1,11 +1,11 @@
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 
 export async function GET(request) {
   try {
-    const requestUrl = new URL(request.url)
-    const code = requestUrl.searchParams.get('code')
+    const url = new URL(request.url)
+    const code = url.searchParams.get('code')
 
     if (code) {
       const cookieStore = cookies()
@@ -19,4 +19,3 @@ export async function GET(request) {
     return new Response('Internal Server Error', { status: 500 })
   }
 }
-

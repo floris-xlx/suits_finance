@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { GetProfilePicById, GetUserNameById } from "@/app/client/supabase/SupabaseUserData.js";
 import { useRequireAuth } from "@/app/auth/hooks/useRequireAuth";
 import { SetKeyLocalStorage, GetKeyLocalStorage } from "@/app/client/caching/LocalStorageRouter";
@@ -50,7 +51,7 @@ const ProfilePic = ({
 
                 <div className="mt-2 flex flex-row">
                     <div>
-                        <img src={profilePic} alt="Profile" className="h-[24px] w-[24px] rounded-full" />
+                        <Image src={profilePic} alt="Profile" width={24} height={24} className="rounded-full" />
                     </div>
 
                     {showUsername && (

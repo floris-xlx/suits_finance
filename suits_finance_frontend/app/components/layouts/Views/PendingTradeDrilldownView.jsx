@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
+import Image from 'next/image';
 
 import SwitchInBlock from '@/app/components/ui/Switches/SwitchInBlock';
 import ButtonPrimary from '@/app/components/ui/Buttons/ButtonPrimary';
@@ -167,9 +168,11 @@ const PendingTradeDrilldownView = ({
 
                             <div className="border border-primary bg-input-primary rounded-md mt-[25px] select-none">
                                 {chartBase64 ? (
-                                    <img
+                                    <Image
                                         src={`data:image/png;base64,${chartBase64}`}
                                         alt="chart"
+                                        width={532}
+                                        height={300}
                                         className="h-[300px] max-w-[380px] sm:max-w-[532px] object-cover rounded-md select-none"
                                     />
                                 ) : chartLoading && (
