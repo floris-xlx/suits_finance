@@ -26,14 +26,9 @@ import {
   AddCommentSuccessNotification,
   InvoiceApprovedSuccessNotification,
 } from '@/app/components/ui/Notifications/Notifications.jsx';
-import { getRelativeTime } from '@/app/client/hooks/datetime/RelativeDate';
 import CommentFeed from '@/app/components/ui/Timeline/CommentFeed';
 
 import { useUserStore } from '@/app/stores/stores';
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
 
 export default function InvoiceComponent({ invoice }) {
   const { user } = useUserStore();
@@ -41,7 +36,6 @@ export default function InvoiceComponent({ invoice }) {
   const [invoiceObject, setInvoiceObject] = useState(null);
   const [comments, setComments] = useState([]);
   const [invoicePaid, setInvoicePaid] = useState(false);
-  const [commentField, setCommentField] = useState('');
   const [invoiceStatus, setInvoiceStatus] = useState('');
   const [forceRefresh, setForceRefresh] = useState(false);
 
@@ -127,24 +121,6 @@ export default function InvoiceComponent({ invoice }) {
     }
   }, [comments]);
 
-  const handleNewComments = async () => {
-    if (commentField.length === 0) return;
-
-    const name = user.full_name || user.username;
-
-    await addInvoiceComment({
-      invoiceId: invoice?.invoice_id,
-      comment: commentField,
-      userId: user.id,
-      username: name,
-      profile_pic: user.profile_picture,
-      type: 'commented',
-    });
-
-    setCommentField('');
-    AddCommentSuccessNotification();
-    await fetchComments();
-  };
 
   const handleNewCommentInvoiceAuthorized = async () => {
     const name = user.full_name || user.username;
@@ -162,6 +138,7 @@ export default function InvoiceComponent({ invoice }) {
     });
 
     await fetchComments();
+    setForceRefresh(!forceRefresh);
   };
 
   return (
@@ -173,8 +150,8 @@ export default function InvoiceComponent({ invoice }) {
           </div>
 
           <div className="mx-auto  py-10 sm:ml-[65px]">
-            <div className="mx-auto flex  w-full items-center justify-between gap-x-8 lg:mx-0 lg:max-w-none">
-              
+            <div className="mx-auto flex flex-col gap-y-4 sm:flex-row  w-full sm:items-center justify-between gap-x-8 lg:mx-0 lg:max-w-none">
+
               <div className="flex items-center gap-x-6">
                 <Image
                   src="https://xylex.ams3.cdn.digitaloceanspaces.com/profilePics/xylexIcon.png"
@@ -204,13 +181,13 @@ export default function InvoiceComponent({ invoice }) {
                   </div>
                 </h1>
               </div>
-              
+
               <div className="flex items-center gap-x-4 sm:gap-x-6">
-                
+
                 {invoicePaid ? (
                   <button
                     disabled={true}
-                    className="rounded-md bg-brand-disabled px-3 py-2 text-sm font-semibold text-gray-200 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:transition flex-row flex items-center gap-x-2 select-none"
+                    className="rounded-md bg-brand-disabled px-3 py-2 text-sm font-semibold text-gray-200 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:transition flex-row flex items-center gap-x-2 select-none min-w-full"
                   >
                     <CheckIcon
                       className="h-6 w-6 text-gray-200"
@@ -221,7 +198,7 @@ export default function InvoiceComponent({ invoice }) {
                 ) : (
                   <button
                     onClick={handleNewCommentInvoiceAuthorized}
-                    className="rounded-md bg-green-primary px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-green-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:transition flex-row flex items-center gap-x-2"
+                    className="rounded-md bg-green-primary px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-green-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:transition flex-row flex items-center gap-x-2 min-w-full"
                   >
                     <CheckIcon
                       className="h-6 w-6 text-black"
@@ -231,7 +208,7 @@ export default function InvoiceComponent({ invoice }) {
                   </button>
                 )}
 
-               
+
               </div>
             </div>
           </div>
