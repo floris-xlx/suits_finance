@@ -66,7 +66,7 @@ export default function DashboardPage() {
     fetchAdminState();
 }, [userId]);
 
-console.log(isSuperAdmin);
+
   useEffect(() => {
     const checkIfUserFrozen = async () => {
       const frozen = await isFrozenUserId(user.id);
