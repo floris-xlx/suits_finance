@@ -51,6 +51,7 @@ export async function fetchComments({
  * @param {string} params.username - The username of the user adding the comment.
  * @param {string} params.profile_pic - The profile picture URL of the user.
  * @param {string} params.type - The type of comment being added.
+ * @param {string} params.mentionUserId - The ID of the user being mentioned in the comment.
  * @returns {Promise<Object>} - Returns the updated comment data.
  * @throws {Error} - Throws an error if the add operation fails.
  */
@@ -62,7 +63,8 @@ export async function addComment({
     userId,
     username,
     profile_pic,
-    type
+    type,
+    mentionUserId // Added mentionUserId parameter
 }) {
     const commentId = `${columnValue}-${randomId()}`;
 
@@ -88,7 +90,8 @@ export async function addComment({
                 username: username,
                 profile_pic: profile_pic,
                 type: type,
-                comment_id: commentId
+                comment_id: commentId,
+                mention_user_id: mentionUserId // Added mentionUserId to the comment object
             }
         ];
 
@@ -118,7 +121,8 @@ export async function addComment({
                             username: username,
                             profile_pic: profile_pic,
                             type: type,
-                            comment_id: commentId
+                            comment_id: commentId,
+                            mention_user_id: mentionUserId // Added mentionUserId to the comment object
                         }
                     ]
                 }

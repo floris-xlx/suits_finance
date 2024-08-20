@@ -25,6 +25,8 @@ interface Comment {
     comment: string;
     datetime: string;
     type: string;
+    user_id: string;
+    mention_user_id: string;
 }
 
 interface CommentFeedProps {
@@ -89,6 +91,7 @@ const CommentFeed: React.FC<CommentFeedProps> = ({
             username: user?.username,
             profile_pic: user?.profile_picture,
             type: 'commented',
+            mentionUserId: tagUsers[selectedTagUser]?.user_id,
         });
         await handleFetchComments(); // Fetch comments again to update the UI
         setComment(''); // Clear the input field
@@ -143,6 +146,14 @@ const CommentFeed: React.FC<CommentFeedProps> = ({
         setIsMention(false);
     }
 
+    const handleAddUserToCommentWithClick = (username) => {
+        setComment((comment) => {
+            const newComment = `${comment.replace(/@\w*\s*$/, '')}@${username}`;
+            return newComment;
+        });
+        setIsMention(false);
+    }
+
 
     const doesCommentMention = () => {
         const mentionRegex = /@\w+/g;
@@ -164,10 +175,13 @@ const CommentFeed: React.FC<CommentFeedProps> = ({
 
         if (e.key === 'ArrowDown') {
             setSelectedTagUser((prev) => (prev + 1) % tagUsers.length);
+            e.preventDefault(); // Prevent default behavior to ensure the arrow key works
         } else if (e.key === 'ArrowUp') {
             setSelectedTagUser((prev) => (prev - 1 + tagUsers.length) % tagUsers.length);
+            e.preventDefault(); // Prevent default behavior to ensure the arrow key works
         } else if (e.key === 'Enter') {
             handleAddUserToComment();
+            e.preventDefault(); // Prevent default behavior to ensure the enter key works
         }
     };
 
@@ -229,121 +243,124 @@ const CommentFeed: React.FC<CommentFeedProps> = ({
 
                                         </div>
                                     </div>
-                                    <p className="text-sm leading-6 text-secondary break-words w-[320px] ">
-                                        {commentItem?.comment}
+                                    <div className="w-full  rounded-md ">
+                                        <p className={`text-sm leading-6  break-words w-[320px] ${commentItem?.mention_user_id === user.id ? 'bg-orange-primary text-primary rounded-md pl-2' : 'text-secondary'}`}>
+                                            {commentItem?.comment}
+                                        </p>
+                                    </div>
+
+                                    </div>
+                                </>
+                                ) : (
+                                <>
+                                    <div className="relative flex h-6 w-6 flex-none items-center justify-center bg-primary ">
+                                        {commentItem?.type === 'paid' ? (
+                                            <CheckCircleIcon
+                                                className="h-6 w-6 text-brand-primary"
+                                                aria-hidden="true"
+                                            />
+                                        ) : (
+                                            <div className="h-1.5 w-1.5 rounded-full bg-secondary ring-1 ring-primary" />
+                                        )}
+                                    </div>
+                                    <p className="flex-auto py-0.5 text-xs leading-5 text-secondary ml-3  ">
+                                        <span className="font-medium text-primary select-none">
+                                            {commentItem?.username}
+                                        </span>{' '}
+                                        {commentItem?.type} the invoice.
                                     </p>
-
-
-                                </div>
-                            </>
-                        ) : (
-                            <>
-                                <div className="relative flex h-6 w-6 flex-none items-center justify-center bg-primary ">
-                                    {commentItem?.type === 'paid' ? (
-                                        <CheckCircleIcon
-                                            className="h-6 w-6 text-brand-primary"
-                                            aria-hidden="true"
-                                        />
-                                    ) : (
-                                        <div className="h-1.5 w-1.5 rounded-full bg-secondary ring-1 ring-primary" />
-                                    )}
-                                </div>
-                                <p className="flex-auto py-0.5 text-xs leading-5 text-secondary ml-3  ">
-                                    <span className="font-medium text-primary select-none">
-                                        {commentItem?.username}
-                                    </span>{' '}
-                                    {commentItem?.type} the invoice.
-                                </p>
-                                <time
-                                    dateTime={commentItem?.datetime}
-                                    className="flex-none py-0.5 text-xs leading-5 text-secondary pr-[4px] select-none"
-                                >
-                                    {getRelativeTime(commentItem?.datetime)}
-                                </time>
-                            </>
+                                    <time
+                                        dateTime={commentItem?.datetime}
+                                        className="flex-none py-0.5 text-xs leading-5 text-secondary pr-[4px] select-none"
+                                    >
+                                        {getRelativeTime(commentItem?.datetime)}
+                                    </time>
+                                </>
                         )}
-                    </li>
+                            </li>
                 ))}
-            </ul>
+                    </ul>
 
-            {/* New comment form */}
-            {isMention && (
-                <div className="pl-[36px]">
-                    <div className="w-full mt-1 border border-primary rounded-md min-h-[50px] mb-2 flex p-2 px-3 flex-col gap-y-3 overflow-y-scroll"
-                        onKeyDown={handleKeyDown}
-                        tabIndex={0}
-                    >
-                        {tagUsers && tagUsers.map((user, index) => (
-                            <span
-                                key={user.username}
-                                className={`text-sm text-primar rounded-md p-2 cursor-pointer hover:bg-accent select-none ${selectedTagUser === index ? 'bg-blue-300/40 ' : ''}`}
+            {/* New comment form */ }
+            { isMention && (
+                        <div className="pl-[36px]">
+                            <div className="w-full mt-1 border border-primary rounded-md min-h-[50px] mb-2 flex p-2 px-3 flex-col gap-y-3 overflow-y-scroll"
+                                onKeyDown={handleKeyDown}
+                                
+                                tabIndex={0}
                             >
-                                {user.username}
-                            </span>
-                        ))}
+                                {tagUsers && tagUsers.map((user, index) => (
+                                    <button
+                                        key={user.username}
+                                        onClick={() => handleAddUserToCommentWithClick(user.username)}
+                                        className={`text-sm text-primary rounded-md p-2 cursor-pointer hover:bg-accent select-none ${selectedTagUser === index ? 'bg-blue-300/40 ' : ''}`}
+                                    >
+                                        {user.username}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                <div className=" flex gap-x-3 mt-2">
+                    <Image
+                        src={user?.profile_picture}
+                        alt=""
+                        className="h-6 w-6 flex-none rounded-full bg-secondary"
+                        width={24}
+                        height={24}
+                    />
+
+                    <div className="relative flex-auto">
+
+                        <div className="p-2 px-4 overflow-hidden rounded-lg pb-12 shadow-sm ring-1 ring-inset ring-primary focus-within:ring-2 focus-within:ring-indigo-600 border border-primary">
+
+
+                            <label htmlFor="comment" className="sr-only">
+                                Add your comment
+                            </label>
+
+
+                            <textarea
+                                rows={2}
+                                name="comment"
+                                id="comment"
+                                value={comment}
+
+                                onChange={(e) => {
+                                    if (!isMention || (isMention && e.nativeEvent.inputType === 'deleteContentBackward')) {
+                                        setComment(e.target.value);
+                                    }
+                                }}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' && !isMention) {
+                                        handleNewComments();
+                                    } else if (isMention && e.key === 'ArrowDown') {
+                                        e.preventDefault();
+                                    } else {
+                                        handleKeyDown(e);
+                                    }
+                                }}
+
+                                className="block w-full resize-none border-0 bg-transparent py-1.5 text-primary placeholder:text-secondary focus:ring-0 sm:text-sm sm:leading-6 h-[50px] pointer-events-auto"
+                                placeholder=""
+                            />
+
+
+                        </div>
+
+                        <div className="absolute inset-x-0 bottom-0 flex justify-end py-2 pl-3 pr-2">
+                            <button
+                                onClick={handleNewComments}
+                                type="button"
+                                className="rounded-md bg-input-primary px-2.5 py-1.5 text-sm font-normal text-primary shadow-sm  ring-primary hover:bg-accent border border-primary hover:transition select-none"
+                            >
+                                Comment
+
+                            </button>
+
+                        </div>
                     </div>
                 </div>
-            )}
-            <div className=" flex gap-x-3">
-                <Image
-                    src={user?.profile_picture}
-                    alt=""
-                    className="h-6 w-6 flex-none rounded-full bg-secondary"
-                    width={24}
-                    height={24}
-                />
-
-                <div className="relative flex-auto">
-
-                    <div className="p-2 px-4 overflow-hidden rounded-lg pb-12 shadow-sm ring-1 ring-inset ring-primary focus-within:ring-2 focus-within:ring-indigo-600 border border-primary">
-
-
-                        <label htmlFor="comment" className="sr-only">
-                            Add your comment
-                        </label>
-
-
-                        <textarea
-                            rows={2}
-                            name="comment"
-                            id="comment"
-                            value={comment}
-                            
-                            onChange={(e) => {
-                                if (!isMention || (isMention && e.nativeEvent.inputType === 'deleteContentBackward')) {
-                                    setComment(e.target.value);
-                                }
-                            }}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter' && !isMention) {
-                                    handleNewComments();
-                                } else if (isMention && e.key === 'ArrowDown') {
-                                    e.preventDefault();
-                                } else {
-                                    handleKeyDown(e);
-                                }
-                            }}
-                            
-                            className="block w-full resize-none border-0 bg-transparent py-1.5 text-primary placeholder:text-secondary focus:ring-0 sm:text-sm sm:leading-6 h-[50px] pointer-events-auto"
-                            placeholder=""
-                        />
-
-
-                    </div>
-
-                    <div className="absolute inset-x-0 bottom-0 flex justify-end py-2 pl-3 pr-2">
-                        <button
-                            onClick={handleNewComments}
-                            type="button"
-                            className="rounded-md bg-input-primary px-2.5 py-1.5 text-sm font-normal text-primary shadow-sm  ring-primary hover:bg-accent border border-primary hover:transition select-none"
-                        >
-                            Comment
-
-                        </button>
-
-                    </div>
-                </div>
-            </div>
         </div>
     );
 };

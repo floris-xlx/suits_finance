@@ -54,6 +54,7 @@ module.exports = {
         'green-secondary': "var(--color-green-secondary)",
         'green-accent': "var(--color-green-accent)",
         'blue-primary': "var(--color-blue-primary)",
+        'orange-primary': "var(--color-orange-primary)",  
       },
       textColor: {
         primary: "var(--color-text-primary)",

@@ -19,6 +19,7 @@
   --color-red-highlight: #ae0808f6;
   --color-red-accent: #e4212123;
   --color-red-text: #e86161;
+  --color-orange-primary: #fcc0609c;
 
   --color-green-primary: #2fd42f;
   --color-green-secondary: #3cc13c;
@@ -48,7 +49,7 @@
 
   /* Text colors */
   --color-text-primary: #000;
-  --color-text-secondary: #4f4f4f;
+  --color-text-secondary: #6e6e6e;
   --color-text-accent: #686767;
 
   /* Icon fill colors */
@@ -82,7 +83,8 @@
   --color-hover-primary: #1f1f1f;
   --color-border-primary: #171717;
   --color-input-primary: #0a0a0a;
-
+  --color-orange-primary: #e9971460;
+  
   /* Brand Colors */
   --color-brand-accent: #523270;
 
