@@ -350,7 +350,7 @@ export default function InvoiceComponent({ invoice }) {
                       <div className="h-[24px] w-[140px]">
                         {typeof invoiceObject?.payment_method ? (
                           <div>
-                            {invoiceObject?.paid ? (
+                            {invoiceObject?.paid || invoicePaid ? (
                               `Paid with ${invoiceObject?.payment_method}`
                             ) : (
                               'Awaiting payment'
