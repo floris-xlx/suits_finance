@@ -55,6 +55,7 @@ module.exports = {
         'green-accent': "var(--color-green-accent)",
         'blue-primary': "var(--color-blue-primary)",
         'orange-primary': "var(--color-orange-primary)",  
+        'orange-secondary': "var(--color-orange-secondary)",
       },
       textColor: {
         primary: "var(--color-text-primary)",
@@ -70,6 +71,9 @@ module.exports = {
         primary: "var(--color-border-primary)",
         secondary: "var(--color-border-secondary)",
         accent: "var(--color-border-accent)",
+        'orange': "var(--color-orange-primary)",
+
+        'orange-secondary': "var(--color-orange-secondary)",
       },
       ringColor: {
         primary: "var(--color-ring-primary)",

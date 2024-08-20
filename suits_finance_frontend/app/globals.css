@@ -19,7 +19,9 @@
   --color-red-highlight: #ae0808f6;
   --color-red-accent: #e4212123;
   --color-red-text: #e86161;
-  --color-orange-primary: #fcc0609c;
+  --color-orange-primary: #fcc56d54;
+  --color-orange-secondary: #fcbf5c;
+
 
   --color-green-primary: #2fd42f;
   --color-green-secondary: #3cc13c;
@@ -84,6 +86,7 @@
   --color-border-primary: #171717;
   --color-input-primary: #0a0a0a;
   --color-orange-primary: #e9971460;
+  --color-orange-secondary: #e99714;
   
   /* Brand Colors */
   --color-brand-accent: #523270;

@@ -244,7 +244,7 @@ const CommentFeed: React.FC<CommentFeedProps> = ({
                                         </div>
                                     </div>
                                     <div className="w-full  rounded-md ">
-                                        <p className={`text-sm leading-6  break-words w-[320px] ${commentItem?.mention_user_id === user.id ? 'bg-orange-primary text-primary rounded-md pl-2' : 'text-secondary'}`}>
+                                        <p className={`text-sm leading-6  break-words w-[320px] ${commentItem?.mention_user_id === user.id ? ' bg-orange-primary text-primary border-l-2 border-orange-secondary rounded-r-md pl-2 w-full' : 'text-secondary'}`}>
                                             {commentItem?.comment}
                                         </p>
                                     </div>
