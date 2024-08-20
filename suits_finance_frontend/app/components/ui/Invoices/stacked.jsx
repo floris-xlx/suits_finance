@@ -21,6 +21,7 @@ import {
   getInvoicePaidStatus,
   updateInvoicePaidStatus,
   getInvoiceStatus,
+  getInvoiceAuthorizer
 } from '@/app/client/supabase/SupabaseUserData';
 import {
   AddCommentSuccessNotification,
@@ -38,6 +39,7 @@ export default function InvoiceComponent({ invoice }) {
   const [invoicePaid, setInvoicePaid] = useState(false);
   const [invoiceStatus, setInvoiceStatus] = useState('');
   const [forceRefresh, setForceRefresh] = useState(false);
+  const [invoiceAuthorizer, setInvoiceAuthorizer] = useState('');
 
   useEffect(() => {
     if (!invoice) return;
@@ -55,6 +57,11 @@ export default function InvoiceComponent({ invoice }) {
   const fetchInvoicePaidStatus = async () => {
     const status = await getInvoicePaidStatus(invoice?.invoice_id);
     setInvoicePaid(status);
+
+    setInvoiceObject(prevState => ({
+      ...prevState,
+      paid: status,
+    }));
   };
 
   const toggleInvoicePaidStatus = async () => {
@@ -71,6 +78,8 @@ export default function InvoiceComponent({ invoice }) {
     await updateInvoicePaidStatus({
       invoiceId: invoice.invoice_id,
       isPaid: newStatus,
+      authorizerName: user.full_name || user.username,
+      authorizerUserId: user.id,
     });
     setInvoicePaid(newStatus);
 
@@ -82,6 +91,24 @@ export default function InvoiceComponent({ invoice }) {
   useEffect(() => {
     if (invoice?.invoice_id) {
       fetchInvoicePaidStatus();
+    }
+  }, [invoice]);
+
+  const fetchInvoiceAuthorizer = async () => {
+    if (!invoice?.invoice_id) return;
+
+    const authorizer = await getInvoiceAuthorizer({ invoiceId: invoice.invoice_id });
+    if (authorizer) {
+      setInvoiceObject(prevState => ({
+        ...prevState,
+        authorizer_name: authorizer.authorizer_name,
+      }));
+    }
+  };
+
+  useEffect(() => {
+    if (invoice?.invoice_id) {
+      fetchInvoiceAuthorizer();
     }
   }, [invoice]);
 
@@ -239,7 +266,7 @@ export default function InvoiceComponent({ invoice }) {
                       <div className="h-[24px] w-[90px]">
                         {typeof invoiceObject?.total === 'number' ? (
                           <div className="flex flex-row">
-                            {invoiceObject?.total}{' '}
+                            {invoiceObject?.total.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}{' '}
                             {CurrencySymbol(invoiceObject?.currency)}
                           </div>
                         ) : (
@@ -273,9 +300,9 @@ export default function InvoiceComponent({ invoice }) {
                       />
                     </dt>
                     <dd className="text-sm font-medium leading-6 text-primary ">
-                      <div className="h-[24px] w-[110px]">
+                      <div className="h-[24px] w-[180px] text-secondary">
                         {typeof invoiceObject?.authorizer_name ? (
-                          <div>{invoiceObject?.authorizer_name}</div>
+                          <div>{invoiceObject?.authorizer_name || 'Awaiting authoritive user'}</div>
                         ) : (
                           <SkeletonLoader />
                         )}
@@ -296,7 +323,7 @@ export default function InvoiceComponent({ invoice }) {
                           <div>
                             {new Date(
                               invoiceObject?.due_date.replace(
-                                /(\d{2})-(\d{2})-(\d{4})/,
+                                /(\d{2})-(\d{1,2})-(\d{4})/,
                                 '$2/$1/$3'
                               )
                             ).toLocaleDateString('en-GB', {
@@ -322,7 +349,13 @@ export default function InvoiceComponent({ invoice }) {
                     <dd className="text-sm leading-6 text-secondary">
                       <div className="h-[24px] w-[140px]">
                         {typeof invoiceObject?.payment_method ? (
-                          <div>Paid with {invoiceObject?.payment_method}</div>
+                          <div>
+                            {invoiceObject?.paid ? (
+                              `Paid with ${invoiceObject?.payment_method}`
+                            ) : (
+                              'Awaiting payment'
+                            )}
+                          </div>
                         ) : (
                           <SkeletonLoader />
                         )}
@@ -501,7 +534,7 @@ export default function InvoiceComponent({ invoice }) {
                       <div className="h-[24px] w-[60px]">
                         {invoiceObject?.subtotal ? (
                           <div className="font-medium text-primary">
-                            {invoiceObject?.subtotal} {CurrencySymbol(invoiceObject?.currency)}
+                            {invoiceObject?.subtotal.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {CurrencySymbol(invoiceObject?.currency)}
                           </div>
                         ) : (
                           <SkeletonLoader />
@@ -512,22 +545,22 @@ export default function InvoiceComponent({ invoice }) {
                   <tr>
                     <th
                       scope="row"
-                      className="pt-4 font-normal text-primary sm:hidden select-none"
+                      className="pt-4 font-normal text-primary sm:hidden select-none "
                     >
                       Fee
                     </th>
                     <th
                       scope="row"
                       colSpan={3}
-                      className="hidden pt-4 text-right font-normal text-primary sm:table-cell"
+                      className="hidden pt-4  text-right font-normal text-primary sm:table-cell"
                     >
                       Fee
                     </th>
-                    <td className="pb-0 pl-8 pr-0 pt-4 text-right tabular-nums text-primary">
+                    <td className="pb-0 pl-8 pr-0 pt-4 text-right tabular-nums text-primary ">
                       <div className="h-[24px] w-[60px]">
                         {invoiceObject?.fee ? (
                           <div className="font-medium text-primary">
-                            {invoiceObject?.fee} {CurrencySymbol(invoiceObject?.currency)}
+                            <span className="text-transparent select-none">iiiiii</span>{invoiceObject?.fee.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {CurrencySymbol(invoiceObject?.currency)}
                           </div>
                         ) : (
                           <SkeletonLoader />
@@ -553,7 +586,7 @@ export default function InvoiceComponent({ invoice }) {
                       <div className="h-[24px] w-[60px]">
                         {invoiceObject?.total ? (
                           <div className="font-medium text-primary">
-                            {invoiceObject?.total}
+                            {invoiceObject?.total.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {CurrencySymbol(invoiceObject?.currency)}
                           </div>
                         ) : (
                           <SkeletonLoader />
