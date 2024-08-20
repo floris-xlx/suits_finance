@@ -103,6 +103,7 @@ export default function InvoiceComponent({ invoice }) {
         ...prevState,
         authorizer_name: authorizer.authorizer_name,
       }));
+      setInvoiceAuthorizer(authorizer.authorizer_name);
     }
   };
 
