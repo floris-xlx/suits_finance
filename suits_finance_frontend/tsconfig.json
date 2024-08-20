@@ -34,7 +34,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "app/page.js"  ],
+, "app/page.js", "app/components/ui/Timeline/CommentFeed.jsx"  ],
   "exclude": [
     "node_modules"
   ]
