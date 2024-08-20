@@ -30,7 +30,7 @@ export default function InvoicesPage() {
 
   // INSERT_YOUR_CODE
 
-  
+
   const [invoiceId, setInvoiceId] = useState(null);
   const [loadingInvoices, setLoadingInvoices] = useState(true);
   const [invoice, setInvoice] = useState(null);
@@ -53,7 +53,7 @@ export default function InvoicesPage() {
       setLoadingInvoices(false);
 
       if (!invoices.length) {
-        
+
         location.replace('/dashboard');
         setLoadingInvoices(false);
       }
@@ -118,10 +118,10 @@ export default function InvoicesPage() {
   }
 
 
-  
+
   return (
-    <div className={styles.containerLogin}>
-      <div className="bg-primary  mt-0 lg:mt-[80px] h-[120vh] mb-[400px] min-h-[90.75vh]">
+    <div >
+      <div className="bg-primary  mt-0 lg:mt-[80px] min-h-[110vh]">
         <div className="flex flex-col items-center gap-3 max-w-[1400px] w-full lg:hidden pb-0 ">
           <div className="w-[96%]">
             <LoggedInUserCard
@@ -135,8 +135,8 @@ export default function InvoicesPage() {
         </div>
 
         {/* This is where the body layout goes */}
-        <div className="flex flex-col gap-y-2 pt-8">
-          <Stacked invoice={invoice}/>
+        <div className="flex flex-col gap-y-2 pt-8 h-full w-full">
+          <Stacked invoice={invoice} />
         </div>
       </div>
 

@@ -6,12 +6,12 @@ import { getRelativeTime } from '@/app/client/hooks/datetime/RelativeDate';
 import { useUserStore } from '@/app/stores/stores';
 
 // ui
-import { CheckCircleIcon, ChatBubbleLeftIcon } from '@heroicons/react/24/solid';
+import { CheckCircleIcon, TrashIcon } from '@heroicons/react/24/solid';
 import SkeletonLoader from '@/app/components/ui/Loading/SkeletonLoader';
 import NoChat from '@/app/components/ui/EmptyStates/NoChat';
 
 // supabase
-import { fetchComments, addComment } from '@/app/components/ui/Timeline/data/CommentFeedData';
+import { fetchComments, addComment, deleteComment } from '@/app/components/ui/Timeline/data/CommentFeedData';
 
 // notifications
 import { AddCommentSuccessNotification } from '@/app/components/ui/Notifications/Notifications.jsx';
@@ -30,13 +30,15 @@ interface CommentFeedProps {
     tableName: string;
     columnValue: string;
     columnName: string;
+    forceRefresh: boolean;
 }
 
 const CommentFeed: React.FC<CommentFeedProps> = ({
     title = 'Activity',
     tableName,
     columnValue,
-    columnName
+    columnName,
+    forceRefresh = false,
 }) => {
     const [comment, setComment] = useState<string>('');
     const [comments, setComments] = useState<Comment[]>([]);
@@ -77,9 +79,21 @@ const CommentFeed: React.FC<CommentFeedProps> = ({
         AddCommentSuccessNotification(); // Notify user of success
     };
 
+    const handleDeleteComment = async (commentId: string) => {
+        const result = await deleteComment({
+            table: tableName,
+            commentId: commentId,
+            columnName: columnName,
+            columnValue: columnValue,
+        })
+        console.log(result);
+        // Fetch comments again to update the UI
+        await handleFetchComments();
+    };
+
     useEffect(() => {
         handleFetchComments();
-    }, [tableName, columnValue]);
+    }, [tableName, columnValue, columnName, forceRefresh]);
 
     // Scroll to the bottom whenever comments are updated
     useEffect(() => {
@@ -135,16 +149,23 @@ const CommentFeed: React.FC<CommentFeedProps> = ({
                                             </span>{' '}
                                             commented
                                         </div>
-                                        <time
-                                            dateTime={commentItem?.datetime}
-                                            className="flex-none py-0.5 text-xs leading-5 text-secondary"
-                                        >
-                                            {getRelativeTime(commentItem?.datetime)}
-                                        </time>
+                                        <div className="flex flex-col">
+                                            <time
+                                                dateTime={commentItem?.datetime}
+                                                className="flex-none py-0.5 text-xs leading-5 text-secondary"
+                                            >
+                                                {getRelativeTime(commentItem?.datetime)}
+                                            </time>
+                                       
+
+
+                                        </div>
                                     </div>
                                     <p className="text-sm leading-6 text-secondary break-words w-[320px] ">
                                         {commentItem?.comment}
                                     </p>
+
+
                                 </div>
                             </>
                         ) : (

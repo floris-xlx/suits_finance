@@ -32,7 +32,7 @@ import BalanceTopUpSuccessNotification from './balanceTopUpSuccess.jsx';
 import TransfersBlockedAccountReviewalNotification from './transfersBlockedAccountReviewal.jsx';
 import AddTransactionSuccessNotification from './addTransactionSuccess.jsx';
 import AddCommentSuccessNotification from './addCommentSuccess.jsx';
-
+import DeleteCommentSuccessNotification from './deleteCommentSuccess.jsx';
 
 export {
     wrongCredentialsNotification,
@@ -68,5 +68,6 @@ export {
     BalanceTopUpSuccessNotification,
     TransfersBlockedAccountReviewalNotification,
     AddTransactionSuccessNotification,
-    AddCommentSuccessNotification
+    AddCommentSuccessNotification,
+    DeleteCommentSuccessNotification
 }

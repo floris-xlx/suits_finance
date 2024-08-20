@@ -43,6 +43,7 @@ export default function InvoiceComponent({ invoice }) {
   const [invoicePaid, setInvoicePaid] = useState(false);
   const [commentField, setCommentField] = useState('');
   const [invoiceStatus, setInvoiceStatus] = useState('');
+  const [forceRefresh, setForceRefresh] = useState(false);
 
   useEffect(() => {
     if (!invoice) return;
@@ -166,13 +167,14 @@ export default function InvoiceComponent({ invoice }) {
   return (
     <>
       <main>
-        <header className="relative isolate">
+        <header className="mx-auto max-w-[79rem]  px-8  sm:px-6  ">
           <div className="absolute inset-0 -z-10 " aria-hidden="true">
             <div className="absolute inset-x-0 bottom-0 h-px bg-primary" />
           </div>
 
-          <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-            <div className="mx-auto flex max-w-2xl items-center justify-between gap-x-8 lg:mx-0 lg:max-w-none">
+          <div className="mx-auto  py-10 sm:ml-[65px]">
+            <div className="mx-auto flex  w-full items-center justify-between gap-x-8 lg:mx-0 lg:max-w-none">
+              
               <div className="flex items-center gap-x-6">
                 <Image
                   src="https://xylex.ams3.cdn.digitaloceanspaces.com/profilePics/xylexIcon.png"
@@ -202,7 +204,9 @@ export default function InvoiceComponent({ invoice }) {
                   </div>
                 </h1>
               </div>
+              
               <div className="flex items-center gap-x-4 sm:gap-x-6">
+                
                 {invoicePaid ? (
                   <button
                     disabled={true}
@@ -227,54 +231,7 @@ export default function InvoiceComponent({ invoice }) {
                   </button>
                 )}
 
-                <Menu as="div" className="relative sm:hidden">
-                  <Menu.Button className="-m-3 block p-3">
-                    <span className="sr-only">More</span>
-                    <EllipsisVerticalIcon
-                      className="h-5 w-5 text-secondary"
-                      aria-hidden="true"
-                    />
-                  </Menu.Button>
-
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="absolute right-0 z-10 mt-0.5 w-32 origin-top-right rounded-md bg-primary py-2 shadow-lg ring-1 ring-primary focus:outline-none">
-                      <Menu.Item>
-                        {({ active }) => (
-                          <button
-                            type="button"
-                            className={classNames(
-                              active ? 'bg-secondary' : '',
-                              'block w-full px-3 py-1 text-left text-sm leading-6 text-primary'
-                            )}
-                          >
-                            Copy URL
-                          </button>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(
-                              active ? 'bg-secondary' : '',
-                              'block px-3 py-1 text-sm leading-6 text-primary'
-                            )}
-                          >
-                            Edit
-                          </a>
-                        )}
-                      </Menu.Item>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
+               
               </div>
             </div>
           </div>
@@ -633,15 +590,16 @@ export default function InvoiceComponent({ invoice }) {
                 </tfoot>
               </table>
             </div>
-
+            <div className="pb-[100px]">
               {/* Activity feed */}
               < CommentFeed
                 tableName='invoices_comments'
                 columnName='invoice_id'
                 columnValue={invoice?.invoice_id}
+                forceRefresh={forceRefresh}
               />
 
-
+            </div>
           </div>
         </div>
       </main>
