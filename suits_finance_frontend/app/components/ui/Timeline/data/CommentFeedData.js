@@ -171,7 +171,7 @@ export async function deleteComment({
 export async function getAllUsers() {
     const { data, error } = await supabase
         .from('users')
-        .select('username');
+        .select('username, user_id');
 
     if (error) throw error;
 

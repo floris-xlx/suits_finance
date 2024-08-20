@@ -129,11 +129,32 @@ const CommentFeed: React.FC<CommentFeedProps> = ({
     }, [comment]);
 
     const handleAddUserToComment = () => {
-        setComment((comment) => `${comment.replace(/@\w*\s*$/, '')}@${tagUsers[selectedTagUser].username} `);
+        setComment((comment) => {
+            const newComment = `${comment.replace(/@\w*\s*$/, '')}@${tagUsers[selectedTagUser].username}`;
+            const textarea = document.getElementById('comment');
+            if (textarea) {
+                const cursorPosition = textarea.selectionStart + tagUsers[selectedTagUser].username.length;
+                setTimeout(() => {
+                    textarea.setSelectionRange(cursorPosition, cursorPosition);
+                }, 0);
+            }
+            return newComment;
+        });
+        setIsMention(false);
     }
 
 
     const doesCommentMention = () => {
+        const mentionRegex = /@\w+/g;
+        const matches = comment.match(mentionRegex);
+        if (matches) {
+            for (const match of matches) {
+                const username = match.slice(1); // Remove the '@' character
+                if (tagUsers.some(user => user.username === username)) {
+                    return false; // Ignore if it's an existing username
+                }
+            }
+        }
         return comment.includes('@');
     }
 
